@@ -49,6 +49,18 @@
             &-button {
                 color: $dark-text;
                 font-family: $roboto-light;
+                font-size: 1.07rem;
+                color: $dark-text;
+                border-color: $primary;
+                text-transform: none;
+                padding: .6rem 1.8rem;
+                border-radius: 25px;
+
+                &:hover {
+                    background-color: $primary;
+                    color: $light-text;
+                    border-color: $primary;
+                }
             }
         }
     }
