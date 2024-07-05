@@ -1,74 +1,74 @@
 @import "./../../../variables";
 
-.container {
+.containerLogin {
+  display: flex;
+  height: 100vh;
+
+  &__left {
+    margin-top: -6rem;
+    width: 40%;
     display: flex;
-    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 
-    &__left {
-        margin-top: -6rem;
-        width: 40%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    &-info {
+      &-image {
+        img {
+          width: 13rem;
+          // height: 150px;
+        }
+      }
+
+      &-welcome {
+        font-size: 2.5rem;
         text-align: center;
-        justify-content: center;
+        font-family: $roboto-bold;
+        color: $dark-text;
+      }
 
-        &-info {
-            &-image {
-                img {
-                    width: 13rem;
-                    // height: 150px;
-                }
-            }
-
-            &-welcome {
-                font-size: 2.5rem;
-                text-align: center;
-                font-family: $roboto-bold;
-                color: $dark-text;
-            }
-
-            &-slogan {
-                padding: .7rem 0 1rem;
-                font-size: 1.2rem;
-                text-align: center;
-                font-family: $roboto-regular;
-                color: $dark-text;
-            }
-        }
-
-        &-login {
-            &-message {
-                font-size: 1.5rem;
-                text-align: center;
-                font-family: $roboto-bold;
-                color: $dark-text;
-                padding: 2.5rem 0 .5rem;
-            }
-
-            &-button {
-                color: $dark-text;
-                font-family: $roboto-light;
-                font-size: 1.07rem;
-                color: $dark-text;
-                border-color: $primary;
-                text-transform: none;
-                padding: .6rem 1.8rem;
-                border-radius: 25px;
-
-                &:hover {
-                    background-color: $primary;
-                    color: $light-text;
-                    border-color: $primary;
-                }
-            }
-        }
+      &-slogan {
+        padding: 0.7rem 0 1rem;
+        font-size: 1.2rem;
+        text-align: center;
+        font-family: $roboto-regular;
+        color: $dark-text;
+      }
     }
 
-    &__right {
-        width: 60%;
-        background-image: url("./../../../assets/background.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
+    &-login {
+      &-message {
+        font-size: 1.5rem;
+        text-align: center;
+        font-family: $roboto-bold;
+        color: $dark-text;
+        padding: 2.5rem 0 0.5rem;
+      }
+
+      &-button {
+        color: $dark-text;
+        font-family: $roboto-light;
+        font-size: 1.07rem;
+        color: $dark-text;
+        border-color: $primary;
+        text-transform: none;
+        padding: 0.6rem 1.8rem;
+        border-radius: 25px;
+
+        &:hover {
+          background-color: $primary;
+          color: $light-text;
+          border-color: $primary;
+        }
+      }
     }
+  }
+
+  &__right {
+    width: 60%;
+    background-image: url("./../../../assets/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
 }
