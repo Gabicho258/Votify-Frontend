@@ -1,0 +1,17 @@
+@import "./variables";
+
+body {
+    margin: 0;
+    font-family: $roboto-regular;
+    background-color: $background;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
