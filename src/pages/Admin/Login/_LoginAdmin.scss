@@ -1,0 +1,47 @@
+@import './../../../variables';
+
+.containerAdminLogin {
+  background-image: url(./../../../assets/backgroundAdmin.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    background-color: $background;
+    height: 100vh;
+    &-logo {
+      width: 14rem;
+    }
+    &-info {
+      font-size: 2.5rem;
+      text-align: center;
+      font-family: $roboto-bold;
+      color: $dark-text;
+      margin: 1rem 0 2.5rem 0;
+    }
+    &-loginButton {
+      margin-bottom: 3rem;
+      color: $dark-text;
+      font-family: $roboto-light;
+      font-size: 1.07rem;
+      color: $dark-text;
+      border-color: $primary;
+      text-transform: none;
+      padding: 0.6rem 1.8rem;
+      border-radius: 25px;
+
+      &:hover {
+        background-color: $primary;
+        color: $light-text;
+        border-color: $primary;
+      }
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import React from 'react';
 import './_Register.scss';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import TextField from '@mui/material/TextField';
