@@ -1,0 +1,80 @@
+@import './../../../variables';
+
+.containerRegister {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  color: $light-text;
+  &__content {
+    width: 70%;
+    background-color: $primary;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    flex-direction: column;
+    &-logo {
+      width: 10rem;
+    }
+    &-title {
+      font-family: $roboto-bold;
+      font-size: 2rem;
+    }
+    &-divider {
+      width: 80%;
+      margin: 1.5rem 0;
+    }
+    &-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 35%;
+      &-label {
+        width: 100%;
+        font-size: 1.3rem;
+        margin: 0.5rem 0;
+      }
+      &-field {
+        width: 100%;
+        .MuiInputBase-input {
+          height: 0.5rem;
+          color: $light-text;
+          outline: none;
+          border: none;
+        }
+        fieldset {
+          border-radius: 5px;
+          border-color: $light-text;
+        }
+        &-error {
+          width: 100%;
+          font-family: $roboto-light;
+        }
+      }
+      &-submit {
+        width: 60%;
+        margin-top: 1.5rem;
+        padding: 0.5rem;
+        font-family: $roboto-regular;
+        background-color: $success;
+        color: $light-text;
+        border-radius: 50px;
+        border: none;
+        font-size: 1.3rem;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      &-help {
+        &-link {
+          color: $light-text;
+          text-decoration: underline;
+          margin-left: 3px;
+        }
+      }
+    }
+  }
+}

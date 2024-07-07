@@ -1,8 +1,10 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landing } from "./pages/User/Landing/Landing";
-import { Login } from "./pages/User/Login/Login";
-import { Register } from "./pages/User/Register/Register";
+import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Landing } from './pages/User/Landing/Landing';
+import { Login } from './pages/User/Login/Login';
+import { Register } from './pages/User/Register/Register';
+import { LoginAdmin } from './pages/Admin/Login/LoginAdmin';
+import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules';
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -41,9 +43,11 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/end-register" element={<Register />} />
+        <Route path='/' element={<Landing />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/end-register' element={<Register />} />
+        <Route path='/login-admin' element={<LoginAdmin />} />
+        <Route path='/system-admin-modules' element={<SystemModules />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
