@@ -1,0 +1,62 @@
+@import './../../variables';
+
+.containerProcessRequest {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &__content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    &-left {
+      &-title {
+        font-family: $roboto-bold;
+        color: $dark-text;
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+      &-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        &-date {
+          display: flex;
+          align-items: center;
+          color: $dark-text;
+          &-icon {
+            margin-right: 0.3rem;
+          }
+        }
+        &-time {
+          display: flex;
+          align-items: center;
+          color: $dark-text;
+          &-icon {
+            margin-right: 0.3rem;
+          }
+        }
+      }
+    }
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &-button {
+        border: none;
+        background-color: $primary;
+        color: $light-text;
+        font-family: $roboto-regular;
+        padding: 0.5rem 1.5rem;
+        &:hover {
+          border: 1px solid $primary;
+          background-color: $background;
+          color: $dark-text;
+        }
+      }
+    }
+  }
+  &__divider {
+    width: 100%;
+    background-color: $primary;
+  }
+}

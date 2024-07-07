@@ -3,8 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Landing } from './pages/User/Landing/Landing';
 import { Login } from './pages/User/Login/Login';
 import { Register } from './pages/User/Register/Register';
+
+// Administrator login
 import { LoginAdmin } from './pages/Admin/Login/LoginAdmin';
+
+// System administrator views
 import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules';
+import { ProcessRequests } from './pages/Admin/System/ProcessRequests/ProcessRequests';
+
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -48,6 +54,7 @@ function App() {
         <Route path='/end-register' element={<Register />} />
         <Route path='/login-admin' element={<LoginAdmin />} />
         <Route path='/system-admin-modules' element={<SystemModules />} />
+        <Route path='/process-requests' element={<ProcessRequests />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
