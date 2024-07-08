@@ -3,12 +3,19 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
+import Modal from '@mui/material/Modal';
+import { useState } from 'react';
 import { AccordionElectionList } from '../../../../components/AccordionElectionList/AccordionElectionList';
+import { EmailListItem } from '../../../../components/EmailListItem/EmailListItem';
 import { Button } from '@mui/material';
 import { IElectionProcess, ICandidate, IList } from '../../../../interfaces';
 import { formatISODate } from '../../../../utils/DateFormatter';
 
 export const ProcessRequest = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const testProcess: IElectionProcess = {
     user_id: 'asd',
     is_owner: false,
@@ -103,6 +110,29 @@ export const ProcessRequest = () => {
     },
   ];
 
+  const testEmails: string[] = [
+    'alice@example.com',
+    'bob@example.net',
+    'charlie@example.org',
+    'diana@example.com',
+    'eric@example.net',
+    'fiona@example.org',
+    'george@example.com',
+    'hannah@example.net',
+    'ian@example.org',
+    'julia@example.com',
+    'kevin@example.net',
+    'laura@example.org',
+    'michael@example.com',
+    'nina@example.net',
+    'oliver@example.org',
+    'paula@example.com',
+    'quentin@example.net',
+    'rachel@example.org',
+    'steven@example.com',
+    'tina@example.net',
+  ];
+
   const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
     testProcess.start_date
   );
@@ -155,7 +185,7 @@ export const ProcessRequest = () => {
             <Button
               variant='outlined'
               className='containerProcessRequestInfo__content-right-participants-button'
-              onClick={() => {}}
+              onClick={handleOpen}
             >
               Mostrar participantes
             </Button>
@@ -178,6 +208,31 @@ export const ProcessRequest = () => {
           Rechazar
         </Button>
       </div>
+      <Modal
+        className='containerProcessRequestInfo__participantsModal'
+        open={open}
+        onClose={handleClose}
+      >
+        <div className='containerProcessRequestInfo__participantsModal-content'>
+          <div className='containerProcessRequestInfo__participantsModal-content-title'>
+            Participantes
+          </div>
+          <div className='containerProcessRequestInfo__participantsModal-content-list'>
+            {testEmails.map((email) => {
+              return <EmailListItem email={email} />;
+            })}
+          </div>
+          <div className='containerProcessRequestInfo__participantsModal-content-button'>
+            <Button
+              variant='outlined'
+              className='containerProcessRequestInfo__participantsModal-content-button-close'
+              onClick={handleClose}
+            >
+              Cerrar
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
