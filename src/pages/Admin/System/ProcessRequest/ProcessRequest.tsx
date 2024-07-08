@@ -20,8 +20,8 @@ export const ProcessRequest = () => {
     user_id: 'asd',
     is_owner: false,
     title: 'presidenciales123',
-    admin_status: 'pendiente',
-    process_status: 'pendiente',
+    admin_status: 'approved',
+    process_status: 'in_progress',
     start_date: '2024-06-05T10:55:00.000Z',
     end_date: '2024-06-06T10:55:00.000Z',
     _id: '668af922469ca1cbb2cb0722',
@@ -193,20 +193,36 @@ export const ProcessRequest = () => {
         </div>
       </div>
       <div className='containerProcessRequestInfo__buttons'>
-        <Button
-          variant='outlined'
-          className='containerProcessRequestInfo__buttons-approve'
-          onClick={() => {}}
-        >
-          Aprobar
-        </Button>
-        <Button
-          variant='outlined'
-          className='containerProcessRequestInfo__buttons-reject'
-          onClick={() => {}}
-        >
-          Rechazar
-        </Button>
+        {testProcess.admin_status === 'pending' ? (
+          <>
+            <Button
+              variant='outlined'
+              className='containerProcessRequestInfo__buttons-approve'
+              onClick={() => {}}
+            >
+              Aprobar
+            </Button>
+            <Button
+              variant='outlined'
+              className='containerProcessRequestInfo__buttons-reject'
+              onClick={() => {}}
+            >
+              Rechazar
+            </Button>
+          </>
+        ) : testProcess.admin_status === 'approved' &&
+          (testProcess.process_status === 'programmed' ||
+            testProcess.process_status === 'in_progress') ? (
+          <Button
+            variant='outlined'
+            className='containerProcessRequestInfo__buttons-cancel'
+            onClick={() => {}}
+          >
+            Cancelar Proceso
+          </Button>
+        ) : (
+          <div></div>
+        )}
       </div>
       <Modal
         className='containerProcessRequestInfo__participantsModal'

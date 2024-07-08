@@ -151,6 +151,19 @@
         color: $danger;
       }
     }
+    &-cancel {
+      padding: 0.5rem 3rem;
+      background-color: $danger;
+      border-color: $danger;
+      color: $light-text;
+      font-family: $roboto-bold;
+      font-size: 1.1rem;
+      &:hover {
+        border-color: $danger;
+        background-color: $background;
+        color: $danger;
+      }
+    }
   }
   &__participantsModal {
     display: flex;
