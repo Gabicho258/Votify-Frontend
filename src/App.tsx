@@ -10,6 +10,7 @@ import { LoginAdmin } from './pages/Admin/Login/LoginAdmin';
 // System administrator views
 import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules';
 import { ProcessRequests } from './pages/Admin/System/ProcessRequests/ProcessRequests';
+import { ProcessRequest } from './pages/Admin/System/ProcessRequest/ProcessRequest';
 
 // import { Login } from "./pages/User/Login/Login";
 
@@ -55,6 +56,7 @@ function App() {
         <Route path='/login-admin' element={<LoginAdmin />} />
         <Route path='/system-admin-modules' element={<SystemModules />} />
         <Route path='/process-requests' element={<ProcessRequests />} />
+        <Route path='/process-request' element={<ProcessRequest />} />
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>

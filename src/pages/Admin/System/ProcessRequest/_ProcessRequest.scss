@@ -1,0 +1,155 @@
+@import './../../../../variables';
+
+.containerProcessRequestInfo {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  &__back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: $dark-text;
+    &-icon {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+    &-text {
+      font-size: 2rem;
+      font-family: $roboto-bold;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__title {
+    font-family: $roboto-bold;
+    font-size: 2.5rem;
+    color: $dark-text;
+    margin-bottom: 1.5rem;
+  }
+  &__info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+    margin-bottom: 1.5rem;
+    &-date {
+      display: flex;
+      align-items: center;
+      color: $dark-text;
+      &-icon {
+        margin-right: 0.3rem;
+        font-size: 2rem;
+      }
+      &-text {
+        font-size: 1.5rem;
+        font-family: $roboto-light;
+      }
+    }
+    &-time {
+      display: flex;
+      align-items: center;
+      color: $dark-text;
+      &-icon {
+        margin-right: 0.3rem;
+        font-size: 2rem;
+      }
+      &-text {
+        font-size: 1.5rem;
+        font-family: $roboto-light;
+      }
+    }
+  }
+  &__content {
+    display: grid;
+    grid-template-columns: 7fr 3fr;
+    gap: 1.5rem;
+    width: 80%;
+    &-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    &-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      &-participants {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1.5rem;
+        width: 80%;
+        border-radius: 15px;
+        background-color: $primary;
+        color: $light-text;
+        -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        &-title {
+          font-family: $roboto-bold;
+          font-size: 1.5rem;
+        }
+        &-number {
+          display: flex;
+          align-items: center;
+          &-icon {
+            font-size: 2.5rem;
+          }
+          &-text {
+            font-family: $roboto-light;
+            font-size: 1.5rem;
+          }
+        }
+        &-button {
+          background-color: $secondary;
+          font-family: $roboto-bold;
+          border-color: $secondary;
+          color: $light-text;
+          &:hover {
+            background-color: $background;
+            border-color: $secondary;
+            color: $secondary;
+          }
+        }
+      }
+    }
+  }
+  &__buttons {
+    margin: 2rem;
+    display: flex;
+    gap: 2.5rem;
+    &-approve {
+      padding: 0.5rem 3rem;
+      background-color: $success;
+      border-color: $success;
+      color: $light-text;
+      font-family: $roboto-bold;
+      font-size: 1.1rem;
+      &:hover {
+        border-color: $success;
+        background-color: $background;
+        color: $success;
+      }
+    }
+    &-reject {
+      padding: 0.5rem 3rem;
+      background-color: $danger;
+      border-color: $danger;
+      color: $light-text;
+      font-family: $roboto-bold;
+      font-size: 1.1rem;
+      &:hover {
+        border-color: $danger;
+        background-color: $background;
+        color: $danger;
+      }
+    }
+  }
+}
