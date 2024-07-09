@@ -1,0 +1,116 @@
+@import './../../variables';
+
+.containerProcessAdminListItem {
+  color: $dark-text;
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-info {
+      &-top {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        &-name {
+          font-family: $roboto-regular;
+          font-size: 1.3rem;
+          margin-right: 0.5rem;
+        }
+        &-status {
+          &-active {
+            height: 1.2rem;
+            padding: 0 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $success;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          &-inactive {
+            height: 1.2rem;
+            padding: 0 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $danger;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+      }
+      &-down {
+        margin-top: 0.3rem;
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+        &-email {
+          display: flex;
+          gap: 0.3rem;
+          flex-direction: row;
+          align-items: center;
+          font-family: $roboto-light;
+          &-icon {
+            font-size: 1.5rem;
+          }
+        }
+        &-dni {
+          display: flex;
+          gap: 0.3rem;
+          flex-direction: row;
+          align-items: center;
+          font-family: $roboto-light;
+          &-icon {
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+    &-buttons {
+      display: flex;
+      gap: 0.5rem;
+      &-edit {
+        background-color: $primary;
+        color: $light-text;
+        border-color: $primary;
+        padding: 0.3rem 2rem;
+        font-family: $roboto-bold;
+        &:hover {
+          background-color: $background;
+          border-color: $primary;
+          color: $primary;
+        }
+      }
+      &-enable {
+        background-color: $success;
+        color: $light-text;
+        border-color: $success;
+        padding: 0.3rem 2rem;
+        font-family: $roboto-bold;
+        min-width: 10rem;
+        &:hover {
+          background-color: $background;
+          border-color: $success;
+          color: $success;
+        }
+      }
+      &-disable {
+        background-color: $danger;
+        color: $light-text;
+        border-color: $danger;
+        padding: 0.3rem 2rem;
+        font-family: $roboto-bold;
+        min-width: 10rem;
+        &:hover {
+          background-color: $background;
+          border-color: $danger;
+          color: $danger;
+        }
+      }
+    }
+  }
+}
