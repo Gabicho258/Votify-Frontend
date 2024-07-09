@@ -9,7 +9,7 @@ import { AccordionElectionList } from "../../../../components/AccordionElectionL
 import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
 import { Button } from "@mui/material";
 import { formatISODate } from "../../../../utils/DateFormatter";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetListsByProcessIdQuery,
   useGetProcessByIdQuery,
@@ -21,7 +21,7 @@ export const ProcessRequest = () => {
   const { data: lists } = useGetListsByProcessIdQuery(
     currentProcess?._id || ""
   );
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -58,7 +58,10 @@ export const ProcessRequest = () => {
 
   return (
     <div className="containerProcessRequestInfo">
-      <div className="containerProcessRequestInfo__back">
+      <div
+        className="containerProcessRequestInfo__back"
+        onClick={() => navigate(-1)}
+      >
         <ArrowBackIcon className="containerProcessRequestInfo__back-icon" />
         <div className="containerProcessRequestInfo__back-text">Volver</div>
       </div>
