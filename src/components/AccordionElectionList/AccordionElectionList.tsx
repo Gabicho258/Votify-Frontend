@@ -1,58 +1,59 @@
-import Accordion from '@mui/material/Accordion';
-import './_AccordionElectionList.scss';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Accordion from "@mui/material/Accordion";
+import "./_AccordionElectionList.scss";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { IList, ICandidate } from '../../interfaces';
+import { IList } from "../../interfaces";
+import { useGetCandidatesByListIdQuery } from "../../app/votify.api";
 
 interface AccordionElectionListProps {
   list: IList;
-  candidates: ICandidate[];
 }
 
-export const AccordionElectionList = ({
-  list,
-  candidates,
-}: AccordionElectionListProps) => {
+export const AccordionElectionList = ({ list }: AccordionElectionListProps) => {
   const { title } = list;
+  const { data: candidates } = useGetCandidatesByListIdQuery(list._id);
   return (
-    <Accordion className='containerAccordionElectionList'>
+    <Accordion className="containerAccordionElectionList">
       <AccordionSummary
         expandIcon={
-          <ExpandMoreIcon className='containerAccordionElectionList__summary-icon' />
+          <ExpandMoreIcon className="containerAccordionElectionList__summary-icon" />
         }
-        className='containerAccordionElectionList__summary'
+        className="containerAccordionElectionList__summary"
       >
         {title}
       </AccordionSummary>
-      <AccordionDetails className='containerAccordionElectionList__details'>
-        {candidates.map((candidate) => {
+      <AccordionDetails className="containerAccordionElectionList__details">
+        {candidates?.map((candidate) => {
           const { candidate_name, photo_url, organization_name, logo_url } =
             candidate;
           return (
-            <div className='containerAccordionElectionList__details-candidate'>
-              <div className='containerAccordionElectionList__details-candidate-content'>
-                <div className='containerAccordionElectionList__details-candidate-content-info'>
-                  <div className='containerAccordionElectionList__details-candidate-content-info-name'>
+            <div
+              key={candidate._id}
+              className="containerAccordionElectionList__details-candidate"
+            >
+              <div className="containerAccordionElectionList__details-candidate-content">
+                <div className="containerAccordionElectionList__details-candidate-content-info">
+                  <div className="containerAccordionElectionList__details-candidate-content-info-name">
                     {candidate_name}
                   </div>
-                  <div className='containerAccordionElectionList__details-candidate-content-info-organization'>
+                  <div className="containerAccordionElectionList__details-candidate-content-info-organization">
                     {organization_name}
                   </div>
                 </div>
-                <div className='containerAccordionElectionList__details-candidate-content-photos'>
+                <div className="containerAccordionElectionList__details-candidate-content-photos">
                   <img
-                    className='containerAccordionElectionList__details-candidate-content-photos-candidate'
+                    className="containerAccordionElectionList__details-candidate-content-photos-candidate"
                     src={photo_url}
                   />
                   <img
-                    className='containerAccordionElectionList__details-candidate-content-photos-organization'
+                    className="containerAccordionElectionList__details-candidate-content-photos-organization"
                     src={logo_url}
                   />
                 </div>
               </div>
-              <hr className='containerAccordionElectionList__details-candidate-divider' />
+              <hr className="containerAccordionElectionList__details-candidate-divider" />
             </div>
           );
         })}
