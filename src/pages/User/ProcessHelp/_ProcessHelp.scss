@@ -1,0 +1,45 @@
+@import './../../../variables';
+
+.processHelpContainer {
+    // width: 100vw;
+    height: 100vh;
+    background-color: $background;
+    // background-color: #40b1ce;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    &__content {
+        // border: 1px solid black;
+        margin-top: -6rem;
+        width: 46rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 15px;
+        // height: 40%;
+        padding: 1.2rem .7rem 1rem;
+        background-color: $primary;
+
+        &-title {
+            font-size: 2rem;
+            color: $light-text;
+            font-family: $roboto-bold;
+            margin: 1.4rem 0 1rem;
+        }
+
+        &-indication {
+            font-family: $roboto-regular;
+            color: $light-text
+        }
+
+        &-button {
+            background-color: $success;
+            margin: .7rem 0 2rem;
+
+            &:hover {
+                background-color: #18703d;
+            }
+        }
+    }
+}

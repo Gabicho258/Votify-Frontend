@@ -1,39 +1,36 @@
+import axios from "axios";
 import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 import "./_Login.scss";
-import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
+import { useGetUsersQuery } from "../../../app/votify.api";
 
 export const Login = () => {
+  const navigate = useNavigate();
+
+  const { data: allUsers } = useGetUsersQuery();
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      console.log(codeResponse);
-      const tokens = await axios.post("http://localhost:5000/auth/google", {
+      const response = await axios.post("http://localhost:8080/auth/google", {
         code: codeResponse.code,
       });
-
-      console.log(tokens);
+      const userData = response.data.user;
+      const userExists = allUsers?.find(
+        (user) => user.email === userData.email
+      );
+      if (userExists) {
+        // realiar la navegación al hub de user
+        // navigate("/");
+      } else {
+        navigate("/end-register", { state: userData });
+      }
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
 
-  // Implicit flow
-  // const handleGoogleLogin = useGoogleLogin({
-  //   onSuccess: async (tokenResponse) => {
-  //     console.log(tokenResponse);
-  //     const userInfo = await axios.get(
-  //       "https://www.googleapis.com/oauth2/v3/userinfo",
-  //       { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
-  //     );
-
-  //     console.log(userInfo);
-  //   },
-  //   onError: (errorResponse) => console.log(errorResponse),
-  // });
-
-  // const handleGoogleLogin = () => {};
   return (
     <div className="containerLogin">
       <div className="containerLogin__left">

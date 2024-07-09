@@ -1,5 +1,5 @@
 export interface ICandidate {
-    candidate_id: string;
+    _id: string;
     list_id: string;
     candidate_name: string;
     photo_url: string;
