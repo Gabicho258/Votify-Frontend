@@ -1,6 +1,8 @@
-import './_Register.scss';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import TextField from '@mui/material/TextField';
+import "./_Register.scss";
+import { useForm, SubmitHandler } from "react-hook-form";
+import TextField from "@mui/material/TextField";
+import { useLocation } from "react-router-dom";
+import { useCreateUserMutation } from "../../../app/votify.api";
 
 type RegisterInputs = {
   user_name: string;
@@ -10,143 +12,161 @@ type RegisterInputs = {
 };
 
 export const Register = () => {
+  const location = useLocation();
+  const previousUserData = location.state;
+  const [createUser] = useCreateUserMutation();
+  // console.log(previousUserData);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterInputs>();
 
-  const onSubmit: SubmitHandler<RegisterInputs> = (data) => {
+  const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     // submit code
-    console.log({
+    const userToCreate = {
       is_active: true,
-      role: 'user',
+      role: "voter",
       ...data,
-    });
+      dni: data.dni.toString(),
+    };
+    try {
+      await createUser(userToCreate).unwrap();
+      alert("Usuario creado correctamente");
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+    console.log(userToCreate);
   };
 
   return (
-    <div className='containerRegister'>
-      <div className='containerRegister__content'>
+    <div className="containerRegister">
+      <div className="containerRegister__content">
         <img
-          className='containerRegister__content-logo'
-          src='https://raw.githubusercontent.com/Gabicho258/votify-frontend/master/src/assets/logo_clean_zoom.png'
-          alt='logo-votify'
+          className="containerRegister__content-logo"
+          src="https://raw.githubusercontent.com/Gabicho258/votify-frontend/master/src/assets/logo_clean_zoom.png"
+          alt="logo-votify"
         />
-        <div className='containerRegister__content-title'>
+        <div className="containerRegister__content-title">
           Regístrate en Votify
         </div>
-        <hr className='containerRegister__content-divider' />
+        <hr className="containerRegister__content-divider" />
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className='containerRegister__content-form'
+          className="containerRegister__content-form"
         >
           <label
-            className='containerRegister__content-form-label'
-            htmlFor='user_name'
+            className="containerRegister__content-form-label"
+            htmlFor="user_name"
           >
             Ingresa tus nombres:
           </label>
           <TextField
-            {...register('user_name', { required: 'Nombre es requerido' })}
-            className='containerRegister__content-form-field'
-            autoComplete='off'
-            placeholder='Mi nombre'
-            name='user_name'
-            id='outlined-basic'
-            variant='outlined'
+            {...register("user_name", { required: "Nombre es requerido" })}
+            className="containerRegister__content-form-field"
+            autoComplete="off"
+            placeholder="Mi nombre"
+            name="user_name"
+            id="outlined-basic"
+            variant="outlined"
+            defaultValue={previousUserData.given_name}
           />
           {errors.user_name && (
-            <div className='containerRegister__content-form-field-error'>
+            <div className="containerRegister__content-form-field-error">
               {errors.user_name.message}
             </div>
           )}
           <label
-            className='containerRegister__content-form-label'
-            htmlFor='user_surname'
+            className="containerRegister__content-form-label"
+            htmlFor="user_surname"
           >
             Ingresa tus apellidos:
           </label>
           <TextField
-            {...register('user_surname', { required: 'Apellido es requerido' })}
-            className='containerRegister__content-form-field'
-            autoComplete='off'
-            placeholder='Mi apellido'
-            name='user_surname'
-            id='outlined-basic'
-            variant='outlined'
+            {...register("user_surname", { required: "Apellido es requerido" })}
+            className="containerRegister__content-form-field"
+            autoComplete="off"
+            placeholder="Mi apellido"
+            name="user_surname"
+            id="outlined-basic"
+            variant="outlined"
+            defaultValue={previousUserData.family_name}
           />
           {errors.user_surname && (
-            <div className='containerRegister__content-form-field-error'>
+            <div className="containerRegister__content-form-field-error">
               {errors.user_surname.message}
             </div>
           )}
           <label
-            className='containerRegister__content-form-label'
-            htmlFor='dni'
+            className="containerRegister__content-form-label"
+            htmlFor="dni"
           >
             Ingresa tu DNI:
           </label>
           <TextField
-            {...register('dni', {
-              required: 'DNI es requerido',
+            {...register("dni", {
+              required: "DNI es requerido",
               validate: {
                 isNumber: (value) =>
-                  !isNaN(Number(value)) || 'DNI debe ser un número',
+                  !isNaN(Number(value)) || "DNI debe ser un número",
                 length: (value) =>
                   value.toString().length === 8 ||
-                  'DNI debe tener exactamente 8 dígitos',
+                  "DNI debe tener exactamente 8 dígitos",
               },
             })}
-            className='containerRegister__content-form-field'
-            type='text'
-            autoComplete='off'
-            placeholder='Mi DNI'
-            name='dni'
-            id='outlined-basic'
-            variant='outlined'
+            className="containerRegister__content-form-field"
+            type="text"
+            autoComplete="off"
+            placeholder="Mi DNI"
+            name="dni"
+            id="outlined-basic"
+            variant="outlined"
           />
           {errors.dni && (
-            <div className='containerRegister__content-form-field-error'>
+            <div className="containerRegister__content-form-field-error">
               {errors.dni.message}
             </div>
           )}
           <label
-            className='containerRegister__content-form-label'
-            htmlFor='email'
+            className="containerRegister__content-form-label"
+            htmlFor="email"
           >
             Ingresa tu correo electrónico:
           </label>
           <TextField
-            {...register('email', {
-              required: 'Email es requerido',
+            {...register("email", {
+              required: "Email es requerido",
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                message: 'Email inválido',
+                message: "Email inválido",
               },
             })}
-            className='containerRegister__content-form-field'
-            type='text'
-            autoComplete='off'
-            placeholder='Mi correo electrónico'
-            name='email'
-            id='outlined-basic'
-            variant='outlined'
+            className="containerRegister__content-form-field"
+            type="text"
+            autoComplete="off"
+            placeholder="Mi correo electrónico"
+            name="email"
+            id="outlined-basic"
+            variant="outlined"
+            defaultValue={previousUserData.email}
+            InputProps={{
+              readOnly: true,
+            }}
           />
           {errors.email && (
-            <div className='containerRegister__content-form-field-error'>
+            <div className="containerRegister__content-form-field-error">
               {errors.email.message}
             </div>
           )}
           <button
-            type='submit'
-            className='containerRegister__content-form-submit'
+            type="submit"
+            className="containerRegister__content-form-submit"
           >
             Registrarse
           </button>
-          <p className='containerRegister__content-form-help'>
+          <p className="containerRegister__content-form-help">
             ¿Ya tienes una cuenta?
-            <a className='containerRegister__content-form-help-link' href='#'>
+            <a className="containerRegister__content-form-help-link" href="#">
               Accede aquí
             </a>
           </p>

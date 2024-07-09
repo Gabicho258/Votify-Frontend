@@ -12,6 +12,9 @@ import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules'
 import { ProcessRequests } from './pages/Admin/System/ProcessRequests/ProcessRequests';
 import { ProcessRequest } from './pages/Admin/System/ProcessRequest/ProcessRequest';
 
+// User routes
+import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
+import { Credential } from "./pages/User/Credential/Credential";
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -57,6 +60,9 @@ function App() {
         <Route path='/system-admin-modules' element={<SystemModules />} />
         <Route path='/process-requests' element={<ProcessRequests />} />
         <Route path='/process-request' element={<ProcessRequest />} />
+        <Route path="/process-help" element={<ProcessHelp />} />
+        <Route path="/credential" element={<Credential />} />
+
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
