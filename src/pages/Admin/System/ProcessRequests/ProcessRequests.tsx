@@ -1,38 +1,47 @@
-import './_ProcessRequests.scss';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { ProcessRequest } from '../../../../components/ProcessRequest/ProcessRequest';
-import { IElectionProcess } from '../../../../interfaces';
+import "./_ProcessRequests.scss";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { ProcessRequest } from "../../../../components/ProcessRequest/ProcessRequest";
+// import { IElectionProcess } from "../../../../interfaces";
+import { useNavigate } from "react-router-dom";
+import { useGetAllProcessesQuery } from "../../../../app/votify.api";
 
 export const ProcessRequests = () => {
-  const testProcess: IElectionProcess = {
-    user_id: 'asd',
-    is_owner: false,
-    title: 'presidenciales123',
-    admin_status: 'pendiente',
-    process_status: 'pendiente',
-    start_date: '2024-06-05T10:55:00.000Z',
-    end_date: '2024-06-06T10:55:00.000Z',
-    _id: '668af922469ca1cbb2cb0722',
-  };
+  // delete when view is finished
+  // const testProcess: IElectionProcess = {
+  //   user_id: "asd",
+  //   is_owner: false,
+  //   title: "presidenciales123",
+  //   admin_status: "pendiente",
+  //   process_status: "pendiente",
+  //   start_date: "2024-06-05T10:55:00.000Z",
+  //   end_date: "2024-06-06T10:55:00.000Z",
+  //   _id: "668af922469ca1cbb2cb0722",
+  // };
+  const navigate = useNavigate();
+  const { data: electionProcesses, isLoading } = useGetAllProcessesQuery();
+  const processesCopy = Array.from(electionProcesses || []);
+
+  // !isLoading && console.log(electionProcesses?.reverse());
+
   return (
-    <div className='containerProcessRequests'>
-      <div className='containerProcessRequests__back'>
-        <ArrowBackIcon className='containerProcessRequests__back-icon' />
-        <div className='containerProcessRequests__back-text'>Ir a módulos</div>
+    <div className="containerProcessRequests">
+      <div
+        className="containerProcessRequests__back"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowBackIcon className="containerProcessRequests__back-icon" />
+        <div className="containerProcessRequests__back-text">Ir a módulos</div>
       </div>
-      <div className='containerProcessRequests__title'>
+      <div className="containerProcessRequests__title">
         Solicitudes de aprobación
       </div>
-      <div className='containerProcessRequests__list'>
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
-        <ProcessRequest process={testProcess} />
+      <div className="containerProcessRequests__list">
+        {!isLoading &&
+          processesCopy
+            ?.reverse()
+            .map((process) => (
+              <ProcessRequest process={process} key={process._id} />
+            ))}
       </div>
     </div>
   );
