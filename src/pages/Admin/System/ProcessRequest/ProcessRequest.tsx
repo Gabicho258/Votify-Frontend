@@ -8,11 +8,9 @@ import { useState } from "react";
 import { AccordionElectionList } from "../../../../components/AccordionElectionList/AccordionElectionList";
 import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
 import { Button } from "@mui/material";
-import { IElectionProcess, ICandidate, IList } from "../../../../interfaces";
 import { formatISODate } from "../../../../utils/DateFormatter";
 import { useParams } from "react-router-dom";
 import {
-  useGetCandidatesByListIdQuery,
   useGetListsByProcessIdQuery,
   useGetProcessByIdQuery,
 } from "../../../../app/votify.api";
@@ -23,107 +21,10 @@ export const ProcessRequest = () => {
   const { data: lists } = useGetListsByProcessIdQuery(
     currentProcess?._id || ""
   );
-  // const { refetch } = useGetCandidatesByListIdQuery(
-  //   (lists && lists[0]._id) || ""
-  // );
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  console.log(lists);
-  const testProcess: IElectionProcess = {
-    user_id: "asd",
-    is_owner: false,
-    title: "presidenciales123",
-    admin_status: "approved",
-    process_status: "in_progress",
-    start_date: "2024-06-05T10:55:00.000Z",
-    end_date: "2024-06-06T10:55:00.000Z",
-    _id: "668af922469ca1cbb2cb0722",
-  };
-
-  const list1: IList = {
-    _id: "list_001",
-    process_id: "process_123",
-    title: "Title 1",
-  };
-  const list2: IList = {
-    _id: "list_002",
-    process_id: "process_123",
-    title: "Title 2",
-  };
-
-  const candidatesList1: ICandidate[] = [
-    {
-      _id: "candidate_001",
-      list_id: "list_001",
-      candidate_name: "John Doe",
-      photo_url:
-        "https://static.vecteezy.com/system/resources/previews/014/307/944/non_2x/man-candidate-icon-cartoon-job-person-vector.jpg",
-      organization_name: "Org A",
-      logo_url:
-        "https://i.pinimg.com/736x/86/15/bf/8615bf8e4412a27370cce4a6434c2630.jpg",
-      valid_votes: 1500,
-    },
-    {
-      _id: "candidate_002",
-      list_id: "list_001",
-      candidate_name: "Jane Smith",
-      photo_url:
-        "https://static.vecteezy.com/system/resources/previews/014/307/944/non_2x/man-candidate-icon-cartoon-job-person-vector.jpg",
-      organization_name: "Org B",
-      logo_url:
-        "https://i.pinimg.com/736x/86/15/bf/8615bf8e4412a27370cce4a6434c2630.jpg",
-      valid_votes: 1200,
-    },
-    {
-      _id: "candidate_003",
-      list_id: "list_001",
-      candidate_name: "Alice Johnson",
-      photo_url:
-        "https://static.vecteezy.com/system/resources/previews/014/307/944/non_2x/man-candidate-icon-cartoon-job-person-vector.jpg",
-      organization_name: "Org C",
-      logo_url:
-        "https://i.pinimg.com/736x/86/15/bf/8615bf8e4412a27370cce4a6434c2630.jpg",
-      valid_votes: 1300,
-    },
-  ];
-
-  const candidatesList2: ICandidate[] = [
-    {
-      _id: "candidate_004",
-      list_id: "list_002",
-      candidate_name: "Bob Brown",
-      photo_url:
-        "https://static.vecteezy.com/system/resources/previews/014/307/944/non_2x/man-candidate-icon-cartoon-job-person-vector.jpg",
-      organization_name: "Org D",
-      logo_url:
-        "https://i.pinimg.com/736x/86/15/bf/8615bf8e4412a27370cce4a6434c2630.jpg",
-      valid_votes: 1400,
-    },
-    {
-      _id: "candidate_005",
-      list_id: "list_002",
-      candidate_name: "Carol White",
-      photo_url:
-        "https://static.vecteezy.com/system/resources/previews/014/307/944/non_2x/man-candidate-icon-cartoon-job-person-vector.jpg",
-      organization_name: "Org E",
-      logo_url:
-        "https://i.pinimg.com/736x/86/15/bf/8615bf8e4412a27370cce4a6434c2630.jpg",
-      valid_votes: 1600,
-    },
-    {
-      _id: "candidate_006",
-      list_id: "list_002",
-      candidate_name: "David Green",
-      photo_url:
-        "https://static.vecteezy.com/system/resources/previews/014/307/944/non_2x/man-candidate-icon-cartoon-job-person-vector.jpg",
-      organization_name: "Org F",
-      logo_url:
-        "https://i.pinimg.com/736x/86/15/bf/8615bf8e4412a27370cce4a6434c2630.jpg",
-      valid_votes: 1100,
-    },
-  ];
 
   const testEmails: string[] = [
     "alice@example.com",
@@ -180,15 +81,14 @@ export const ProcessRequest = () => {
       </div>
       <div className="containerProcessRequestInfo__content">
         <div className="containerProcessRequestInfo__content-left">
-          {/* {lists?.map((list) => {
-            // const idk = refetch(list._id);
-            return "<";
-          })} */}
-          <AccordionElectionList list={list1} candidates={candidatesList1} />
+          {lists?.map((list) => (
+            <AccordionElectionList list={list} key={list._id} />
+          ))}
+          {/* <AccordionElectionList list={list1} candidates={candidatesList1} />
           <AccordionElectionList list={list2} candidates={candidatesList2} />
           <AccordionElectionList list={list2} candidates={candidatesList2} />
           <AccordionElectionList list={list2} candidates={candidatesList2} />
-          <AccordionElectionList list={list2} candidates={candidatesList2} />
+          <AccordionElectionList list={list2} candidates={candidatesList2} /> */}
         </div>
         <div className="containerProcessRequestInfo__content-right">
           <div className="containerProcessRequestInfo__content-right-participants">
@@ -212,7 +112,7 @@ export const ProcessRequest = () => {
         </div>
       </div>
       <div className="containerProcessRequestInfo__buttons">
-        {testProcess.admin_status === "pending" ? (
+        {currentProcess?.admin_status === "pending" ? (
           <>
             <Button
               variant="outlined"
@@ -229,9 +129,9 @@ export const ProcessRequest = () => {
               Rechazar
             </Button>
           </>
-        ) : testProcess.admin_status === "approved" &&
-          (testProcess.process_status === "programmed" ||
-            testProcess.process_status === "in_progress") ? (
+        ) : currentProcess?.admin_status === "approved" &&
+          (currentProcess?.process_status === "programmed" ||
+            currentProcess?.process_status === "in_progress") ? (
           <Button
             variant="outlined"
             className="containerProcessRequestInfo__buttons-cancel"
@@ -253,8 +153,8 @@ export const ProcessRequest = () => {
             Participantes
           </div>
           <div className="containerProcessRequestInfo__participantsModal-content-list">
-            {testEmails.map((email) => {
-              return <EmailListItem email={email} />;
+            {testEmails.map((email, i) => {
+              return <EmailListItem email={email} key={i} />;
             })}
           </div>
           <div className="containerProcessRequestInfo__participantsModal-content-button">
