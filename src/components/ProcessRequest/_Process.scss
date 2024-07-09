@@ -20,13 +20,39 @@
         &-text {
           margin-right: 1rem;
         }
-        &-status-active {
-          padding: 0.1rem 2rem;
-          font-family: $roboto-bold;
-          font-size: 0.8rem;
-          color: $light-text;
-          background-color: $success;
-          border-radius: 50px;
+        &-status {
+          &-inProgress {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $success;
+            border-radius: 50px;
+          }
+          &-programmed {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $warning;
+            border-radius: 50px;
+          }
+          &-cancelled {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $danger;
+            border-radius: 50px;
+          }
+          &-done {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $primary;
+            border-radius: 50px;
+          }
         }
       }
       &-info {
