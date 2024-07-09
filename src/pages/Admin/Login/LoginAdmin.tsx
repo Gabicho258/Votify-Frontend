@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useGetUsersQuery } from "../../../app/votify.api";
+import { useNavigate } from "react-router-dom";
 
 interface State extends SnackbarOrigin {
   open: boolean;
@@ -36,6 +37,7 @@ export const LoginAdmin = () => {
     setState({ ...state, open: false });
   };
   // END - Notification
+  const navigate = useNavigate();
   const { data: allUsers } = useGetUsersQuery();
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
@@ -49,8 +51,8 @@ export const LoginAdmin = () => {
       );
       if (userExists) {
         if (userExists.role === "sys_admin") {
-          console.log("sys_admin");
-          // navigate("/process", { state: userData });
+          navigate("/system-admin-modules");
+          localStorage.setItem("sys_admin_id", userExists._id);
         } else if (userExists.role === "process_admin") {
           console.log("process_admin");
           // navigate("/process", { state: userData });
