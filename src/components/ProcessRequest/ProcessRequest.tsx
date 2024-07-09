@@ -23,7 +23,12 @@ export const ProcessRequest = ({ process }: ProcessRequestProps) => {
       <div className="containerProcessRequest__content">
         <div className="containerProcessRequest__content-left">
           <div className="containerProcessRequest__content-left-title">
-            {title}
+            <span className="containerProcessRequest__content-left-title-text">
+              {title}
+            </span>
+            <span className="containerProcessRequest__content-left-title-status-active">
+              Activo
+            </span>
           </div>
           <div className="containerProcessRequest__content-left-info">
             <div className="containerProcessRequest__content-left-info-date">
