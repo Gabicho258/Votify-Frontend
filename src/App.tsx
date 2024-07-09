@@ -8,13 +8,14 @@ import { Register } from "./pages/User/Register/Register";
 import { LoginAdmin } from "./pages/Admin/Login/LoginAdmin";
 
 // System administrator views
-import { SystemModules } from "./pages/Admin/System/SystemModules/SystemModules";
-import { ProcessRequests } from "./pages/Admin/System/ProcessRequests/ProcessRequests";
-import { ProcessRequest } from "./pages/Admin/System/ProcessRequest/ProcessRequest";
+import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules';
+import { ProcessRequests } from './pages/Admin/System/ProcessRequests/ProcessRequests';
+import { ProcessRequest } from './pages/Admin/System/ProcessRequest/ProcessRequest';
+import { ManagementElectionAdmin } from './pages/Admin/System/ManagementElectionAdmin/ManagementElectionAdmin';
 
 // User routes
-import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
-import { Credential } from "./pages/User/Credential/Credential";
+import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
+import { Credential } from './pages/User/Credential/Credential';
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -53,18 +54,22 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/end-register" element={<Register />} />
-        <Route path="/login-admin" element={<LoginAdmin />} />
-        <Route path="/system-admin-modules" element={<SystemModules />} />
-        <Route path="/process-requests" element={<ProcessRequests />} />
+        <Route path='/' element={<Landing />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/end-register' element={<Register />} />
+        <Route path='/login-admin' element={<LoginAdmin />} />
+        <Route path='/system-admin-modules' element={<SystemModules />} />
+        <Route path='/process-requests' element={<ProcessRequests />} />
+        <Route
+          path='/process-admin-management'
+          element={<ManagementElectionAdmin />}
+        />
+        <Route path='/process-help' element={<ProcessHelp />} />
+        <Route path='/credential' element={<Credential />} />
         <Route
           path="/process-request/:process_id"
           element={<ProcessRequest />}
         />
-        <Route path="/process-help" element={<ProcessHelp />} />
-        <Route path="/credential" element={<Credential />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
