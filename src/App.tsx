@@ -12,6 +12,7 @@ import { SystemModules } from "./pages/Admin/System/SystemModules/SystemModules"
 import { ProcessRequests } from "./pages/Admin/System/ProcessRequests/ProcessRequests";
 import { ProcessRequest } from "./pages/Admin/System/ProcessRequest/ProcessRequest";
 import { ManagementElectionAdmin } from "./pages/Admin/System/ManagementElectionAdmin/ManagementElectionAdmin";
+import { Mailbox } from "./pages/Admin/Mailbox/Mailbox";
 
 // User routes
 import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
@@ -64,6 +65,7 @@ function App() {
           path="/process-admin-management"
           element={<ManagementElectionAdmin />}
         />
+        <Route path="/mailbox" element={<Mailbox />} />
         <Route path="/process-help" element={<ProcessHelp />} />
         <Route path="/credential" element={<Credential />} />
         <Route

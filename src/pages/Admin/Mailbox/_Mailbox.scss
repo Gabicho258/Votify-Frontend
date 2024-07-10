@@ -1,0 +1,181 @@
+@import "./../../../variables";
+
+.containerMailbox {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  &__back {
+    margin-bottom: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: $dark-text;
+    &-icon {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+    &-text {
+      font-size: 2rem;
+      font-family: $roboto-bold;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__content {
+    box-sizing: border-box;
+    width: 100%;
+    height: 90%;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr 3fr;
+    &-left {
+      box-sizing: border-box;
+      padding: 1rem;
+      height: 100%;
+      overflow-y: auto;
+      border-radius: 10px;
+      border: 2px solid $primary;
+      &-open {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        &-title {
+          margin-bottom: 0.5rem;
+          font-family: $roboto-bold;
+          font-size: 1.5rem;
+          color: $dark-text;
+        }
+      }
+      &-close {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        &-title {
+          font-family: $roboto-bold;
+          font-size: 1.5rem;
+          color: $dark-text;
+          margin-bottom: 0.5rem;
+        }
+      }
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      &::-webkit-scrollbar-track {
+        background: none;
+        margin: 1rem;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: $primary;
+        border-radius: 20px;
+        border: none;
+      }
+    }
+    &-right {
+      padding: 1rem;
+      box-sizing: border-box;
+      border-radius: 10px;
+      border: 2px solid $primary;
+      display: grid;
+      grid-template-rows: 1fr 9fr 1fr;
+      height: 100%;
+      &-chatInfo {
+        &-top {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          &-info {
+            &-title {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 0.5rem;
+              &-text {
+                font-family: $roboto-bold;
+                font-size: 1.5rem;
+                color: $dark-text;
+              }
+              &-status {
+                &-open {
+                  height: 1.2rem;
+                  padding: 0 2rem;
+                  font-family: $roboto-bold;
+                  font-size: 0.8rem;
+                  color: $light-text;
+                  background-color: $success;
+                  border-radius: 50px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  text-align: center;
+                }
+                &-close {
+                  text-align: center;
+                  height: 1.2rem;
+                  padding: 0 2rem;
+                  font-family: $roboto-bold;
+                  font-size: 0.8rem;
+                  color: $light-text;
+                  background-color: $danger;
+                  border-radius: 50px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                }
+              }
+            }
+            &-processName {
+              font-family: $roboto-regular;
+              color: $dark-text;
+              font-size: 1.2rem;
+            }
+            &-friendName {
+              font-family: $roboto-light;
+              color: $dark-text;
+            }
+          }
+          &-button {
+            &-closeChat {
+              margin: 0 1rem;
+              background-color: $danger;
+              border-color: $danger;
+              padding: 0.4rem 2rem;
+              color: $light-text;
+            }
+          }
+        }
+      }
+      &-chatMessages {
+        height: 80vh;
+        overflow-y: auto;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        &-messageSender {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          &-box {
+            width: 40%;
+          }
+        }
+        &-messageReceiver {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          &-box {
+            width: 40%;
+          }
+        }
+      }
+    }
+  }
+}

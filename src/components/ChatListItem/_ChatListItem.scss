@@ -1,0 +1,24 @@
+@import "./../../variables";
+
+.containerChatListItem {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  &__info {
+    &-title {
+      font-family: $roboto-regular;
+      font-size: 1.2rem;
+      color: $dark-text;
+    }
+    &-processName {
+      font-family: $roboto-light;
+      font-size: 0.9rem;
+      color: $dark-text;
+    }
+  }
+  &__divider {
+    width: 100%;
+    color: $primary;
+  }
+}
