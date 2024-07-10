@@ -1,4 +1,4 @@
-import "./_ProcessRequest.scss";
+import "./_Process.scss";
 import { IElectionProcess } from "../../interfaces";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -10,10 +10,10 @@ interface ProcessRequestProps {
   process: IElectionProcess;
 }
 
-export const ProcessRequest = ({ process }: ProcessRequestProps) => {
+export const Process = ({ process }: ProcessRequestProps) => {
   const navigate = useNavigate();
 
-  const { title, start_date, end_date } = process;
+  const { title, start_date, end_date, process_status, admin_status } = process;
   const { formattedDate: startDate, formattedTime: startTime } =
     formatISODate(start_date);
   const { formattedDate: endDate, formattedTime: endTime } =
@@ -23,7 +23,31 @@ export const ProcessRequest = ({ process }: ProcessRequestProps) => {
       <div className="containerProcessRequest__content">
         <div className="containerProcessRequest__content-left">
           <div className="containerProcessRequest__content-left-title">
-            {title}
+            <span className="containerProcessRequest__content-left-title-text">
+              {title}
+            </span>
+            {admin_status === "pending"
+              ? ""
+              : (process_status === "in_progress" && (
+                  <span className="containerProcessRequest__content-left-title-status-inProgress">
+                    En curso
+                  </span>
+                )) ||
+                (process_status === "programmed" && (
+                  <span className="containerProcessRequest__content-left-title-status-programmed">
+                    Programado
+                  </span>
+                )) ||
+                (process_status === "cancelled" && (
+                  <span className="containerProcessRequest__content-left-title-status-cancelled">
+                    Cancelado
+                  </span>
+                )) ||
+                (process_status === "done" && (
+                  <span className="containerProcessRequest__content-left-title-status-done">
+                    Realizado
+                  </span>
+                ))}
           </div>
           <div className="containerProcessRequest__content-left-info">
             <div className="containerProcessRequest__content-left-info-date">

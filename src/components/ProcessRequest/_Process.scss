@@ -1,4 +1,4 @@
-@import './../../variables';
+@import "./../../variables";
 
 .containerProcessRequest {
   width: 100%;
@@ -13,6 +13,47 @@
         color: $dark-text;
         font-size: 1.3rem;
         margin-bottom: 0.3rem;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        &-text {
+          margin-right: 1rem;
+        }
+        &-status {
+          &-inProgress {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $success;
+            border-radius: 50px;
+          }
+          &-programmed {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $warning;
+            border-radius: 50px;
+          }
+          &-cancelled {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $danger;
+            border-radius: 50px;
+          }
+          &-done {
+            padding: 0.1rem 2rem;
+            font-family: $roboto-bold;
+            font-size: 0.8rem;
+            color: $light-text;
+            background-color: $primary;
+            border-radius: 50px;
+          }
+        }
       }
       &-info {
         display: flex;

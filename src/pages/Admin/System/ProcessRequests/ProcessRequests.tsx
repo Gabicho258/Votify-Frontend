@@ -1,6 +1,6 @@
 import "./_ProcessRequests.scss";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { ProcessRequest } from "../../../../components/ProcessRequest/ProcessRequest";
+import { Process } from "../../../../components/ProcessRequest/Process";
 // import { IElectionProcess } from "../../../../interfaces";
 import { useNavigate } from "react-router-dom";
 import { useGetAllProcessesQuery } from "../../../../app/votify.api";
@@ -39,9 +39,7 @@ export const ProcessRequests = () => {
         {!isLoading &&
           processesCopy
             ?.reverse()
-            .map((process) => (
-              <ProcessRequest process={process} key={process._id} />
-            ))}
+            .map((process) => <Process process={process} key={process._id} />)}
       </div>
     </div>
   );
