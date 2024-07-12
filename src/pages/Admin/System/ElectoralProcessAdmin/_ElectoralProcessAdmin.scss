@@ -1,0 +1,90 @@
+@import './../../../../variables';
+
+.containerElectoralProcessAdmin {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  &__back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: $dark-text;
+    &-icon {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+    &-text {
+      font-size: 2rem;
+      font-family: $roboto-bold;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__title {
+    font-family: $roboto-bold;
+    font-size: 2.5rem;
+    color: $dark-text;
+    margin-bottom: 3rem;
+  }
+  &__inProgressList {
+    box-sizing: border-box;
+    width: 60%;
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid $success;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    &-title {
+      font-family: $roboto-bold;
+      font-size: 1.5rem;
+      color: $dark-text;
+      &-divider {
+        width: 100%;
+        color: $primary;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: none;
+      margin: 1rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 20px;
+      border: none;
+    }
+  }
+  &__list {
+    box-sizing: border-box;
+    width: 60%;
+    height: 45%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid $primary;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: none;
+      margin: 1rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 20px;
+      border: none;
+    }
+  }
+}
