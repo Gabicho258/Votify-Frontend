@@ -15,6 +15,9 @@ import { ManagementElectionAdmin } from './pages/Admin/System/ManagementElection
 import { Mailbox } from './pages/Admin/Mailbox/Mailbox';
 import { ElectoralProcessAdmin } from './pages/Admin/System/ElectoralProcessAdmin/ElectoralProcessAdmin';
 
+// Process administrator views
+import { ProcessModules } from './pages/Admin/Process/ProcessModules/ProcessModules';
+
 // User routes
 import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
 import { Credential } from './pages/User/Credential/Credential';
@@ -77,6 +80,7 @@ function App() {
           path='/process-request/:process_id'
           element={<ProcessRequest />}
         />
+        <Route path='/process-admin-modules' element={<ProcessModules />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
