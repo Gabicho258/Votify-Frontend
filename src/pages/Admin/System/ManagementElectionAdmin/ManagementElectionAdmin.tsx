@@ -17,18 +17,20 @@ type AddAdminInputs = {
 };
 
 export const ManagementElectionAdmin = () => {
+  // open and close add admin modal
   const [openAddAdmin, setOpenAddAdmin] = useState(false);
   const handleOpenAddAdmin = () => setOpenAddAdmin(true);
   const handleCloseAddAdmin = () => setOpenAddAdmin(false);
 
+  // add admin form
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register: registerAddAdmin,
+    handleSubmit: handleSubmitAddAdmin,
+    formState: { errors: errorsAddAdmin },
   } = useForm<AddAdminInputs>();
 
-  const onSubmit: SubmitHandler<AddAdminInputs> = async (data) => {
-    // submit code
+  const onSubmitAddAdmin: SubmitHandler<AddAdminInputs> = async (data) => {
+    // submit add admin code
     const processAdminToCreate = {
       is_active: true,
       role: 'process_admin',
@@ -177,7 +179,7 @@ export const ManagementElectionAdmin = () => {
             Añadir administrador de elecciones
           </div>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmitAddAdmin(onSubmitAddAdmin)}
             className='containerManagementeElectionAdmin__addAdminModal-content-form'
           >
             <label
@@ -187,7 +189,9 @@ export const ManagementElectionAdmin = () => {
               Nombres:
             </label>
             <TextField
-              {...register('user_name', { required: 'Nombre es requerido' })}
+              {...registerAddAdmin('user_name', {
+                required: 'Nombre es requerido',
+              })}
               className='containerManagementeElectionAdmin__addAdminModal-content-form-field'
               autoComplete='off'
               placeholder='Ingresar nombre'
@@ -195,9 +199,9 @@ export const ManagementElectionAdmin = () => {
               id='outlined-basic'
               variant='outlined'
             />
-            {errors.user_name && (
+            {errorsAddAdmin.user_name && (
               <div className='containerManagementeElectionAdmin__addAdminModal-content-form-field-error'>
-                {errors.user_name.message}
+                {errorsAddAdmin.user_name.message}
               </div>
             )}
             <label
@@ -207,7 +211,7 @@ export const ManagementElectionAdmin = () => {
               Apellidos:
             </label>
             <TextField
-              {...register('user_surname', {
+              {...registerAddAdmin('user_surname', {
                 required: 'Apellido es requerido',
               })}
               className='containerManagementeElectionAdmin__addAdminModal-content-form-field'
@@ -217,9 +221,9 @@ export const ManagementElectionAdmin = () => {
               id='outlined-basic'
               variant='outlined'
             />
-            {errors.user_surname && (
+            {errorsAddAdmin.user_surname && (
               <div className='containerManagementeElectionAdmin__addAdminModal-content-form-field-error'>
-                {errors.user_surname.message}
+                {errorsAddAdmin.user_surname.message}
               </div>
             )}
             <label
@@ -229,7 +233,7 @@ export const ManagementElectionAdmin = () => {
               DNI:
             </label>
             <TextField
-              {...register('dni', {
+              {...registerAddAdmin('dni', {
                 required: 'DNI es requerido',
                 validate: {
                   isNumber: (value) =>
@@ -247,9 +251,9 @@ export const ManagementElectionAdmin = () => {
               id='outlined-basic'
               variant='outlined'
             />
-            {errors.dni && (
+            {errorsAddAdmin.dni && (
               <div className='containerManagementeElectionAdmin__addAdminModal-content-form-field-error'>
-                {errors.dni.message}
+                {errorsAddAdmin.dni.message}
               </div>
             )}
             <label
@@ -259,7 +263,7 @@ export const ManagementElectionAdmin = () => {
               Correo electrónico:
             </label>
             <TextField
-              {...register('email', {
+              {...registerAddAdmin('email', {
                 required: 'Email es requerido',
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -274,9 +278,9 @@ export const ManagementElectionAdmin = () => {
               id='outlined-basic'
               variant='outlined'
             />
-            {errors.email && (
+            {errorsAddAdmin.email && (
               <div className='containerManagementeElectionAdmin__addAdminModal-content-form-field-error'>
-                {errors.email.message}
+                {errorsAddAdmin.email.message}
               </div>
             )}
             <div className='containerManagementeElectionAdmin__addAdminModal-content-form-buttons'>
