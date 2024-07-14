@@ -1,0 +1,146 @@
+@import './../../../../variables';
+
+.containerProcessListAdmin {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  &__back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: $dark-text;
+    &-icon {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+    &-text {
+      font-size: 2rem;
+      font-family: $roboto-bold;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__title {
+    font-family: $roboto-bold;
+    font-size: 2.5rem;
+    color: $dark-text;
+    margin-bottom: 3rem;
+  }
+  &__add {
+    width: 60%;
+    margin-bottom: 1rem;
+    &-button {
+      background-color: $primary;
+      border-color: $primary;
+      color: $light-text;
+      font-family: $roboto-bold;
+      &:hover {
+        background-color: $background;
+        border-color: $primary;
+        color: $primary;
+      }
+    }
+  }
+  &__approvedList {
+    box-sizing: border-box;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid $success;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: none;
+      margin: 1rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 20px;
+      border: none;
+    }
+    &-title {
+      font-family: $roboto-bold;
+      font-size: 1.5rem;
+      color: $dark-text;
+      &-divider {
+        width: 100%;
+        color: $primary;
+      }
+    }
+  }
+  &__pendingList {
+    box-sizing: border-box;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid $warning;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: none;
+      margin: 1rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 20px;
+      border: none;
+    }
+    &-title {
+      font-family: $roboto-bold;
+      font-size: 1.5rem;
+      color: $dark-text;
+      &-divider {
+        width: 100%;
+        color: $primary;
+      }
+    }
+  }
+  &__cancelledList {
+    box-sizing: border-box;
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid $danger;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: none;
+      margin: 1rem;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $primary;
+      border-radius: 20px;
+      border: none;
+    }
+    &-title {
+      font-family: $roboto-bold;
+      font-size: 1.5rem;
+      color: $dark-text;
+      &-divider {
+        width: 100%;
+        color: $primary;
+      }
+    }
+  }
+}
