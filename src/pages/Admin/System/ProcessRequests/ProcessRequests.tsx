@@ -19,7 +19,9 @@ export const ProcessRequests = () => {
   // };
   const navigate = useNavigate();
   const { data: electionProcesses, isLoading } = useGetAllProcessesQuery();
-  const processesCopy = Array.from(electionProcesses || []);
+  const processesCopy = Array.from(electionProcesses || []).filter(
+    (process) => process.admin_status === "pending"
+  );
 
   // !isLoading && console.log(electionProcesses?.reverse());
 

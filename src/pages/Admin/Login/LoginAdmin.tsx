@@ -52,7 +52,7 @@ export const LoginAdmin = () => {
       if (userExists) {
         if (userExists.role === "sys_admin") {
           navigate("/system-admin-modules");
-          localStorage.setItem("sys_admin_id", userExists._id);
+          localStorage.setItem("admin_id", userExists._id);
         } else if (userExists.role === "process_admin") {
           console.log("process_admin");
           // navigate("/process", { state: userData });
