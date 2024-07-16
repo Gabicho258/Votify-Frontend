@@ -1,10 +1,11 @@
-@import "./../../variables";
+@import './../../variables';
 
 .containerChatListItem {
   width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  padding: 0 0.5rem;
   &__info {
     &-title {
       font-family: $roboto-regular;
@@ -20,5 +21,17 @@
   &__divider {
     width: 100%;
     color: $primary;
+    &:hover {
+      color: $light-text;
+    }
+  }
+  &:hover {
+    background-color: $primary;
+    color: $light-text;
+    border-radius: 5px;
+    cursor: pointer;
+    & * {
+      color: $light-text;
+    }
   }
 }

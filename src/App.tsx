@@ -1,22 +1,27 @@
-import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landing } from "./pages/User/Landing/Landing";
-import { Login } from "./pages/User/Login/Login";
-import { Register } from "./pages/User/Register/Register";
+import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Landing } from './pages/User/Landing/Landing';
+import { Login } from './pages/User/Login/Login';
+import { Register } from './pages/User/Register/Register';
 
 // Administrator login
-import { LoginAdmin } from "./pages/Admin/Login/LoginAdmin";
+import { LoginAdmin } from './pages/Admin/Login/LoginAdmin';
 
 // System administrator views
-import { SystemModules } from "./pages/Admin/System/SystemModules/SystemModules";
-import { ProcessRequests } from "./pages/Admin/System/ProcessRequests/ProcessRequests";
-import { ProcessRequest } from "./pages/Admin/System/ProcessRequest/ProcessRequest";
-import { ManagementElectionAdmin } from "./pages/Admin/System/ManagementElectionAdmin/ManagementElectionAdmin";
-import { Mailbox } from "./pages/Admin/Mailbox/Mailbox";
+import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules';
+import { ProcessRequests } from './pages/Admin/System/ProcessRequests/ProcessRequests';
+import { ProcessRequest } from './pages/Admin/System/ProcessRequest/ProcessRequest';
+import { ManagementElectionAdmin } from './pages/Admin/System/ManagementElectionAdmin/ManagementElectionAdmin';
+import { Mailbox } from './pages/Admin/Mailbox/Mailbox';
+import { ElectoralProcessAdmin } from './pages/Admin/System/ElectoralProcessAdmin/ElectoralProcessAdmin';
+
+// Process administrator views
+import { ProcessModules } from './pages/Admin/Process/ProcessModules/ProcessModules';
+import { ProcessListAdmin } from './pages/Admin/Process/ProcessListAdmin/ProcessListAdmin';
 
 // User routes
-import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
-import { Credential } from "./pages/User/Credential/Credential";
+import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
+import { Credential } from './pages/User/Credential/Credential';
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -55,23 +60,29 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/end-register" element={<Register />} />
-        <Route path="/login-admin" element={<LoginAdmin />} />
-        <Route path="/system-admin-modules" element={<SystemModules />} />
-        <Route path="/process-requests" element={<ProcessRequests />} />
+        <Route path='/' element={<Landing />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/end-register' element={<Register />} />
+        <Route path='/login-admin' element={<LoginAdmin />} />
+        <Route path='/system-admin-modules' element={<SystemModules />} />
+        <Route path='/process-requests' element={<ProcessRequests />} />
         <Route
-          path="/process-admin-management"
+          path='/process-admin-management'
           element={<ManagementElectionAdmin />}
         />
-        <Route path="/mailbox" element={<Mailbox />} />
-        <Route path="/process-help" element={<ProcessHelp />} />
-        <Route path="/credential" element={<Credential />} />
         <Route
-          path="/process-request/:process_id"
+          path='/electoral-process-administration'
+          element={<ElectoralProcessAdmin />}
+        />
+        <Route path='/mailbox' element={<Mailbox />} />
+        <Route path='/process-help' element={<ProcessHelp />} />
+        <Route path='/credential' element={<Credential />} />
+        <Route
+          path='/process-request/:process_id'
           element={<ProcessRequest />}
         />
+        <Route path='/process-admin-modules' element={<ProcessModules />} />
+        <Route path='/process-list-admin' element={<ProcessListAdmin />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

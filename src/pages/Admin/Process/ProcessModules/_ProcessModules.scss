@@ -1,0 +1,111 @@
+@import './../../../../variables';
+
+.containerProcessModules {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  height: 100vh;
+
+  &__left {
+    background-color: $primary;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+    justify-content: space-between;
+    -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+    -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+    box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+
+    &-welcome {
+      font-family: $roboto-bold;
+      font-size: 1.8rem;
+      color: $light-text;
+      text-align: center;
+      margin-bottom: 0.5rem;
+
+      &-name {
+        font-family: $roboto-light;
+        font-size: 1.2rem;
+        text-align: center;
+      }
+    }
+
+    &-logoutButton {
+      border-radius: 10px;
+      background-color: $danger;
+      font-family: $roboto-regular;
+      border-color: $danger;
+      color: $light-text;
+
+      &:hover {
+        box-sizing: border-box;
+        border: 1px solid $danger;
+        background-color: $light-text;
+        color: $danger;
+      }
+    }
+  }
+
+  &__right {
+    padding: 5rem 0 5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-title {
+      color: $dark-text;
+      font-family: $roboto-bold;
+      font-size: 2rem;
+      margin-bottom: 4rem;
+      text-align: center;
+    }
+
+    &-modules {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      height: 50vh;
+      width: 50vw;
+      gap: 2rem;
+
+      &-module-1 {
+        border-radius: 15px 15px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $primary;
+        font-family: $roboto-bold;
+        font-size: 1.5rem;
+        color: $light-text;
+        text-align: center;
+        -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+
+        &:hover {
+          cursor: pointer;
+          background-color: #144668;
+        }
+      }
+
+      &-module-2 {
+        border-radius: 0 0 15px 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $primary;
+        font-family: $roboto-bold;
+        font-size: 1.5rem;
+        color: $light-text;
+        text-align: center;
+        -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+
+        &:hover {
+          cursor: pointer;
+          background-color: #144668;
+        }
+      }
+    }
+  }
+}
