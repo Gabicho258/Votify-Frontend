@@ -13,9 +13,15 @@ import {
   useGetUsersQuery,
   useUpdateChatMutation,
 } from "../../../app/votify.api";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export const Mailbox = () => {
+  const conversationRef = useRef<HTMLDivElement>(null);
+  const scrollToBottom = () => {
+    if (conversationRef.current) {
+      conversationRef.current.scrollTop = conversationRef.current.scrollHeight;
+    }
+  };
   const user_id = localStorage.getItem("admin_id") || "";
   const { data: currentUser } = useGetUserByIdQuery(user_id);
   const { data: allUsers } = useGetUsersQuery();
@@ -53,12 +59,18 @@ export const Mailbox = () => {
     };
     try {
       await createMessage(message).unwrap();
+
       setMessageToSend("");
       await refetchMessages();
     } catch (error) {
       alert(JSON.stringify(error));
     }
   };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const handleCloseChat = async () => {
     try {
       await updateChat({ _id: selectedChat._id, state: "close" }).unwrap();
@@ -159,7 +171,10 @@ export const Mailbox = () => {
             <hr className="containerMailbox__content-right-chatInfo-divider" />
           </div>
 
-          <div className="containerMailbox__content-right-chatMessages">
+          <div
+            className="containerMailbox__content-right-chatMessages"
+            ref={conversationRef}
+          >
             {messages?.map((message) => {
               return (
                 <div
