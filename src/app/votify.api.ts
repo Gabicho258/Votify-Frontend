@@ -185,6 +185,13 @@ export const votifyApi = createApi({
         body: chat,
       }),
     }),
+    updateChat: builder.mutation<IChat, Partial<IChat>>({
+      query: (chat) => ({
+        url: `/buzon-service/chat/update/${chat._id}`,
+        method: "PUT",
+        body: chat,
+      }),
+    }),
     // Message
     getMessagesByChatId: builder.query<IMessage[], string>({
       query: (_id) => `/buzon-service/message/${_id}`,
@@ -224,4 +231,5 @@ export const {
   useUpdateListMutation,
   useUpdateProcessMutation,
   useUpdateUserMutation,
+  useUpdateChatMutation,
 } = votifyApi;
