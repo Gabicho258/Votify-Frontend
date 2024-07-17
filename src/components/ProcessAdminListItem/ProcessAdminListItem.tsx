@@ -59,9 +59,8 @@ export const ProcessAdminListItem = ({ admin }: ProcessAdminListItemProps) => {
   };
   const handleChangeAdminState = async () => {
     try {
-      // await updateUser({ _id: admin._id, is_active: !is_active }).unwrap();
-      console.log(!is_active);
-      // await refetch();
+      await updateUser({ _id: admin._id, is_active: !is_active }).unwrap();
+      await refetch();
       handleCloseConfirm();
     } catch (error) {
       alert(JSON.stringify(error));
