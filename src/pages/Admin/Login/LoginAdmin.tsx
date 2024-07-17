@@ -55,6 +55,8 @@ export const LoginAdmin = () => {
           localStorage.setItem("admin_id", userExists._id);
         } else if (userExists.role === "process_admin") {
           console.log("process_admin");
+          navigate("/process-admin-modules");
+          localStorage.setItem("admin_id", userExists._id);
           // navigate("/process", { state: userData });
         } else {
           handleClick(
