@@ -7,7 +7,10 @@ import { ProcessAdminListItem } from "../../../../components/ProcessAdminListIte
 import { useForm, SubmitHandler } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
-import { useGetUsersQuery } from "../../../../app/votify.api";
+import {
+  useCreateUserMutation,
+  useGetUsersQuery,
+} from "../../../../app/votify.api";
 import { useNavigate } from "react-router-dom";
 
 type AddAdminInputs = {
@@ -24,13 +27,23 @@ export const ManagementElectionAdmin = () => {
   // open and close add admin modal
   const [openAddAdmin, setOpenAddAdmin] = useState(false);
   const handleOpenAddAdmin = () => setOpenAddAdmin(true);
-  const handleCloseAddAdmin = () => setOpenAddAdmin(false);
+  const handleCloseAddAdmin = () => {
+    reset();
+    setOpenAddAdmin(false);
+  };
+  // get admins
+  const { data: allUsers, refetch: refetchUsers } = useGetUsersQuery();
+  const admins = allUsers?.filter((user) => user.role === "process_admin");
+
+  // mutators
+  const [createUser] = useCreateUserMutation();
 
   // add admin form
   const {
     register: registerAddAdmin,
     handleSubmit: handleSubmitAddAdmin,
     formState: { errors: errorsAddAdmin },
+    reset,
   } = useForm<AddAdminInputs>();
 
   const onSubmitAddAdmin: SubmitHandler<AddAdminInputs> = async (data) => {
@@ -41,113 +54,15 @@ export const ManagementElectionAdmin = () => {
       ...data,
       dni: data.dni.toString(),
     };
+    try {
+      await createUser(processAdminToCreate).unwrap();
+      await refetchUsers();
+      handleCloseAddAdmin();
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
     console.log(processAdminToCreate);
   };
-  // get admins
-  const { data: allUsers } = useGetUsersQuery();
-  const admins = allUsers?.filter((user) => user.role === "process_admin");
-  // const admins: IUser[] = [
-  //   {
-  //     _id: "1",
-  //     role: "process_admin",
-  //     user_name: "Alice",
-  //     user_surname: "Johnson",
-  //     email: "alice.johnson@example.com",
-  //     created_at: "2023-01-15T08:00:00Z",
-  //     dni: "12345678",
-  //     is_active: true,
-  //   },
-  //   {
-  //     _id: "2",
-  //     role: "process_admin",
-  //     user_name: "Bob",
-  //     user_surname: "Smith",
-  //     email: "bob.smith@example.com",
-  //     created_at: "2023-02-20T09:30:00Z",
-  //     dni: "87654321",
-  //     is_active: true,
-  //   },
-  //   {
-  //     _id: "3",
-  //     role: "process_admin",
-  //     user_name: "Charlie",
-  //     user_surname: "Brown",
-  //     email: "charlie.brown@example.net",
-  //     created_at: "2023-03-10T10:45:00Z",
-  //     dni: "11223344",
-  //     is_active: false,
-  //   },
-  //   {
-  //     _id: "4",
-  //     role: "process_admin",
-  //     user_name: "Diana",
-  //     user_surname: "Miller",
-  //     email: "diana.miller@example.org",
-  //     created_at: "2023-04-05T11:15:00Z",
-  //     dni: "99887766",
-  //     is_active: false,
-  //   },
-  //   {
-  //     _id: "5",
-  //     role: "process_admin",
-  //     user_name: "Eric",
-  //     user_surname: "Wilson",
-  //     email: "eric.wilson@example.com",
-  //     created_at: "2023-05-18T14:00:00Z",
-  //     dni: "55667788",
-  //     is_active: true,
-  //   },
-  //   {
-  //     _id: "1",
-  //     role: "process_admin",
-  //     user_name: "Alice",
-  //     user_surname: "Johnson",
-  //     email: "alice.johnson@example.com",
-  //     created_at: "2023-01-15T08:00:00Z",
-  //     dni: "12345678",
-  //     is_active: true,
-  //   },
-  //   {
-  //     _id: "2",
-  //     role: "process_admin",
-  //     user_name: "Bob",
-  //     user_surname: "Smith",
-  //     email: "bob.smith@example.com",
-  //     created_at: "2023-02-20T09:30:00Z",
-  //     dni: "87654321",
-  //     is_active: true,
-  //   },
-  //   {
-  //     _id: "3",
-  //     role: "process_admin",
-  //     user_name: "Charlie",
-  //     user_surname: "Brown",
-  //     email: "charlie.brown@example.net",
-  //     created_at: "2023-03-10T10:45:00Z",
-  //     dni: "11223344",
-  //     is_active: false,
-  //   },
-  //   {
-  //     _id: "4",
-  //     role: "process_admin",
-  //     user_name: "Diana",
-  //     user_surname: "Miller",
-  //     email: "diana.miller@example.org",
-  //     created_at: "2023-04-05T11:15:00Z",
-  //     dni: "99887766",
-  //     is_active: false,
-  //   },
-  //   {
-  //     _id: "5",
-  //     role: "process_admin",
-  //     user_name: "Eric",
-  //     user_surname: "Wilson",
-  //     email: "eric.wilson@example.com",
-  //     created_at: "2023-05-18T14:00:00Z",
-  //     dni: "55667788",
-  //     is_active: true,
-  //   },
-  // ];
 
   return (
     <div className="containerManagementeElectionAdmin">
