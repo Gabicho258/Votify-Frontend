@@ -11,6 +11,7 @@ import {
   useGetMessagesByChatIdQuery,
   useGetUserByIdQuery,
   useGetUsersQuery,
+  useUpdateChatMutation,
 } from "../../../app/votify.api";
 import { useState } from "react";
 
@@ -19,16 +20,15 @@ export const Mailbox = () => {
   const { data: currentUser } = useGetUserByIdQuery(user_id);
   const { data: allUsers } = useGetUsersQuery();
   const [messageToSend, setMessageToSend] = useState("");
-  // const currentUser = {
-  //   role: "sys_admin",
-  //   _id: "algunid",
-  // };
+
   const [selectedChat, setSelectedChat] = useState<Partial<IChat>>({
     title: "Seleccione un chat para empezar",
   });
   const idToSearchChats =
     currentUser?.role === "sys_admin" ? "system" : currentUser?._id;
-  const { data: chats } = useGetChatsByUserIdQuery(idToSearchChats || "");
+  const { data: chats, refetch: refetchChats } = useGetChatsByUserIdQuery(
+    idToSearchChats || ""
+  );
   const handleSelectChat = (chat: IChat) => {
     setSelectedChat(chat);
     setMessageToSend("");
@@ -40,6 +40,7 @@ export const Mailbox = () => {
     );
   });
   const [createMessage] = useCreateMessageMutation();
+  const [updateChat] = useUpdateChatMutation();
 
   const { data: messages, refetch: refetchMessages } =
     useGetMessagesByChatIdQuery(selectedChat?._id || "");
@@ -59,395 +60,21 @@ export const Mailbox = () => {
     }
   };
   const handleCloseChat = async () => {
-    // try {
-    //   await createMessage(message).unwrap();
-    //   setMessageToSend("");
-    //   await refetchMessages();
-    // } catch (error) {
-    //   alert(JSON.stringify(error));
-    // }
+    try {
+      await updateChat({ _id: selectedChat._id, state: "close" }).unwrap();
+      // setMessageToSend("");
+      await refetchChats();
+      setSelectedChat({
+        title: "Operación realizada exitosamente",
+        process_name: "Seleccione otro chat para continuar",
+      });
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
   };
-  // const chats: IChat[] = [
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
 
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-
-  //   {
-  //     _id: "chat1",
-  //     members: ["user1", "user2"],
-  //     title: "revisión de proceso",
-  //     state: "open",
-  //     process_name: "Proceso de revisión",
-  //     createdAt: "2024-07-09T10:00:00Z",
-  //     updatedAt: "2024-07-09T10:30:00Z",
-  //   },
-  //   {
-  //     _id: "chat2",
-  //     members: ["user3", "user4"],
-  //     title: "emergencia en proceso",
-  //     state: "close",
-  //     process_name: "Proceso de desarrollo",
-  //     createdAt: "2024-07-08T15:00:00Z",
-  //     updatedAt: "2024-07-09T09:45:00Z",
-  //   },
-  // ];
-
-  // const messages: IMessage[] = [
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message1",
-  //     chat_id: "chat1",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:05:00Z",
-  //     updatedAt: "2024-07-09T10:05:00Z",
-  //   },
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message3",
-  //     chat_id: "chat2",
-  //     sender_id: "user3",
-  //     text: "Buenos días equipo, ¿qué tal va el proyecto?",
-  //     createdAt: "2024-07-08T15:30:00Z",
-  //     updatedAt: "2024-07-08T15:30:00Z",
-  //   },
-  //   {
-  //     _id: "message4",
-  //     chat_id: "chat2",
-  //     sender_id: "user4",
-  //     text: "Hola, vamos avanzando según lo planeado.",
-  //     createdAt: "2024-07-08T16:00:00Z",
-  //     updatedAt: "2024-07-08T16:00:00Z",
-  //   },
-
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message3",
-  //     chat_id: "chat2",
-  //     sender_id: "user3",
-  //     text: "Buenos días equipo, ¿qué tal va el proyecto?",
-  //     createdAt: "2024-07-08T15:30:00Z",
-  //     updatedAt: "2024-07-08T15:30:00Z",
-  //   },
-  //   {
-  //     _id: "message4",
-  //     chat_id: "chat2",
-  //     sender_id: "algunid",
-  //     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis libero ac quam ultricies dapibus. Fusce scelerisque non tortor non tristique. Pellentesque venenatis magna eu mauris euismod efficitur. ",
-  //     createdAt: "2024-07-08T16:00:00Z",
-  //     updatedAt: "2024-07-08T16:00:00Z",
-  //   },
-
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message3",
-  //     chat_id: "chat2",
-  //     sender_id: "user3",
-  //     text: "Buenos días equipo, ¿qué tal va el proyecto?",
-  //     createdAt: "2024-07-08T15:30:00Z",
-  //     updatedAt: "2024-07-08T15:30:00Z",
-  //   },
-  //   {
-  //     _id: "message4",
-  //     chat_id: "chat2",
-  //     sender_id: "user4",
-  //     text: "Hola, vamos avanzando según lo planeado.",
-  //     createdAt: "2024-07-08T16:00:00Z",
-  //     updatedAt: "2024-07-08T16:00:00Z",
-  //   },
-
-  //   {
-  //     _id: "message2",
-  //     chat_id: "chat1",
-  //     sender_id: "user2",
-  //     text: "¡Hola! Todo bien por aquí, gracias.",
-  //     createdAt: "2024-07-09T10:10:00Z",
-  //     updatedAt: "2024-07-09T10:10:00Z",
-  //   },
-  //   {
-  //     _id: "message3",
-  //     chat_id: "chat2",
-  //     sender_id: "user3",
-  //     text: "Buenos días equipo, ¿qué tal va el proyecto?",
-  //     createdAt: "2024-07-08T15:30:00Z",
-  //     updatedAt: "2024-07-08T15:30:00Z",
-  //   },
-  //   {
-  //     _id: "message4",
-  //     chat_id: "chat2",
-  //     sender_id: "user4",
-  //     text: "Hola, vamos avanzando según lo planeado.",
-  //     createdAt: "2024-07-08T16:00:00Z",
-  //     updatedAt: "2024-07-08T16:00:00Z",
-  //   },
-  // ];
   const navigate = useNavigate();
-  // const selectedChat: IChat = {
-  //   _id: "chat1",
-  //   members: ["user1", "user2"],
-  //   title: "revisión de proceso",
-  //   state: "open",
-  //   process_name: "Proceso de revisión",
-  //   createdAt: "2024-07-09T10:00:00Z",
-  //   updatedAt: "2024-07-09T10:30:00Z",
-  // };
+
   return (
     <div className="containerMailbox">
       <div className="containerMailbox__back" onClick={() => navigate(-1)}>
@@ -512,7 +139,7 @@ export const Mailbox = () => {
                   {selectedChat.process_name}
                 </div>
                 <div className="containerMailbox__content-right-chatInfo-top-info-friendName">
-                  {friend?.user_name + " " + friend?.user_surname}
+                  {friend ? friend?.user_name + " " + friend?.user_surname : ""}
                 </div>
               </div>
               <div className="containerMailbox__content-right-chatInfo-top-button">
@@ -557,22 +184,28 @@ export const Mailbox = () => {
             })}
           </div>
           <div className="containerMailbox__content-right-chatInput">
-            <input
-              type="text"
-              className="containerMailbox__content-right-chatInput-input"
-              placeholder="Escribe tu mensaje..."
-              value={messageToSend}
-              onChange={(event) => {
-                setMessageToSend(event.target.value);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") handleSendMessage();
-              }}
-            />
-            <SendIcon
-              className="containerMailbox__content-right-chatInput-send"
-              onClick={handleSendMessage}
-            />
+            {selectedChat.state === "open" ? (
+              <>
+                <input
+                  type="text"
+                  className="containerMailbox__content-right-chatInput-input"
+                  placeholder="Escribe tu mensaje..."
+                  value={messageToSend}
+                  onChange={(event) => {
+                    setMessageToSend(event.target.value);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") handleSendMessage();
+                  }}
+                />
+                <SendIcon
+                  className="containerMailbox__content-right-chatInput-send"
+                  onClick={handleSendMessage}
+                />
+              </>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
