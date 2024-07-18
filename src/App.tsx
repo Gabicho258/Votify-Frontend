@@ -19,6 +19,7 @@ import { ElectoralProcessAdmin } from './pages/Admin/System/ElectoralProcessAdmi
 import { ProcessModules } from './pages/Admin/Process/ProcessModules/ProcessModules';
 import { ProcessListAdmin } from './pages/Admin/Process/ProcessListAdmin/ProcessListAdmin';
 import { ProcessInfoForm } from './pages/Admin/Process/ProcessInfoForm/ProcessInfoForm';
+import { ProcessCreateLists } from './pages/Admin/Process/ProcessCreateLists/ProcessCreateLists';
 
 // User routes
 import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
@@ -85,6 +86,7 @@ function App() {
         <Route path='/process-admin-modules' element={<ProcessModules />} />
         <Route path='/process-list-admin' element={<ProcessListAdmin />} />
         <Route path='/process-info-form' element={<ProcessInfoForm />} />
+        <Route path='/process-create-lists' element={<ProcessCreateLists />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

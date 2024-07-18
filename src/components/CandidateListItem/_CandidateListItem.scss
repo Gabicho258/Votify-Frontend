@@ -1,0 +1,71 @@
+@import './../../variables';
+
+.containerCandidateListItem {
+  box-sizing: border-box;
+  width: 100%;
+  &__content {
+    box-sizing: border-box;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    &-info {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      &-logo {
+        width: 5rem;
+        height: 5rem;
+        border: 1px solid $primary;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+      &-photo {
+        width: 5rem;
+        height: 5rem;
+        border: 1px solid $primary;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+      &-name {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        &-candidate {
+          font-family: $roboto-bold;
+          color: $dark-text;
+          font-size: 1.3rem;
+        }
+        &-organization {
+          font-family: $roboto-light;
+          color: $dark-text;
+          font-size: 1rem;
+        }
+      }
+    }
+    &-button {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      &-delete {
+        background-color: $danger;
+        border-color: $danger;
+        color: $light-text;
+        font-family: $roboto-bold;
+        &:hover {
+          background-color: $light-text;
+          border-color: $danger;
+          color: $danger;
+        }
+      }
+    }
+  }
+  &__divider {
+    width: 100%;
+    background-color: $primary;
+  }
+}
