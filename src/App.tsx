@@ -20,6 +20,7 @@ import { ProcessModules } from './pages/Admin/Process/ProcessModules/ProcessModu
 import { ProcessListAdmin } from './pages/Admin/Process/ProcessListAdmin/ProcessListAdmin';
 import { ProcessInfoForm } from './pages/Admin/Process/ProcessInfoForm/ProcessInfoForm';
 import { ProcessCreateLists } from './pages/Admin/Process/ProcessCreateLists/ProcessCreateLists';
+import { ProcessAddVoter } from './pages/Admin/Process/ProcessAddVoter/ProcessAddVoter';
 
 // User routes
 import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
@@ -62,31 +63,32 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/end-register' element={<Register />} />
-        <Route path='/login-admin' element={<LoginAdmin />} />
-        <Route path='/system-admin-modules' element={<SystemModules />} />
-        <Route path='/process-requests' element={<ProcessRequests />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/end-register" element={<Register />} />
+        <Route path="/login-admin" element={<LoginAdmin />} />
+        <Route path="/system-admin-modules" element={<SystemModules />} />
+        <Route path="/process-requests" element={<ProcessRequests />} />
         <Route
-          path='/process-admin-management'
+          path="/process-admin-management"
           element={<ManagementElectionAdmin />}
         />
         <Route
-          path='/electoral-process-administration'
+          path="/electoral-process-administration"
           element={<ElectoralProcessAdmin />}
         />
-        <Route path='/mailbox' element={<Mailbox />} />
-        <Route path='/process-help' element={<ProcessHelp />} />
-        <Route path='/credential' element={<Credential />} />
+        <Route path="/mailbox" element={<Mailbox />} />
+        <Route path="/process-help" element={<ProcessHelp />} />
+        <Route path="/credential" element={<Credential />} />
         <Route
-          path='/process-request/:process_id'
+          path="/process-request/:process_id"
           element={<ProcessRequest />}
         />
-        <Route path='/process-admin-modules' element={<ProcessModules />} />
-        <Route path='/process-list-admin' element={<ProcessListAdmin />} />
-        <Route path='/process-info-form' element={<ProcessInfoForm />} />
-        <Route path='/process-create-lists' element={<ProcessCreateLists />} />
+        <Route path="/process-admin-modules" element={<ProcessModules />} />
+        <Route path="/process-list-admin" element={<ProcessListAdmin />} />
+        <Route path="/process-info-form" element={<ProcessInfoForm />} />
+        <Route path="/process-create-lists" element={<ProcessCreateLists />} />
+        <Route path="/process-add-voter" element={<ProcessAddVoter />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

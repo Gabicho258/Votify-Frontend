@@ -1,0 +1,63 @@
+@import './../../variables';
+
+.containerVoterListItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &__content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    &-left {
+      &-name {
+        font-family: $roboto-bold;
+        color: $dark-text;
+        font-size: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+      &-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+        &-email {
+          display: flex;
+          align-items: center;
+          color: $dark-text;
+          &-icon {
+            margin-right: 0.3rem;
+          }
+        }
+        &-dni {
+          display: flex;
+          align-items: center;
+          color: $dark-text;
+          &-icon {
+            margin-right: 0.3rem;
+          }
+        }
+      }
+    }
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      &-button {
+        width: 60%;
+        background-color: $danger;
+        border-color: $danger;
+        color: $light-text;
+        font-family: $roboto-bold;
+        padding: 0.5rem 1.5rem;
+        &:hover {
+          border: 1px solid $danger;
+          background-color: $background;
+          color: $danger;
+        }
+      }
+    }
+  }
+  &__divider {
+    width: 100%;
+    background-color: $primary;
+  }
+}
