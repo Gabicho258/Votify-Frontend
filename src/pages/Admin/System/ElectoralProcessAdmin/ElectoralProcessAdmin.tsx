@@ -3,11 +3,15 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Process } from "../../../../components/ProcessRequest/Process";
 import { useGetAllProcessesQuery } from "../../../../app/votify.api";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const ElectoralProcessAdmin = () => {
   const navigate = useNavigate();
-  const { data: electionProcesses } = useGetAllProcessesQuery();
+  const { data: electionProcesses, refetch } = useGetAllProcessesQuery();
 
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <div className="containerElectoralProcessAdmin">
       <div

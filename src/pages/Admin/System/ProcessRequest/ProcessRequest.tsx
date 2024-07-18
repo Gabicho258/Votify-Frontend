@@ -11,43 +11,65 @@ import { Button } from "@mui/material";
 import { formatISODate } from "../../../../utils/DateFormatter";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  useGetCredentialsByProcessIdQuery,
   useGetListsByProcessIdQuery,
   useGetProcessByIdQuery,
+  useGetUserByIdQuery,
+  useUpdateProcessMutation,
 } from "../../../../app/votify.api";
 
 export const ProcessRequest = () => {
   const { process_id } = useParams();
+  const user_id = localStorage.getItem("admin_id") || "";
+  const { data: currentUser } = useGetUserByIdQuery(user_id);
   const { data: currentProcess } = useGetProcessByIdQuery(process_id || "");
   const { data: lists } = useGetListsByProcessIdQuery(
     currentProcess?._id || ""
   );
+  const [updateProcess] = useUpdateProcessMutation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const testEmails: string[] = [
-    "alice@example.com",
-    "bob@example.net",
-    "charlie@example.org",
-    "diana@example.com",
-    "eric@example.net",
-    "fiona@example.org",
-    "george@example.com",
-    "hannah@example.net",
-    "ian@example.org",
-    "julia@example.com",
-    "kevin@example.net",
-    "laura@example.org",
-    "michael@example.com",
-    "nina@example.net",
-    "oliver@example.org",
-    "paula@example.com",
-    "quentin@example.net",
-    "rachel@example.org",
-    "steven@example.com",
-    "tina@example.net",
-  ];
+  const handleCancellProcess = async () => {
+    try {
+      await updateProcess({
+        _id: process_id,
+        process_status: "cancelled",
+      }).unwrap();
+      navigate(-1);
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+  };
+  const handleApproveProcess = async () => {
+    try {
+      await updateProcess({
+        _id: process_id,
+        process_status: "programmed",
+        admin_status: "approved",
+      }).unwrap();
+      navigate(-1);
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+  };
+  const handleRejectProcess = async () => {
+    try {
+      await updateProcess({
+        _id: process_id,
+        process_status: "",
+        admin_status: "rejected",
+      }).unwrap();
+      navigate(-1);
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+  };
+  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
+    process_id || ""
+  );
+  console.log(processCredentials);
 
   const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
     currentProcess?.start_date || ""
@@ -101,7 +123,7 @@ export const ProcessRequest = () => {
             <div className="containerProcessRequestInfo__content-right-participants-number">
               <PersonIcon className="containerProcessRequestInfo__content-right-participants-number-icon" />
               <span className="containerProcessRequestInfo__content-right-participants-number-text">
-                {192}
+                {processCredentials?.length}
               </span>
             </div>
             <Button
@@ -114,38 +136,42 @@ export const ProcessRequest = () => {
           </div>
         </div>
       </div>
-      <div className="containerProcessRequestInfo__buttons">
-        {currentProcess?.admin_status === "pending" ? (
-          <>
+      {currentUser?.role === "sys_admin" ? (
+        <div className="containerProcessRequestInfo__buttons">
+          {currentProcess?.admin_status === "pending" ? (
+            <>
+              <Button
+                variant="outlined"
+                className="containerProcessRequestInfo__buttons-approve"
+                onClick={handleApproveProcess}
+              >
+                Aprobar
+              </Button>
+              <Button
+                variant="outlined"
+                className="containerProcessRequestInfo__buttons-reject"
+                onClick={handleRejectProcess}
+              >
+                Rechazar
+              </Button>
+            </>
+          ) : currentProcess?.admin_status === "approved" &&
+            (currentProcess?.process_status === "programmed" ||
+              currentProcess?.process_status === "in_progress") ? (
             <Button
               variant="outlined"
-              className="containerProcessRequestInfo__buttons-approve"
-              onClick={() => {}}
+              className="containerProcessRequestInfo__buttons-cancel"
+              onClick={handleCancellProcess}
             >
-              Aprobar
+              Cancelar Proceso
             </Button>
-            <Button
-              variant="outlined"
-              className="containerProcessRequestInfo__buttons-reject"
-              onClick={() => {}}
-            >
-              Rechazar
-            </Button>
-          </>
-        ) : currentProcess?.admin_status === "approved" &&
-          (currentProcess?.process_status === "programmed" ||
-            currentProcess?.process_status === "in_progress") ? (
-          <Button
-            variant="outlined"
-            className="containerProcessRequestInfo__buttons-cancel"
-            onClick={() => {}}
-          >
-            Cancelar Proceso
-          </Button>
-        ) : (
-          <div></div>
-        )}
-      </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
       <Modal
         className="containerProcessRequestInfo__participantsModal"
         open={open}
@@ -156,8 +182,8 @@ export const ProcessRequest = () => {
             Participantes
           </div>
           <div className="containerProcessRequestInfo__participantsModal-content-list">
-            {testEmails.map((email, i) => {
-              return <EmailListItem email={email} key={i} />;
+            {processCredentials?.map((credential, i) => {
+              return <EmailListItem email={credential.email} key={i} />;
             })}
           </div>
           <div className="containerProcessRequestInfo__participantsModal-content-button">

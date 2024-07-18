@@ -70,6 +70,9 @@ export const Mailbox = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  useEffect(() => {
+    refetchMessages();
+  }, [selectedChat]);
 
   const handleCloseChat = async () => {
     try {

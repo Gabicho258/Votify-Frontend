@@ -7,6 +7,7 @@ import type {
   IElectionProcess,
   IList,
   IUser,
+  ICredential,
 } from "../interfaces/index.ts";
 
 export const votifyApi = createApi({
@@ -203,6 +204,16 @@ export const votifyApi = createApi({
         body: message,
       }),
     }),
+    // Credentials Endpoint
+    getAllCredentials: builder.query<ICredential[], void>({
+      query: () => "/v1/credential/list",
+    }),
+    getCredentialsByUserId: builder.query<ICredential[], string>({
+      query: (_id) => `/v1/credential/user/${_id}`,
+    }),
+    getCredentialsByProcessId: builder.query<ICredential[], string>({
+      query: (_id) => `/v1/credential/process/${_id}`,
+    }),
   }),
 });
 
@@ -232,4 +243,7 @@ export const {
   useUpdateProcessMutation,
   useUpdateUserMutation,
   useUpdateChatMutation,
+  useGetAllCredentialsQuery,
+  useGetCredentialsByProcessIdQuery,
+  useGetCredentialsByUserIdQuery,
 } = votifyApi;
