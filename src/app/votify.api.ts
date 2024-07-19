@@ -7,6 +7,7 @@ import type {
   IElectionProcess,
   IList,
   IUser,
+  ICredential,
 } from "../interfaces/index.ts";
 
 export const votifyApi = createApi({
@@ -185,6 +186,13 @@ export const votifyApi = createApi({
         body: chat,
       }),
     }),
+    updateChat: builder.mutation<IChat, Partial<IChat>>({
+      query: (chat) => ({
+        url: `/buzon-service/chat/update/${chat._id}`,
+        method: "PUT",
+        body: chat,
+      }),
+    }),
     // Message
     getMessagesByChatId: builder.query<IMessage[], string>({
       query: (_id) => `/buzon-service/message/${_id}`,
@@ -195,6 +203,16 @@ export const votifyApi = createApi({
         method: "POST",
         body: message,
       }),
+    }),
+    // Credentials Endpoint
+    getAllCredentials: builder.query<ICredential[], void>({
+      query: () => "/v1/credential/list",
+    }),
+    getCredentialsByUserId: builder.query<ICredential[], string>({
+      query: (_id) => `/v1/credential/user/${_id}`,
+    }),
+    getCredentialsByProcessId: builder.query<ICredential[], string>({
+      query: (_id) => `/v1/credential/process/${_id}`,
     }),
   }),
 });
@@ -224,4 +242,8 @@ export const {
   useUpdateListMutation,
   useUpdateProcessMutation,
   useUpdateUserMutation,
+  useUpdateChatMutation,
+  useGetAllCredentialsQuery,
+  useGetCredentialsByProcessIdQuery,
+  useGetCredentialsByUserIdQuery,
 } = votifyApi;

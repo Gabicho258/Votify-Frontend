@@ -1,0 +1,131 @@
+@import "../../../variables";
+
+.containerHub {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    height: 100vh;
+
+    &__left {
+        background-color: $primary;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+        justify-content: space-between;
+        -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+        box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+
+        &-welcome {
+            font-family: $roboto-bold;
+            font-size: 1.8rem;
+            color: $light-text;
+            text-align: center;
+            margin-bottom: 0.5rem;
+
+            &-name {
+                font-family: $roboto-light;
+                font-size: 1.2rem;
+                text-align: center;
+            }
+        }
+
+        &-logoutButton {
+            border-radius: 10px;
+            background-color: $danger;
+            font-family: $roboto-regular;
+            border: none;
+            color: $light-text;
+
+            &:hover {
+                box-sizing: border-box;
+                border: 1px solid $danger;
+                background-color: $light-text;
+                color: $danger;
+            }
+        }
+    }
+
+    &__right {
+        padding: 4rem 2rem 5rem 4rem;
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+
+        &-title {
+            color: $dark-text;
+            font-family: $roboto-bold;
+            font-size: 2rem;
+            margin-bottom: 2.4rem;
+            // text-align: center;
+        }
+
+        &-process {
+            &-inProgressList {
+                box-sizing: border-box;
+                width: 90%;
+                height: 22rem;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+                border-radius: 10px;
+                border: 2px solid $success;
+                overflow-y: auto;
+                margin-bottom: 1rem;
+
+                &-title {
+                    font-family: $roboto-bold;
+                    font-size: 1.5rem;
+                    color: $dark-text;
+
+                    &-divider {
+                        width: 100%;
+                        color: $primary;
+                    }
+                }
+
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: none;
+                    margin: 1rem;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: $primary;
+                    border-radius: 20px;
+                    border: none;
+                }
+            }
+
+            &-list {
+                box-sizing: border-box;
+                width: 90%;
+                height: 22rem;
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+                border-radius: 10px;
+                border: 2px solid $primary;
+                overflow-y: auto;
+
+                &::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: none;
+                    margin: 1rem;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: $primary;
+                    border-radius: 20px;
+                    border: none;
+                }
+            }
+        }
+    }
+}
