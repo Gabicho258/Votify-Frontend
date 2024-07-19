@@ -1,0 +1,62 @@
+@import "./../../variables";
+
+.containerVoteSummaryListItem {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  &__content {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 3fr 2fr;
+    &-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.3rem;
+      color: $dark-text;
+      min-height: 7rem;
+      &-list {
+        font-family: $roboto-bold;
+        font-size: 1.5rem;
+      }
+      &-candidate {
+        font-family: $roboto-regular;
+        font-size: 1.2rem;
+      }
+      &-organization {
+        font-family: $roboto-light;
+        font-size: 1rem;
+      }
+      &-null {
+        font-family: $roboto-bold;
+        font-size: 1.7rem;
+      }
+    }
+    &-photos {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.5rem;
+      &-organization {
+        width: 7rem;
+        height: 7rem;
+        border: 1px solid $primary;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+      &-candidate {
+        width: 7rem;
+        height: 7rem;
+        border: 1px solid $primary;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+    }
+  }
+  &__divider {
+    width: 100%;
+    background-color: $primary;
+  }
+}
