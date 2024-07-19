@@ -26,6 +26,7 @@ import { ProcessInfoAdmin } from './pages/Admin/Process/ProcessInfoAdmin/Process
 // User routes
 import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
 import { Credential } from './pages/User/Credential/Credential';
+import { ProcessList } from './pages/User/ProcessList/ProcessList';
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -67,6 +68,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/end-register" element={<Register />} />
+        <Route path="/process-list" element={<ProcessList />} />
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/system-admin-modules" element={<SystemModules />} />
         <Route path="/process-requests" element={<ProcessRequests />} />
