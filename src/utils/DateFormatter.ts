@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 export function formatISODate(isoString: string): {
   formattedDate: string;
   formattedTime: string;
@@ -22,3 +24,33 @@ export function formatISODate(isoString: string): {
     formattedTime,
   };
 }
+
+const padZero = (num: number): string => num.toString().padStart(2, '0');
+
+export const convertToISO8601 = (
+  startDate: string,
+  startTime: string,
+  endDate: string,
+  endTime: string
+) => {
+  // Función para convertir una fecha y hora al formato ISO 8601
+  const convertToISO = (date: string, time: string): string => {
+    const [day, month, year] = date.split('-').map(Number);
+    const [hour, minute] = time.split(':').map(Number);
+
+    // Crear la cadena en formato ISO 8601
+    const isoString = `${year}-${padZero(month)}-${padZero(day)}T${padZero(
+      hour
+    )}:${padZero(minute)}:00.000Z`;
+    return isoString;
+  };
+
+  // Convertir las fechas y horas de inicio y fin
+  const startISO = convertToISO(startDate, startTime);
+  const endISO = convertToISO(endDate, endTime);
+
+  return {
+    startISO,
+    endISO,
+  };
+};

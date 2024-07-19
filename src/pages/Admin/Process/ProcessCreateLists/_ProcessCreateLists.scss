@@ -1,0 +1,165 @@
+@import './../../../../variables';
+
+.containerProcessCreateLists {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  &__back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: $dark-text;
+    &-icon {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+    &-text {
+      font-size: 2rem;
+      font-family: $roboto-bold;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__title {
+    font-family: $roboto-bold;
+    font-size: 2.5rem;
+    color: $dark-text;
+    margin-bottom: 3rem;
+  }
+  &__add {
+    width: 60%;
+    margin-bottom: 1rem;
+    &-button {
+      background-color: $primary;
+      border-color: $primary;
+      color: $light-text;
+      font-family: $roboto-bold;
+      &:hover {
+        background-color: $background;
+        border-color: $primary;
+        color: $primary;
+      }
+    }
+  }
+  &__lists {
+    box-sizing: border-box;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  &__button {
+    margin: 1.5rem 0;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    &-continue {
+      background-color: $primary;
+      border-color: $primary;
+      color: $light-text;
+      font-family: $roboto-bold;
+      &:hover {
+        background-color: $background;
+        border-color: $primary;
+        color: $primary;
+      }
+    }
+  }
+  &__addListModal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: 1rem;
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: $primary;
+      -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+      -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+      box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+      color: $light-text;
+      width: 50%;
+      height: 30%;
+      border-radius: 15px;
+      &-title {
+        font-family: $roboto-bold;
+        font-size: 1.7rem;
+      }
+
+      &-form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        &-label {
+          width: 100%;
+          font-size: 1rem;
+          margin: 0.3rem 0;
+        }
+        &-field {
+          width: 100%;
+          .MuiInputBase-input {
+            height: 0.5rem;
+            color: $light-text;
+            outline: none;
+            border: none;
+          }
+          fieldset {
+            border-radius: 5px;
+            border-color: $light-text;
+          }
+          &-error {
+            width: 100%;
+            font-family: $roboto-light;
+          }
+        }
+        &-buttons {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 0.5rem;
+          width: 100%;
+          margin-top: 1rem;
+          &-close {
+            background-color: $danger;
+            border-color: $danger;
+            color: $light-text;
+            font-family: $roboto-regular;
+            padding: 0.3rem 2.5rem;
+            font-family: $roboto-bold;
+            &:hover {
+              border-color: $danger;
+              background-color: $light-text;
+              color: $danger;
+            }
+          }
+          &-confirm {
+            background-color: $success;
+            border-color: $success;
+            color: $light-text;
+            font-family: $roboto-regular;
+            padding: 0.3rem 2.5rem;
+            font-family: $roboto-bold;
+            &:hover {
+              border-color: $success;
+              background-color: $light-text;
+              color: $success;
+            }
+          }
+        }
+      }
+    }
+  }
+}
