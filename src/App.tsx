@@ -22,6 +22,7 @@ import { ProcessListAdmin } from "./pages/Admin/Process/ProcessListAdmin/Process
 // User routes
 import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
 import { Credential } from "./pages/User/Credential/Credential";
+import { Hub } from "./pages/User/Hub/Hub";
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -60,9 +61,14 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
+        {/* //        User Routes                */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/end-register" element={<Register />} />
+        <Route path="/process-help" element={<ProcessHelp />} />
+        <Route path="/credential" element={<Credential />} />
+        <Route path="/hub" element={<Hub />} />
+        {/*       ADMIN ROUTES             */}
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/system-admin-modules" element={<SystemModules />} />
         <Route path="/process-requests" element={<ProcessRequests />} />
@@ -75,15 +81,12 @@ function App() {
           element={<ElectoralProcessAdmin />}
         />
         <Route path="/mailbox" element={<Mailbox />} />
-        <Route path="/process-help" element={<ProcessHelp />} />
-        <Route path="/credential" element={<Credential />} />
         <Route
           path="/process-request/:process_id"
           element={<ProcessRequest />}
         />
         <Route path="/process-admin-modules" element={<ProcessModules />} />
         <Route path="/process-list-admin" element={<ProcessListAdmin />} />
-
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </BrowserRouter>
