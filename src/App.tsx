@@ -21,6 +21,7 @@ import { ProcessListAdmin } from './pages/Admin/Process/ProcessListAdmin/Process
 import { ProcessInfoForm } from './pages/Admin/Process/ProcessInfoForm/ProcessInfoForm';
 import { ProcessCreateLists } from './pages/Admin/Process/ProcessCreateLists/ProcessCreateLists';
 import { ProcessAddVoter } from './pages/Admin/Process/ProcessAddVoter/ProcessAddVoter';
+import { ProcessInfoAdmin } from './pages/Admin/Process/ProcessInfoAdmin/ProcessInfoAdmin';
 
 // User routes
 import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
@@ -89,6 +90,7 @@ function App() {
         <Route path="/process-info-form" element={<ProcessInfoForm />} />
         <Route path="/process-create-lists" element={<ProcessCreateLists />} />
         <Route path="/process-add-voter" element={<ProcessAddVoter />} />
+        <Route path="/process-info-admin" element={<ProcessInfoAdmin />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
