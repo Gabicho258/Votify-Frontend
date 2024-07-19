@@ -1,16 +1,20 @@
-import { useState } from 'react';
-import { Button } from '@mui/material';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import './_ElectionListItem.scss';
-import { ICandidate } from '../../interfaces';
-import { CandidateListItem } from '../CandidateListItem/CandidateListItem';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState } from "react";
+import { Button } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import "./_ElectionListItem.scss";
+import { ICandidate } from "../../interfaces";
+import { CandidateListItem } from "../CandidateListItem/CandidateListItem";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 type ElectionListItemInputs = {
   title: string;
+  candidates: ICandidate[];
+  addCandidate: (listTitle: string, candidate: ICandidate) => void;
+  removeCandidate: (listTitle: string, candidateName: string) => void;
+  removeList: (listTitle: string) => void;
 };
 
 type AddCandidateInputs = {
@@ -18,8 +22,14 @@ type AddCandidateInputs = {
   organization_name: string;
 };
 
-export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
-  const [options, setOptions] = useState<ICandidate[]>([]);
+export const ElectionListItem = ({
+  title,
+  addCandidate,
+  removeCandidate,
+  removeList,
+  candidates,
+}: ElectionListItemInputs) => {
+  // const [options, setOptions] = useState<ICandidate[]>([]);
   const [isCandidatePhotoLoaded, setIsCandidatePhotoLoaded] = useState(false);
   const [isOrganizationPhotoLoaded, setIsOrganizationPhotoLoaded] =
     useState(true);
@@ -27,13 +37,17 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
   // open and close add candidate modal
   const [openAddCandidate, setOpenAddCandidate] = useState(false);
   const handleOpenAddCandidate = () => setOpenAddCandidate(true);
-  const handleCloseAddCandidate = () => setOpenAddCandidate(false);
+  const handleCloseAddCandidate = () => {
+    setOpenAddCandidate(false);
+    reset();
+  };
 
   // add candidate form
   const {
     register: registerAddCandidate,
     handleSubmit: handleSubmitAddCandidate,
     formState: { errors: errorsAddCandidate },
+    reset,
   } = useForm<AddCandidateInputs>();
 
   const onSubmitAddCandidate: SubmitHandler<AddCandidateInputs> = async (
@@ -42,28 +56,37 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
     // submit add candidate code
     const candidateToAdd = {
       ...data,
+      photo_url:
+        "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
+
+      logo_url:
+        "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
+      valid_votes: 0,
     };
+    addCandidate(title, candidateToAdd);
+    handleCloseAddCandidate();
     console.log(candidateToAdd);
   };
 
   const testCandidate: ICandidate = {
-    _id: 'c1a2b3c4d5e6f7g8h9i0j',
-    list_id: 'list123',
-    candidate_name: 'Alice Johnson',
-    photo_url:
-      'https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg',
-    organization_name: 'Tech Innovators',
-    logo_url:
-      'https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png',
-    valid_votes: 1500,
+    _id: "c1a2b3c4d5e6f7g8h9i0j",
+    list_id: "list123",
+    candidate_name: "Alice Johnson",
+
+    organization_name: "Tech Innovators",
   };
 
   return (
     <div className="containerElectionListItem">
       <div className="containerElectionListItem__title">{title}</div>
       <div className="containerElectionListItem__options">
-        {options.map((option) => (
-          <CandidateListItem candidate={option} />
+        {candidates.map((option) => (
+          <CandidateListItem
+            key={option.candidate_name}
+            listTitle={title}
+            candidate={option}
+            removeCandidate={removeCandidate}
+          />
         ))}
       </div>
       <div className="containerElectionListItem__buttons">
@@ -73,7 +96,7 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
           startIcon={<AddIcon />}
           onClick={() => {
             handleOpenAddCandidate();
-            setOptions([...options, testCandidate]);
+            // setOptions([...options, testCandidate]);
           }}
         >
           Añadir opción
@@ -82,7 +105,9 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
           variant="outlined"
           className="containerElectionListItem__buttons-delete"
           startIcon={<DeleteIcon />}
-          onClick={() => {}}
+          onClick={() => {
+            removeList(title);
+          }}
         >
           Eliminar lista
         </Button>
@@ -107,8 +132,8 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
               Nombres y Apellidos:
             </label>
             <TextField
-              {...registerAddCandidate('candidate_name', {
-                required: 'Nombre y apellido es requerido',
+              {...registerAddCandidate("candidate_name", {
+                required: "Nombre y apellido es requerido",
               })}
               className="containerElectionListItem__addCandidateModal-content-form-field"
               autoComplete="off"
@@ -129,8 +154,8 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
               Organización:
             </label>
             <TextField
-              {...registerAddCandidate('organization_name', {
-                required: 'Nombre de organización es requerido',
+              {...registerAddCandidate("organization_name", {
+                required: "Nombre de organización es requerido",
               })}
               className="containerElectionListItem__addCandidateModal-content-form-field"
               autoComplete="off"

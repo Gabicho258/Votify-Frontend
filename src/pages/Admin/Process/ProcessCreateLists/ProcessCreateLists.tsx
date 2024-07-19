@@ -1,14 +1,15 @@
-import './_ProcessCreateLists.scss';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { IList } from '../../../../interfaces';
-import { ElectionListItem } from '../../../../components/ElectionListItem/ElectionListItem';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import "./_ProcessCreateLists.scss";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+// import { IList } from "../../../../interfaces";
+import { ElectionListItem } from "../../../../components/ElectionListItem/ElectionListItem";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useList } from "../../../../hooks/useList";
 
 type AddListInputs = {
   title: string;
@@ -20,55 +21,41 @@ export const ProcessCreateLists = () => {
   // open and close add list modal
   const [openAddList, setOpenAddList] = useState(false);
   const handleOpenAddList = () => setOpenAddList(true);
-  const handleCloseAddList = () => setOpenAddList(false);
-
+  const handleCloseAddList = () => {
+    setOpenAddList(false);
+    reset();
+  };
+  const { state } = useLocation();
+  // console.log(state);
   // add list form
   const {
     register: registerAddList,
     handleSubmit: handleSubmitAddList,
     formState: { errors: errorsAddList },
+    reset,
   } = useForm<AddListInputs>();
-
+  // Custom hooks lists
+  const { addCandidate, addList, lists, removeCandidate, removeList } = useList(
+    []
+  );
   const onSubmitAddList: SubmitHandler<AddListInputs> = async (data) => {
     // submit add list code
     const listToAdd = {
-      ...data,
+      title: data.title,
+      candidates: [],
     };
-    console.log(listToAdd);
+    addList(listToAdd);
+    handleCloseAddList();
   };
 
-  const lists: IList[] = [
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      process_id: 'process123',
-      title: 'Daily Standup Meeting',
-    },
-    {
-      _id: '2b3c4d5e6f7g8h9i0j1a',
-      process_id: 'process456',
-      title: 'Sprint Planning',
-    },
-    {
-      _id: '3c4d5e6f7g8h9i0j1a2b',
-      process_id: 'process789',
-      title: 'Code Review Session',
-    },
-    {
-      _id: '4d5e6f7g8h9i0j1a2b3c',
-      process_id: 'process101',
-      title: 'Project Kickoff',
-    },
-    {
-      _id: '5e6f7g8h9i0j1a2b3c4d',
-      process_id: 'process202',
-      title: 'Retrospective Meeting',
-    },
-  ];
+  if (state === null)
+    return <Navigate to={"/process-info-form"} replace={true} />;
+
   return (
     <div className="containerProcessCreateLists">
       <div
         className="containerProcessCreateLists__back"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/process-info-form", { replace: true })}
       >
         <ArrowBackIcon className="containerProcessCreateLists__back-icon" />
         <div className="containerProcessCreateLists__back-text">Volver</div>
@@ -86,7 +73,14 @@ export const ProcessCreateLists = () => {
       </div>
       <div className="containerProcessCreateLists__lists">
         {lists.map((list) => (
-          <ElectionListItem title={list.title} />
+          <ElectionListItem
+            candidates={list.candidates}
+            addCandidate={addCandidate}
+            removeCandidate={removeCandidate}
+            removeList={removeList}
+            key={list.title}
+            title={list.title}
+          />
         ))}
       </div>
       <div className="containerProcessCreateLists__button">
@@ -118,8 +112,8 @@ export const ProcessCreateLists = () => {
               Título de la lista:
             </label>
             <TextField
-              {...registerAddList('title', {
-                required: 'Título es requerido',
+              {...registerAddList("title", {
+                required: "Título es requerido",
               })}
               className="containerProcessCreateLists__addListModal-content-form-field"
               autoComplete="off"

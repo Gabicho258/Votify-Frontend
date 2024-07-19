@@ -29,7 +29,7 @@ export const ProcessListAdmin = () => {
           variant="outlined"
           className="containerProcessListAdmin__add-button"
           startIcon={<AddIcon />}
-          onClick={() => {}}
+          onClick={() => navigate("/process-info-form")}
         >
           Crear proceso
         </Button>

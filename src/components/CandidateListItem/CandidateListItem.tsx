@@ -1,13 +1,19 @@
-import { ICandidate } from '../../interfaces';
-import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import './_CandidateListItem.scss';
+import { ICandidate } from "../../interfaces";
+import { Button } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import "./_CandidateListItem.scss";
 
 type CandidateListItemInputs = {
   candidate: ICandidate;
+  removeCandidate: (listTitle: string, candidateName: string) => void;
+  listTitle: string;
 };
 
-export const CandidateListItem = ({ candidate }: CandidateListItemInputs) => {
+export const CandidateListItem = ({
+  candidate,
+  removeCandidate,
+  listTitle,
+}: CandidateListItemInputs) => {
   const { candidate_name, organization_name, photo_url, logo_url } = candidate;
   return (
     <div className="containerCandidateListItem">
@@ -35,7 +41,9 @@ export const CandidateListItem = ({ candidate }: CandidateListItemInputs) => {
             variant="outlined"
             className="containerCandidateListItem__content-button-delete"
             startIcon={<DeleteIcon />}
-            onClick={() => {}}
+            onClick={() => {
+              removeCandidate(listTitle, candidate_name);
+            }}
           >
             Eliminar opción
           </Button>
