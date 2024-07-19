@@ -1,33 +1,34 @@
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Landing } from './pages/User/Landing/Landing';
-import { Login } from './pages/User/Login/Login';
-import { Register } from './pages/User/Register/Register';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Landing } from "./pages/User/Landing/Landing";
+import { Login } from "./pages/User/Login/Login";
+import { Register } from "./pages/User/Register/Register";
 
 // Administrator login
-import { LoginAdmin } from './pages/Admin/Login/LoginAdmin';
+import { LoginAdmin } from "./pages/Admin/Login/LoginAdmin";
 
 // System administrator views
-import { SystemModules } from './pages/Admin/System/SystemModules/SystemModules';
-import { ProcessRequests } from './pages/Admin/System/ProcessRequests/ProcessRequests';
-import { ProcessRequest } from './pages/Admin/System/ProcessRequest/ProcessRequest';
-import { ManagementElectionAdmin } from './pages/Admin/System/ManagementElectionAdmin/ManagementElectionAdmin';
-import { Mailbox } from './pages/Admin/Mailbox/Mailbox';
-import { ElectoralProcessAdmin } from './pages/Admin/System/ElectoralProcessAdmin/ElectoralProcessAdmin';
+import { SystemModules } from "./pages/Admin/System/SystemModules/SystemModules";
+import { ProcessRequests } from "./pages/Admin/System/ProcessRequests/ProcessRequests";
+import { ProcessRequest } from "./pages/Admin/System/ProcessRequest/ProcessRequest";
+import { ManagementElectionAdmin } from "./pages/Admin/System/ManagementElectionAdmin/ManagementElectionAdmin";
+import { Mailbox } from "./pages/Admin/Mailbox/Mailbox";
+import { ElectoralProcessAdmin } from "./pages/Admin/System/ElectoralProcessAdmin/ElectoralProcessAdmin";
 
 // Process administrator views
-import { ProcessModules } from './pages/Admin/Process/ProcessModules/ProcessModules';
-import { ProcessListAdmin } from './pages/Admin/Process/ProcessListAdmin/ProcessListAdmin';
-import { ProcessInfoForm } from './pages/Admin/Process/ProcessInfoForm/ProcessInfoForm';
-import { ProcessCreateLists } from './pages/Admin/Process/ProcessCreateLists/ProcessCreateLists';
-import { ProcessAddVoter } from './pages/Admin/Process/ProcessAddVoter/ProcessAddVoter';
-import { ProcessInfoAdmin } from './pages/Admin/Process/ProcessInfoAdmin/ProcessInfoAdmin';
+import { ProcessModules } from "./pages/Admin/Process/ProcessModules/ProcessModules";
+import { ProcessListAdmin } from "./pages/Admin/Process/ProcessListAdmin/ProcessListAdmin";
+import { ProcessInfoForm } from "./pages/Admin/Process/ProcessInfoForm/ProcessInfoForm";
+import { ProcessCreateLists } from "./pages/Admin/Process/ProcessCreateLists/ProcessCreateLists";
+import { ProcessAddVoter } from "./pages/Admin/Process/ProcessAddVoter/ProcessAddVoter";
+import { ProcessInfoAdmin } from "./pages/Admin/Process/ProcessInfoAdmin/ProcessInfoAdmin";
 
 // User routes
-import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
-import { Credential } from './pages/User/Credential/Credential';
-import { ProcessList } from './pages/User/ProcessList/ProcessList';
-import { Hub } from './pages/User/Hub/Hub';
+import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
+import { Credential } from "./pages/User/Credential/Credential";
+import { ProcessList } from "./pages/User/ProcessList/ProcessList";
+import { Hub } from "./pages/User/Hub/Hub";
+import { InProgressProcessInfo } from "./pages/User/InProgressProcessInfo/InProgressProcessInfo";
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -73,6 +74,10 @@ function App() {
         <Route path="/process-help" element={<ProcessHelp />} />
         <Route path="/credential" element={<Credential />} />
         <Route path="/hub" element={<Hub />} />
+        <Route
+          path="/in-progress-process-info"
+          element={<InProgressProcessInfo />}
+        />
         {/*       ADMIN ROUTES             */}
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/system-admin-modules" element={<SystemModules />} />
