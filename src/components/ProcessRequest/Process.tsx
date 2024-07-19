@@ -3,21 +3,22 @@ import { IElectionProcess } from "../../interfaces";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Button } from "@mui/material";
-import { formatISODate } from "../../utils/DateFormatter";
+// import { formatISODate } from "../../utils/DateFormatter";
 import { useNavigate } from "react-router-dom";
 
 interface ProcessRequestProps {
   process: IElectionProcess;
+  isUser?: boolean;
 }
 
-export const Process = ({ process }: ProcessRequestProps) => {
+export const Process = ({ process, isUser }: ProcessRequestProps) => {
   const navigate = useNavigate();
 
   const { title, start_date, end_date, process_status, admin_status } = process;
-  const { formattedDate: startDate, formattedTime: startTime } =
-    formatISODate(start_date);
-  const { formattedDate: endDate, formattedTime: endTime } =
-    formatISODate(end_date);
+  // const { formattedDate: startDate, formattedTime: startTime } =
+  //   formatISODate(start_date);
+  // const { formattedDate: endDate, formattedTime: endTime } =
+  //   formatISODate(end_date);
   return (
     <div className="containerProcessRequest">
       <div className="containerProcessRequest__content">
@@ -53,13 +54,23 @@ export const Process = ({ process }: ProcessRequestProps) => {
             <div className="containerProcessRequest__content-left-info-date">
               <DateRangeIcon className="containerProcessRequest__content-left-info-date-icon" />
               <div className="containerProcessRequest__content-left-info-date-text">
-                {startDate + " - " + endDate}
+                {new Date(start_date).toLocaleDateString() +
+                  " - " +
+                  new Date(end_date).toLocaleDateString()}
               </div>
             </div>
             <div className="containerProcessRequest__content-left-info-time">
               <AccessTimeIcon className="containerProcessRequest__content-left-info-time-icon" />
               <div className="containerProcessRequest__content-left-info-time-text">
-                {startTime + " - " + endTime}
+                {new Date(start_date).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                }) +
+                  " - " +
+                  new Date(end_date).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
               </div>
             </div>
           </div>
@@ -68,7 +79,14 @@ export const Process = ({ process }: ProcessRequestProps) => {
           <Button
             variant="outlined"
             className="containerProcessRequest__content-right-button"
-            onClick={() => navigate(`/process-request/${process._id}`)}
+            onClick={() => {
+              if (isUser) {
+                // navigate(`/process-request/${process._id}/user`);
+                console.log("esUser");
+              } else {
+                navigate(`/process-request/${process._id}`);
+              }
+            }}
           >
             Ir al proceso
           </Button>

@@ -18,10 +18,10 @@ export const SystemModules = () => {
   //   is_active: true,
   // };
   const navigate = useNavigate();
-  const user_id = localStorage.getItem("sys_admin_id") || "";
+  const user_id = localStorage.getItem("admin_id") || "";
   const { data: sys_user } = useGetUserByIdQuery(user_id);
   const handleLogout = () => {
-    localStorage.removeItem("sys_admin_id");
+    localStorage.removeItem("admin_id");
     window.location.href = "/login-admin";
   };
 
@@ -56,21 +56,19 @@ export const SystemModules = () => {
           </div>
           <div
             className="containerSystemModules__right-modules-module-2"
-            onClick={() => console.log("Administración procesos electorales")}
+            onClick={() => navigate("/electoral-process-administration")}
           >
             Administración procesos electorales
           </div>
           <div
             className="containerSystemModules__right-modules-module-3"
-            onClick={() =>
-              console.log("Gestión de administradores de elección")
-            }
+            onClick={() => navigate("/process-admin-management")}
           >
             Gestión de administradores de elección
           </div>
           <div
             className="containerSystemModules__right-modules-module-4"
-            onClick={() => console.log("Buzón administrativo")}
+            onClick={() => navigate("/mailbox")}
           >
             Buzón administrativo
           </div>

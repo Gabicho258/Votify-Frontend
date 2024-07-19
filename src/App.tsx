@@ -69,6 +69,10 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/end-register" element={<Register />} />
         <Route path="/process-list" element={<ProcessList />} />
+        <Route path="/process-help" element={<ProcessHelp />} />
+        <Route path="/credential" element={<Credential />} />
+        <Route path="/hub" element={<Hub />} />
+        {/*       ADMIN ROUTES             */}
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/system-admin-modules" element={<SystemModules />} />
         <Route path="/process-requests" element={<ProcessRequests />} />
@@ -81,8 +85,7 @@ function App() {
           element={<ElectoralProcessAdmin />}
         />
         <Route path="/mailbox" element={<Mailbox />} />
-        <Route path="/process-help" element={<ProcessHelp />} />
-        <Route path="/credential" element={<Credential />} />
+
         <Route
           path="/process-request/:process_id"
           element={<ProcessRequest />}
