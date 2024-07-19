@@ -27,6 +27,7 @@ import { ProcessInfoAdmin } from './pages/Admin/Process/ProcessInfoAdmin/Process
 import { ProcessHelp } from './pages/User/ProcessHelp/ProcessHelp';
 import { Credential } from './pages/User/Credential/Credential';
 import { ProcessList } from './pages/User/ProcessList/ProcessList';
+import { Hub } from './pages/User/Hub/Hub';
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
