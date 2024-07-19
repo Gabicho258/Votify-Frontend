@@ -109,11 +109,6 @@ export const ProcessRequest = () => {
           {lists?.map((list) => (
             <AccordionElectionList list={list} key={list._id} />
           ))}
-          {/* <AccordionElectionList list={list1} candidates={candidatesList1} />
-          <AccordionElectionList list={list2} candidates={candidatesList2} />
-          <AccordionElectionList list={list2} candidates={candidatesList2} />
-          <AccordionElectionList list={list2} candidates={candidatesList2} />
-          <AccordionElectionList list={list2} candidates={candidatesList2} /> */}
         </div>
         <div className="containerProcessRequestInfo__content-right">
           <div className="containerProcessRequestInfo__content-right-participants">

@@ -23,6 +23,8 @@ export const Login = () => {
       );
       if (userExists) {
         // realiar la navegación al hub de user
+        localStorage.setItem("voter_id", userExists._id);
+        window.location.href = "/hub";
         // navigate("/");
       } else {
         navigate("/end-register", { state: userData });
