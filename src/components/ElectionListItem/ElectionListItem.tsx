@@ -40,6 +40,10 @@ export const ElectionListItem = ({
   const handleOpenAddCandidate = () => setOpenAddCandidate(true);
   const handleCloseAddCandidate = () => {
     setOpenAddCandidate(false);
+    setPhoto_url("");
+    setLogo_url("");
+    setIsCandidatePhotoLoaded(false);
+    setIsOrganizationPhotoLoaded(false);
     reset();
   };
 
