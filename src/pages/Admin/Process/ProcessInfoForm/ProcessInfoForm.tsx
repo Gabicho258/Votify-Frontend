@@ -26,6 +26,7 @@ export const ProcessInfoForm = () => {
   const [endDateValue, setEndDateValue] = useState<Dayjs | null>(dayjs());
   const [startTimeValue, setStartTimeValue] = useState<Dayjs | null>(dayjs());
   const [endTimeValue, setEndTimeValue] = useState<Dayjs | null>(dayjs());
+  const user_id = localStorage.getItem("admin_id") || "";
 
   const onSubmit: SubmitHandler<ProcessInfoInputs> = async (data) => {
     const startDate = startDateValue?.format("DD-MM-YYYY");
@@ -45,6 +46,10 @@ export const ProcessInfoForm = () => {
           ...data,
           start_date: new Date(dateStart).toISOString(),
           end_date: new Date(dateEnd).toISOString(),
+          user_id,
+          is_owner: true,
+          admin_status: "pending",
+          process_status: "",
         },
       });
     }
