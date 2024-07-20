@@ -1,0 +1,126 @@
+@import "./../../../variables";
+
+.containerInProgressProcessInfo {
+  box-sizing: border-box;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 3rem;
+  &__back {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: $dark-text;
+    &-icon {
+      font-size: 2.5rem;
+      margin-right: 0.5rem;
+    }
+    &-text {
+      font-size: 2rem;
+      font-family: $roboto-bold;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &__content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-box {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background-color: $primary;
+      height: 70%;
+      width: 65%;
+      border-radius: 15px;
+      -webkit-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+      -moz-box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+      box-shadow: 3px 3px 9px -2px rgba(0, 0, 0, 0.42);
+      padding: 2.5rem;
+      &-title {
+        color: $light-text;
+        text-align: center;
+        font-family: $roboto-bold;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      &-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 3rem;
+        margin-bottom: 1.5rem;
+        &-date {
+          display: flex;
+          align-items: center;
+          color: $light-text;
+          &-icon {
+            margin-right: 0.3rem;
+            font-size: 2rem;
+          }
+          &-text {
+            font-size: 1.5rem;
+            font-family: $roboto-light;
+          }
+        }
+        &-time {
+          display: flex;
+          align-items: center;
+          color: $light-text;
+          &-icon {
+            margin-right: 0.3rem;
+            font-size: 2rem;
+          }
+          &-text {
+            font-size: 1.5rem;
+            font-family: $roboto-light;
+          }
+        }
+      }
+      &-help {
+        width: 90%;
+        box-sizing: border-box;
+        color: $light-text;
+        &-label {
+          font-family: $roboto-bold;
+          font-size: 1.5rem;
+        }
+        &-list {
+          &-item {
+            font-family: $roboto-regular;
+            font-size: 1.2rem;
+          }
+        }
+      }
+      &-button {
+        box-sizing: border-box;
+        width: 70%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &-continue {
+          width: 40%;
+          margin-top: 1.5rem;
+          padding: 0.5rem;
+          font-family: $roboto-regular;
+          background-color: $success;
+          color: $light-text;
+          border-radius: 10px;
+          border: none;
+          font-size: 1.3rem;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
