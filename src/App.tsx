@@ -16,12 +16,12 @@ import { Mailbox } from "./pages/Admin/Mailbox/Mailbox";
 import { ElectoralProcessAdmin } from "./pages/Admin/System/ElectoralProcessAdmin/ElectoralProcessAdmin";
 
 // Process administrator views
-import { ProcessModules } from './pages/Admin/Process/ProcessModules/ProcessModules';
-import { ProcessListAdmin } from './pages/Admin/Process/ProcessListAdmin/ProcessListAdmin';
-import { ProcessInfoForm } from './pages/Admin/Process/ProcessInfoForm/ProcessInfoForm';
-import { ProcessCreateLists } from './pages/Admin/Process/ProcessCreateLists/ProcessCreateLists';
-import { ProcessAddVoter } from './pages/Admin/Process/ProcessAddVoter/ProcessAddVoter';
-import { ProcessInfoAdmin } from './pages/Admin/Process/ProcessInfoAdmin/ProcessInfoAdmin';
+import { ProcessModules } from "./pages/Admin/Process/ProcessModules/ProcessModules";
+import { ProcessListAdmin } from "./pages/Admin/Process/ProcessListAdmin/ProcessListAdmin";
+import { ProcessInfoForm } from "./pages/Admin/Process/ProcessInfoForm/ProcessInfoForm";
+import { ProcessCreateLists } from "./pages/Admin/Process/ProcessCreateLists/ProcessCreateLists";
+import { ProcessAddVoter } from "./pages/Admin/Process/ProcessAddVoter/ProcessAddVoter";
+import { ProcessInfoAdmin } from "./pages/Admin/Process/ProcessInfoAdmin/ProcessInfoAdmin";
 
 // User routes
 import { ProcessHelp } from "./pages/User/ProcessHelp/ProcessHelp";
@@ -65,7 +65,6 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
-
         {/* //        User Routes                */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -96,7 +95,10 @@ function App() {
         <Route path="/process-info-form" element={<ProcessInfoForm />} />
         <Route path="/process-create-lists" element={<ProcessCreateLists />} />
         <Route path="/process-add-voter" element={<ProcessAddVoter />} />
-        <Route path="/process-info-admin" element={<ProcessInfoAdmin />} />
+        <Route
+          path="/process-info-admin/:process_id"
+          element={<ProcessInfoAdmin />}
+        />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

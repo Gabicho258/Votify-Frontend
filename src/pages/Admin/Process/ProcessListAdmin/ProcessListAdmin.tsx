@@ -18,7 +18,7 @@ export const ProcessListAdmin = () => {
     <div className="containerProcessListAdmin">
       <div
         className="containerProcessListAdmin__back"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/process-admin-modules")}
       >
         <ArrowBackIcon className="containerProcessListAdmin__back-icon" />
         <div className="containerProcessListAdmin__back-text">Ir a módulos</div>
@@ -29,7 +29,7 @@ export const ProcessListAdmin = () => {
           variant="outlined"
           className="containerProcessListAdmin__add-button"
           startIcon={<AddIcon />}
-          onClick={() => {}}
+          onClick={() => navigate("/process-info-form")}
         >
           Crear proceso
         </Button>
@@ -42,7 +42,7 @@ export const ProcessListAdmin = () => {
         {electionProcesses
           ?.filter((process) => process.admin_status === "approved")
           .map((process) => (
-            <Process key={process._id} process={process} />
+            <Process key={process._id} isProcessAdmin process={process} />
           ))}
       </div>
       <div className="containerProcessListAdmin__pendingList">
@@ -53,7 +53,7 @@ export const ProcessListAdmin = () => {
         {electionProcesses
           ?.filter((process) => process.admin_status === "pending")
           .map((process) => (
-            <Process key={process._id} process={process} />
+            <Process key={process._id} isProcessAdmin process={process} />
           ))}
       </div>
       <div className="containerProcessListAdmin__cancelledList">
@@ -64,7 +64,7 @@ export const ProcessListAdmin = () => {
         {electionProcesses
           ?.filter((process) => process.admin_status === "rejected")
           .map((process) => (
-            <Process key={process._id} process={process} />
+            <Process key={process._id} isProcessAdmin process={process} />
           ))}
       </div>
     </div>

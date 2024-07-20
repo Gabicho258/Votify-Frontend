@@ -9,9 +9,14 @@ import { useNavigate } from "react-router-dom";
 interface ProcessRequestProps {
   process: IElectionProcess;
   isUser?: boolean;
+  isProcessAdmin?: boolean;
 }
 
-export const Process = ({ process, isUser }: ProcessRequestProps) => {
+export const Process = ({
+  process,
+  isUser,
+  isProcessAdmin,
+}: ProcessRequestProps) => {
   const navigate = useNavigate();
 
   const { title, start_date, end_date, process_status, admin_status } = process;
@@ -83,6 +88,8 @@ export const Process = ({ process, isUser }: ProcessRequestProps) => {
               if (isUser) {
                 // navigate(`/process-request/${process._id}/user`);
                 console.log("esUser");
+              } else if (isProcessAdmin) {
+                navigate(`/process-info-admin/${process._id}`);
               } else {
                 navigate(`/process-request/${process._id}`);
               }

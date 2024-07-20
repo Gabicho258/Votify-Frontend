@@ -1,14 +1,15 @@
-import './_VoterListItem.scss';
-import { IUser } from '../../interfaces';
-import EmailIcon from '@mui/icons-material/Email';
-import ContactsIcon from '@mui/icons-material/Contacts';
-import { Button } from '@mui/material';
+import "./_VoterListItem.scss";
+import { IUser } from "../../interfaces";
+import EmailIcon from "@mui/icons-material/Email";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import { Button } from "@mui/material";
 
 interface VoterListItemProps {
-  voter: IUser;
+  voter: Partial<IUser>;
+  removeVoter: (dni: string) => void;
 }
 
-export const VoterListItem = ({ voter }: VoterListItemProps) => {
+export const VoterListItem = ({ voter, removeVoter }: VoterListItemProps) => {
   const { user_name, user_surname, email, dni } = voter;
 
   return (
@@ -17,7 +18,7 @@ export const VoterListItem = ({ voter }: VoterListItemProps) => {
         <div className="containerVoterListItem__content-left">
           <div className="containerVoterListItem__content-left-name">
             <span className="containerVoterListItem__content-left-name-text">
-              {user_name + ' ' + user_surname}
+              {user_name + " " + user_surname}
             </span>
           </div>
           <div className="containerVoterListItem__content-left-info">
@@ -39,7 +40,9 @@ export const VoterListItem = ({ voter }: VoterListItemProps) => {
           <Button
             variant="outlined"
             className="containerVoterListItem__content-right-button"
-            onClick={() => {}}
+            onClick={() => {
+              removeVoter(dni || "");
+            }}
           >
             Quitar
           </Button>
