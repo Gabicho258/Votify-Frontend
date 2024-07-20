@@ -9,6 +9,8 @@ import TextField from "@mui/material/TextField";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useVoters } from "../../../../hooks/useVoter";
+import axios from "axios";
+import { IList } from "../../../../hooks/useList";
 
 type AddVoterInputs = {
   user_name: string;
@@ -45,7 +47,52 @@ export const ProcessAddVoter = () => {
     reset();
     // console.log(voterToAdd);
   };
-  const handleSendToRevision = () => {
+  const handleSendToRevision = async () => {
+    if (voters.length === 0) {
+      alert("Debe agregar al menos un participante");
+      return;
+    }
+    try {
+      const gateway = "http://localhost:8080/api";
+      const { data: processCreated } = await axios.post(
+        `${gateway}/election-service/process/create`,
+        state.process
+      );
+      // console.log(state);
+      //
+      (state.lists as IList[]).forEach(async ({ title, candidates }) => {
+        const listToCreate = {
+          process_id: processCreated._id,
+          title: title,
+        };
+        const { data: listCreated } = await axios.post(
+          `${gateway}/election-service/list/create`,
+          listToCreate
+        );
+
+        candidates.forEach(async (candidate) => {
+          const candidateCreated = {
+            list_id: listCreated._id,
+            ...candidate,
+          };
+          await axios.post(
+            `${gateway}/election-service/candidate/create`,
+            candidateCreated
+          );
+        });
+      });
+      await axios.post(`${gateway}/v1/credential/create/users`, {
+        process_id: processCreated._id,
+        process_title: processCreated._title,
+        voters,
+      });
+      ///
+      navigate("/process-list-admin", { replace: true });
+      // console.log(data);
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+
     console.log(state);
   };
   if (state === null)
