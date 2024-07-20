@@ -8,15 +8,16 @@ import { useState } from "react";
 import { AccordionElectionList } from "../../../../components/AccordionElectionList/AccordionElectionList";
 import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
 import { Button } from "@mui/material";
-import { formatISODate } from "../../../../utils/DateFormatter";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetCredentialsByProcessIdQuery,
   useGetListsByProcessIdQuery,
   useGetProcessByIdQuery,
   useGetUserByIdQuery,
+  useGetUsersQuery,
   useUpdateProcessMutation,
 } from "../../../../app/votify.api";
+import axios from "axios";
 
 export const ProcessRequest = () => {
   const { process_id } = useParams();
@@ -26,6 +27,10 @@ export const ProcessRequest = () => {
   const { data: lists } = useGetListsByProcessIdQuery(
     currentProcess?._id || ""
   );
+  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
+    process_id || ""
+  );
+  const { data: allUsers } = useGetUsersQuery();
   const [updateProcess] = useUpdateProcessMutation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -42,6 +47,23 @@ export const ProcessRequest = () => {
       alert(JSON.stringify(error));
     }
   };
+  const startDate = new Date(
+    currentProcess?.start_date || ""
+  ).toLocaleDateString();
+  const endDate = new Date(currentProcess?.end_date || "").toLocaleDateString();
+  const startTime = new Date(
+    currentProcess?.start_date || ""
+  ).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const endTime = new Date(currentProcess?.end_date || "").toLocaleTimeString(
+    [],
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    }
+  );
   const handleApproveProcess = async () => {
     try {
       await updateProcess({
@@ -49,6 +71,28 @@ export const ProcessRequest = () => {
         process_status: "programmed",
         admin_status: "approved",
       }).unwrap();
+      const apigateway = "http://localhost:8080/api";
+      const emailBody = {
+        process_name: currentProcess?.title,
+        start_date: startDate,
+        start_time: startTime,
+        end_date: endDate,
+        end_time: endTime,
+        voters: processCredentials?.map((credential) => {
+          const userCredential = allUsers?.find(
+            (user) => user._id === credential.user_id
+          );
+          return {
+            email: userCredential?.email,
+            name: `${userCredential?.user_name} ${userCredential?.user_surname}`,
+            dni: userCredential?.dni,
+            password: credential.password,
+          };
+        }),
+        // startDate:
+      };
+      await axios.post(`${apigateway}/email-service/credential`, emailBody);
+
       navigate(-1);
     } catch (error) {
       alert(JSON.stringify(error));
@@ -66,17 +110,13 @@ export const ProcessRequest = () => {
       alert(JSON.stringify(error));
     }
   };
-  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
-    process_id || ""
-  );
-  console.log(processCredentials);
 
-  const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
-    currentProcess?.start_date || ""
-  );
-  const { formattedDate: endDate, formattedTime: endTime } = formatISODate(
-    currentProcess?.end_date || ""
-  );
+  // const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
+  //   currentProcess?.start_date || ""
+  // );
+  // const { formattedDate: endDate, formattedTime: endTime } = formatISODate(
+  //   currentProcess?.end_date || ""
+  // );
 
   return (
     <div className="containerProcessRequestInfo">

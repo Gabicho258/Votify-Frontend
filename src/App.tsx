@@ -68,6 +68,8 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
+
+        {/* //        User Routes                */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/end-register" element={<Register />} />
@@ -103,7 +105,10 @@ function App() {
         <Route path="/process-info-form" element={<ProcessInfoForm />} />
         <Route path="/process-create-lists" element={<ProcessCreateLists />} />
         <Route path="/process-add-voter" element={<ProcessAddVoter />} />
-        <Route path="/process-info-admin" element={<ProcessInfoAdmin />} />
+        <Route
+          path="/process-info-admin/:process_id"
+          element={<ProcessInfoAdmin />}
+        />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

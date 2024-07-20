@@ -1,18 +1,25 @@
-import './_ProcessInfoAdmin.scss';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import PersonIcon from '@mui/icons-material/Person';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import { AccordionElectionList } from '../../../../components/AccordionElectionList/AccordionElectionList';
-import { EmailListItem } from '../../../../components/EmailListItem/EmailListItem';
-import { Button } from '@mui/material';
-import { formatISODate } from '../../../../utils/DateFormatter';
-import { useNavigate } from 'react-router-dom';
-import { IElectionProcess, IList } from '../../../../interfaces';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import "./_ProcessInfoAdmin.scss";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DateRangeIcon from "@mui/icons-material/DateRange";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonIcon from "@mui/icons-material/Person";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import { useState } from "react";
+import { AccordionElectionList } from "../../../../components/AccordionElectionList/AccordionElectionList";
+import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
+import { Button } from "@mui/material";
+import { formatISODate } from "../../../../utils/DateFormatter";
+import { useNavigate, useParams } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
+import {
+  useCreateChatMutation,
+  useCreateMessageMutation,
+  useGetChatsByUserIdQuery,
+  useGetCredentialsByProcessIdQuery,
+  useGetListsByProcessIdQuery,
+  useGetProcessByIdQuery,
+} from "../../../../app/votify.api";
 
 type ContactInputs = {
   text: string;
@@ -20,14 +27,40 @@ type ContactInputs = {
 };
 
 export const ProcessInfoAdmin = () => {
+  // get information from backend
+  const user_id = localStorage.getItem("admin_id") || "";
+  const { process_id } = useParams();
+  const { data: currentProcess } = useGetProcessByIdQuery(process_id || "");
+  const { data: chats } = useGetChatsByUserIdQuery(user_id || "");
+
+  const { data: lists } = useGetListsByProcessIdQuery(
+    currentProcess?._id || ""
+  );
+  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
+    process_id || ""
+  );
+  const [createChat] = useCreateChatMutation();
+  const [createMessage] = useCreateMessageMutation();
+
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   // open and close contact modal
+  const existingChat = chats?.some(
+    (chat) => chat.process_name === currentProcess?.title
+  );
+
   const [openContact, setOpenContact] = useState(false);
-  const handleOpenContact = () => setOpenContact(true);
+  const handleOpenContact = () => {
+    if (existingChat) {
+      navigate("/mailbox");
+      return;
+    }
+
+    setOpenContact(true);
+  };
   const handleCloseContact = () => setOpenContact(false);
 
   // contact form
@@ -40,78 +73,33 @@ export const ProcessInfoAdmin = () => {
   const onSubmitContact: SubmitHandler<ContactInputs> = async (data) => {
     // submit add list code
     const contactToAdd = {
-      ...data,
+      title: data.title,
+      owner_id: user_id,
+      friend_id: "system",
+      state: "open",
+      process_name: currentProcess?.title,
     };
+    try {
+      const { _id } = await createChat(contactToAdd).unwrap();
+      console.log(_id);
+      const messageToSend = {
+        chat_id: _id,
+        sender_id: user_id,
+        text: data.text,
+      };
+      await createMessage(messageToSend).unwrap();
+      navigate("/mailbox");
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
     console.log(contactToAdd);
   };
 
-  const currentProcess: IElectionProcess = {
-    _id: '1a2b3c4d5e6f7g8h9i0j',
-    user_id: 'user123',
-    is_owner: true,
-    title: 'Presidential Election 2024',
-    admin_status: 'approved',
-    process_status: 'active',
-    start_date: '2024-08-01T00:00:00.000Z',
-    end_date: '2024-11-01T23:59:59.000Z',
-  };
-
-  const lists: IList[] = [
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      process_id: '1a2b3c4d5e6f7g8h9i0j',
-      title: 'Candidates for Presidential Election 2024',
-    },
-    {
-      _id: '2b3c4d5e6f7g8h9i0j1k',
-      process_id: '2b3c4d5e6f7g8h9i0j1k',
-      title: 'Candidates for School Board Election 2024',
-    },
-    {
-      _id: '3c4d5e6f7g8h9i0j1k2l',
-      process_id: '3c4d5e6f7g8h9i0j1k2l',
-      title: 'Candidates for Local Government Election 2024',
-    },
-    {
-      _id: '4d5e6f7g8h9i0j1k2l3m',
-      process_id: '4d5e6f7g8h9i0j1k2l3m',
-      title: 'Candidates for Union Representative Election 2024',
-    },
-    {
-      _id: '5e6f7g8h9i0j1k2l3m4n',
-      process_id: '5e6f7g8h9i0j1k2l3m4n',
-      title: 'Candidates for Club President Election 2024',
-    },
-  ];
-
-  const testEmails: string[] = [
-    'alice@example.com',
-    'bob@example.net',
-    'charlie@example.org',
-    'diana@example.com',
-    'eric@example.net',
-    'fiona@example.org',
-    'george@example.com',
-    'hannah@example.net',
-    'ian@example.org',
-    'julia@example.com',
-    'kevin@example.net',
-    'laura@example.org',
-    'michael@example.com',
-    'nina@example.net',
-    'oliver@example.org',
-    'paula@example.com',
-    'quentin@example.net',
-    'rachel@example.org',
-    'steven@example.com',
-    'tina@example.net',
-  ];
-
   const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
-    currentProcess?.start_date || ''
+    currentProcess?.start_date || ""
   );
   const { formattedDate: endDate, formattedTime: endTime } = formatISODate(
-    currentProcess?.end_date || ''
+    currentProcess?.end_date || ""
   );
 
   return (
@@ -127,17 +115,17 @@ export const ProcessInfoAdmin = () => {
         {currentProcess?.title}
       </div>
       <div className="containerProcessInfoAdmin__status">
-        {currentProcess?.admin_status === 'approved' && (
+        {currentProcess?.admin_status === "approved" && (
           <div className="containerProcessInfoAdmin__status-approved">
             Aprobado
           </div>
         )}
-        {currentProcess?.admin_status === 'pending' && (
+        {currentProcess?.admin_status === "pending" && (
           <div className="containerProcessInfoAdmin__status-pending">
             Pendiente
           </div>
         )}
-        {currentProcess?.admin_status === 'rejected' && (
+        {currentProcess?.admin_status === "rejected" && (
           <div className="containerProcessInfoAdmin__status-cancelled">
             Rechazado
           </div>
@@ -147,13 +135,13 @@ export const ProcessInfoAdmin = () => {
         <div className="containerProcessInfoAdmin__info-date">
           <DateRangeIcon className="containerProcessInfoAdmin__info-date-icon" />
           <div className="containerProcessInfoAdmin__info-date-text">
-            {startDate + ' - ' + endDate}
+            {startDate + " - " + endDate}
           </div>
         </div>
         <div className="containerProcessInfoAdmin__info-time">
           <AccessTimeIcon className="containerProcessInfoAdmin__info-time-icon" />
           <div className="containerProcessInfoAdmin__info-time-text">
-            {startTime + ' - ' + endTime}
+            {startTime + " - " + endTime}
           </div>
         </div>
       </div>
@@ -171,7 +159,7 @@ export const ProcessInfoAdmin = () => {
             <div className="containerProcessInfoAdmin__content-right-participants-number">
               <PersonIcon className="containerProcessInfoAdmin__content-right-participants-number-icon" />
               <span className="containerProcessInfoAdmin__content-right-participants-number-text">
-                {testEmails.length}
+                {processCredentials?.length}
               </span>
             </div>
             <Button
@@ -185,16 +173,18 @@ export const ProcessInfoAdmin = () => {
         </div>
       </div>
       <div className="containerProcessInfoAdmin__buttons">
-        {currentProcess?.admin_status === 'approved' ? (
+        {currentProcess?.admin_status === "approved" ? (
           <Button
             variant="outlined"
             className="containerProcessInfoAdmin__buttons-contact"
             onClick={handleOpenContact}
           >
-            Contactar administrador
+            {existingChat
+              ? "Ir a buzón administrativo"
+              : "Contactar administrador"}
           </Button>
         ) : (
-          ''
+          ""
         )}
       </div>
       <Modal
@@ -207,8 +197,8 @@ export const ProcessInfoAdmin = () => {
             Participantes
           </div>
           <div className="containerProcessInfoAdmin__participantsModal-content-list">
-            {testEmails.map((email, i) => {
-              return <EmailListItem email={email} key={i} />;
+            {processCredentials?.map((credential, i) => {
+              return <EmailListItem email={credential.email} key={i} />;
             })}
           </div>
           <div className="containerProcessInfoAdmin__participantsModal-content-button">
@@ -242,8 +232,8 @@ export const ProcessInfoAdmin = () => {
               Asunto:
             </label>
             <TextField
-              {...registerContact('title', {
-                required: 'Asunto es requerido',
+              {...registerContact("title", {
+                required: "Asunto es requerido",
               })}
               className="containerProcessInfoAdmin__contactModal-content-form-field"
               autoComplete="off"
@@ -265,8 +255,8 @@ export const ProcessInfoAdmin = () => {
               Mensaje:
             </label>
             <textarea
-              {...registerContact('text', {
-                required: 'Mensaje es requerido',
+              {...registerContact("text", {
+                required: "Mensaje es requerido",
               })}
               className="containerProcessInfoAdmin__contactModal-content-form-textarea"
               autoComplete="off"

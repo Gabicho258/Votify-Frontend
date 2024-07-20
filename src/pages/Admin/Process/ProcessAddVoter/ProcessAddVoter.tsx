@@ -1,14 +1,16 @@
-import './_ProcessAddVoter.scss';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import AddIcon from '@mui/icons-material/Add';
-import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { IUser } from '../../../../interfaces';
-import { VoterListItem } from '../../../../components/VoterListItem/VoterListItem';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import "./_ProcessAddVoter.scss";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { VoterListItem } from "../../../../components/VoterListItem/VoterListItem";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import { useVoters } from "../../../../hooks/useVoter";
+import axios from "axios";
+import { IList } from "../../../../hooks/useList";
 
 type AddVoterInputs = {
   user_name: string;
@@ -19,7 +21,7 @@ type AddVoterInputs = {
 
 export const ProcessAddVoter = () => {
   const navigate = useNavigate();
-
+  const { state } = useLocation();
   // open and close add voter modal
   const [openAddVoter, setOpenAddVoter] = useState(false);
   const handleOpenAddVoter = () => setOpenAddVoter(true);
@@ -30,133 +32,84 @@ export const ProcessAddVoter = () => {
     register: registerAddVoter,
     handleSubmit: handleSubmitAddVoter,
     formState: { errors: errorsAddVoter },
+    reset,
   } = useForm<AddVoterInputs>();
 
+  const { addVoter, removeVoter, voters } = useVoters();
   const onSubmitAddVoter: SubmitHandler<AddVoterInputs> = async (data) => {
     // submit add voter code
     const voterToAdd = {
       ...data,
     };
-    console.log(voterToAdd);
-  };
 
-  const voters: IUser[] = [
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-    {
-      _id: '1a2b3c4d5e6f7g8h9i0j',
-      role: 'voter',
-      user_name: 'John',
-      user_surname: 'Doe',
-      email: 'john.doe@example.com',
-      created_at: '2023-07-10T14:48:00.000Z',
-      dni: '12345678',
-      is_active: true,
-    },
-  ];
+    addVoter(voterToAdd);
+    handleCloseAddVoter();
+    reset();
+    // console.log(voterToAdd);
+  };
+  const handleSendToRevision = async () => {
+    if (voters.length === 0) {
+      alert("Debe agregar al menos un participante");
+      return;
+    }
+    try {
+      const gateway = "http://localhost:8080/api";
+      const { data: processCreated } = await axios.post(
+        `${gateway}/election-service/process/create`,
+        state.process
+      );
+      // console.log(state);
+      //
+      (state.lists as IList[]).forEach(async ({ title, candidates }) => {
+        const listToCreate = {
+          process_id: processCreated._id,
+          title: title,
+        };
+        const { data: listCreated } = await axios.post(
+          `${gateway}/election-service/list/create`,
+          listToCreate
+        );
+
+        candidates.forEach(async (candidate) => {
+          const candidateCreated = {
+            list_id: listCreated._id,
+            ...candidate,
+          };
+          await axios.post(
+            `${gateway}/election-service/candidate/create`,
+            candidateCreated
+          );
+        });
+      });
+      await axios.post(`${gateway}/v1/credential/create/users`, {
+        process_id: processCreated._id,
+        process_title: processCreated._title,
+        voters,
+      });
+      ///
+      navigate("/process-list-admin", { replace: true });
+      // console.log(data);
+    } catch (error) {
+      alert(JSON.stringify(error));
+    }
+
+    console.log(state);
+  };
+  if (state === null)
+    return <Navigate to={"/process-info-form"} replace={true} />;
+  // const voters: Partial<IUser>[] = [
+  //   {
+  //     dni: "75964143",
+  //     user_name: "no deberia",
+  //     user_surname: "suno",
+  //     email: "gmamanican@unsa.edu.pe",
+  //   },
+  // ];
   return (
     <div className="containerProcessAddVoter">
       <div
         className="containerProcessAddVoter__back"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate("/process-info-form", { replace: true })}
       >
         <ArrowBackIcon className="containerProcessAddVoter__back-icon" />
         <div className="containerProcessAddVoter__back-text">Volver</div>
@@ -175,15 +128,15 @@ export const ProcessAddVoter = () => {
         </Button>
       </div>
       <div className="containerProcessAddVoter__voters">
-        {voters.map((voter) => (
-          <VoterListItem voter={voter} />
+        {voters.map((voter, index) => (
+          <VoterListItem key={index} removeVoter={removeVoter} voter={voter} />
         ))}
       </div>
       <div className="containerProcessAddVoter__button">
         <Button
           variant="outlined"
           className="containerProcessAddVoter__button-request"
-          onClick={() => {}}
+          onClick={handleSendToRevision}
         >
           Enviar el proceso a revisión
         </Button>
@@ -208,8 +161,8 @@ export const ProcessAddVoter = () => {
               Nombres:
             </label>
             <TextField
-              {...registerAddVoter('user_name', {
-                required: 'Nombre es requerido',
+              {...registerAddVoter("user_name", {
+                required: "Nombre es requerido",
               })}
               className="containerProcessAddVoter__addVoterModal-content-form-field"
               autoComplete="off"
@@ -230,8 +183,8 @@ export const ProcessAddVoter = () => {
               Apellidos:
             </label>
             <TextField
-              {...registerAddVoter('user_surname', {
-                required: 'Apellido es requerido',
+              {...registerAddVoter("user_surname", {
+                required: "Apellido es requerido",
               })}
               className="containerProcessAddVoter__addVoterModal-content-form-field"
               autoComplete="off"
@@ -252,14 +205,14 @@ export const ProcessAddVoter = () => {
               DNI:
             </label>
             <TextField
-              {...registerAddVoter('dni', {
-                required: 'DNI es requerido',
+              {...registerAddVoter("dni", {
+                required: "DNI es requerido",
                 validate: {
                   isNumber: (value) =>
-                    !isNaN(Number(value)) || 'DNI debe ser un número',
+                    !isNaN(Number(value)) || "DNI debe ser un número",
                   length: (value) =>
                     value.toString().length === 8 ||
-                    'DNI debe tener exactamente 8 dígitos',
+                    "DNI debe tener exactamente 8 dígitos",
                 },
               })}
               className="containerProcessAddVoter__addVoterModal-content-form-field"
@@ -282,11 +235,11 @@ export const ProcessAddVoter = () => {
               Correo electrónico:
             </label>
             <TextField
-              {...registerAddVoter('email', {
-                required: 'Email es requerido',
+              {...registerAddVoter("email", {
+                required: "Email es requerido",
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: 'Email inválido',
+                  message: "Email inválido",
                 },
               })}
               className="containerProcessAddVoter__addVoterModal-content-form-field"
