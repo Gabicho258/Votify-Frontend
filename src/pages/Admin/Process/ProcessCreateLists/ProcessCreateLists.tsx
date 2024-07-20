@@ -50,6 +50,19 @@ export const ProcessCreateLists = () => {
 
   if (state === null)
     return <Navigate to={"/process-info-form"} replace={true} />;
+  const handleContinue = () => {
+    if (lists.length === 0) {
+      alert("Debe agregar al menos una lista.");
+      return;
+    }
+    for (const list of lists) {
+      if (list.candidates.length === 0) {
+        alert("Debe agregar al menos un candidato a cada lista.");
+        return;
+      }
+    }
+    navigate("/process-add-voter", { state: { process: state, lists } });
+  };
 
   return (
     <div className="containerProcessCreateLists">
@@ -87,7 +100,7 @@ export const ProcessCreateLists = () => {
         <Button
           variant="outlined"
           className="containerProcessCreateLists__button-continue"
-          onClick={() => {}}
+          onClick={handleContinue}
         >
           Ir a añadir participantes
         </Button>
