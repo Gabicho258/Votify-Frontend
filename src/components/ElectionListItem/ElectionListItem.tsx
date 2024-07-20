@@ -8,6 +8,7 @@ import "./_ElectionListItem.scss";
 import { ICandidate } from "../../interfaces";
 import { CandidateListItem } from "../CandidateListItem/CandidateListItem";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { cloudinaryService } from "../../services/cloudinaryService";
 
 type ElectionListItemInputs = {
   title: string;
@@ -32,7 +33,7 @@ export const ElectionListItem = ({
   // const [options, setOptions] = useState<ICandidate[]>([]);
   const [isCandidatePhotoLoaded, setIsCandidatePhotoLoaded] = useState(false);
   const [isOrganizationPhotoLoaded, setIsOrganizationPhotoLoaded] =
-    useState(true);
+    useState(false);
 
   // open and close add candidate modal
   const [openAddCandidate, setOpenAddCandidate] = useState(false);
@@ -50,30 +51,49 @@ export const ElectionListItem = ({
     reset,
   } = useForm<AddCandidateInputs>();
 
+  const [photo_url, setPhoto_url] = useState("");
+  const [logo_url, setLogo_url] = useState("");
+  // CLoudinary
+  const showWidgetPhotoUser = async (type: string) => {
+    let state = "";
+    let URL = "";
+    // hacemos un casteo para evitar errores
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).cloudinary.openUploadWidget(
+      cloudinaryService("eco_conciencia"),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (err: any, result: any) => {
+        if (!err && result && result.event === "success") {
+          state = "success";
+          const { secure_url } = result.info;
+          URL = secure_url;
+        }
+        if (state === "success" && result.event === "close") {
+          if (type === "photo_url") {
+            setPhoto_url(URL);
+            setIsCandidatePhotoLoaded(true);
+          } else if (type === "logo_url") {
+            setLogo_url(URL);
+            setIsOrganizationPhotoLoaded(true);
+          }
+        }
+      }
+    );
+  };
+
   const onSubmitAddCandidate: SubmitHandler<AddCandidateInputs> = async (
     data
   ) => {
     // submit add candidate code
     const candidateToAdd = {
       ...data,
-      photo_url:
-        "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-
-      logo_url:
-        "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
+      photo_url,
+      logo_url,
       valid_votes: 0,
     };
     addCandidate(title, candidateToAdd);
     handleCloseAddCandidate();
     console.log(candidateToAdd);
-  };
-
-  const testCandidate: ICandidate = {
-    _id: "c1a2b3c4d5e6f7g8h9i0j",
-    list_id: "list123",
-    candidate_name: "Alice Johnson",
-
-    organization_name: "Tech Innovators",
   };
 
   return (
@@ -173,20 +193,36 @@ export const ElectionListItem = ({
               {isCandidatePhotoLoaded ? (
                 <img
                   className="containerElectionListItem__addCandidateModal-content-form-photos-loaded"
-                  src={testCandidate.photo_url}
+                  src={photo_url}
+                  onClick={() => {
+                    showWidgetPhotoUser("photo_url");
+                  }}
                 />
               ) : (
-                <div className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded">
+                <div
+                  className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded"
+                  onClick={() => {
+                    showWidgetPhotoUser("photo_url");
+                  }}
+                >
                   Subir foto del candidato
                 </div>
               )}
               {isOrganizationPhotoLoaded ? (
                 <img
                   className="containerElectionListItem__addCandidateModal-content-form-photos-loaded"
-                  src={testCandidate.logo_url}
+                  src={logo_url}
+                  onClick={() => {
+                    showWidgetPhotoUser("logo_url");
+                  }}
                 />
               ) : (
-                <div className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded">
+                <div
+                  className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded"
+                  onClick={() => {
+                    showWidgetPhotoUser("logo_url");
+                  }}
+                >
                   Subir foto de la organización
                 </div>
               )}
