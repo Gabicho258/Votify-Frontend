@@ -171,6 +171,12 @@ export const votifyApi = createApi({
         }
       },
     }),
+    addVoteByCandidateId: builder.mutation<ICandidate, string>({
+      query: (_id) => ({
+        url: `/election-service/candidate/add_vote/${_id}`,
+        method: "PUT",
+      }),
+    }),
     // Buzon endpoint
     // Chat
     getChat: builder.query<IChat[], { owner_id: string; friend_id: string }>({
@@ -214,6 +220,12 @@ export const votifyApi = createApi({
     getCredentialsByProcessId: builder.query<ICredential[], string>({
       query: (_id) => `/v1/credential/process/${_id}`,
     }),
+    updateCredentialUsed: builder.mutation<ICredential, string>({
+      query: (_id) => ({
+        url: `/v1/credential/update-used/${_id}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -246,4 +258,6 @@ export const {
   useGetAllCredentialsQuery,
   useGetCredentialsByProcessIdQuery,
   useGetCredentialsByUserIdQuery,
+  useAddVoteByCandidateIdMutation,
+  useUpdateCredentialUsedMutation,
 } = votifyApi;
