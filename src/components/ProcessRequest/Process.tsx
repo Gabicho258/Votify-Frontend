@@ -87,7 +87,11 @@ export const Process = ({
             onClick={() => {
               if (isUser) {
                 // navigate(`/process-request/${process._id}/user`);
-                console.log("esUser");
+                if (process_status === "in_progress") {
+                  navigate(`/in-progress-process-info/${process._id}`);
+                } else {
+                  console.log("no está en proceso");
+                }
               } else if (isProcessAdmin) {
                 navigate(`/process-info-admin/${process._id}`);
               } else {
