@@ -90,7 +90,7 @@ export const Process = ({
                 if (process_status === "in_progress") {
                   navigate(`/in-progress-process-info/${process._id}`);
                 } else {
-                  console.log("no está en proceso");
+                  navigate(`/process-info/${process._id}`);
                 }
               } else if (isProcessAdmin) {
                 navigate(`/process-info-admin/${process._id}`);

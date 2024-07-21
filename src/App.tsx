@@ -82,7 +82,7 @@ function App() {
           element={<InProgressProcessInfo />}
         />
         <Route path="/votes-summary" element={<VotesSummary />} />
-        <Route path="/process-info" element={<ProcessInfo />} />
+        <Route path="/process-info/:process_id" element={<ProcessInfo />} />
         {/*       ADMIN ROUTES             */}
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/system-admin-modules" element={<SystemModules />} />

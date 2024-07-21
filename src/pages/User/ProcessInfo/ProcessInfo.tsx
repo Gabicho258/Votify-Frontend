@@ -4,12 +4,18 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { ICandidate, IElectionProcess } from "../../../interfaces";
-import { formatISODate } from "../../../utils/DateFormatter";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { ICandidate } from "../../../interfaces";
+
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { CandidateWinnerListItem } from "../../../components/CandidateWinnerListItem/CandidateWinnerListItem";
 import { CountdownTimer } from "../../../components/CountdownTimer/CountdownTimer";
+import {
+  useGetAllCandidatesQuery,
+  useGetCredentialsByProcessIdQuery,
+  useGetListsByProcessIdQuery,
+  useGetProcessByIdQuery,
+} from "../../../app/votify.api";
 
 type ProcessListsResult = {
   _id: string;
@@ -20,240 +26,53 @@ type ProcessListsResult = {
 
 export const ProcessInfo = () => {
   const navigate = useNavigate();
+  const { process_id } = useParams();
+  const { data: currentProcess, isLoading: isLoadingProcess } =
+    useGetProcessByIdQuery(process_id || "");
+  const { data: myLists, isLoading: isLoadingLists } =
+    useGetListsByProcessIdQuery(process_id || "");
+  const { data: allCandidates, isLoading: isLoadingCandidates } =
+    useGetAllCandidatesQuery();
 
-  const currentProcess: IElectionProcess = {
-    _id: "1a2b3c4d5e6f7g8h9i0j",
-    user_id: "user123",
-    is_owner: true,
-    title: "Presidential Election 2024",
-    admin_status: "approved",
-    process_status: "done",
-    start_date: "2024-10-21T23:15:00.000Z",
-    end_date: "2024-11-01T23:59:59.000Z",
-  };
-
-  const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
+  const startDate = new Date(
     currentProcess?.start_date || ""
-  );
-  const { formattedDate: endDate, formattedTime: endTime } = formatISODate(
-    currentProcess?.end_date || ""
+  ).toLocaleDateString();
+  const endDate = new Date(currentProcess?.end_date || "").toLocaleDateString();
+  const startTime = new Date(
+    currentProcess?.start_date || ""
+  ).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const endTime = new Date(currentProcess?.end_date || "").toLocaleTimeString(
+    [],
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    }
   );
 
-  const listsResult: ProcessListsResult[] = [
-    {
-      _id: "1a2b3c4d5e6f7g8h9i0j",
-      process_id: "1a2b3c4d5e6f7g8h9i0j",
-      title: "Candidates for Presidential Election 2024",
-      candidates: [
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0a",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 15,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0b",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 30,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0c",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 3,
-        },
-      ],
-    },
-    {
-      _id: "2b3c4d5e6f7g8h9i0j1k",
-      process_id: "2b3c4d5e6f7g8h9i0j1k",
-      title: "Candidates for School Board Election 2024",
-      candidates: [
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0d",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 5,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0e",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 35,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0f",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 3,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0sd",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 20,
-        },
-      ],
-    },
-    {
-      _id: "3c4d5e6f7g8h9i0j1k2l",
-      process_id: "3c4d5e6f7g8h9i0j1k2l",
-      title: "Candidates for Local Government Election 2024",
-      candidates: [
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0g",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 15,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0h",
-          list_id: "list123",
-          candidate_name: "Alice Johnson Win",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 20,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0i",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 3,
-        },
-      ],
-    },
-    {
-      _id: "4d5e6f7g8h9i0j1k2l3m",
-      process_id: "4d5e6f7g8h9i0j1k2l3m",
-      title: "Candidates for Union Representative Election 2024",
-      candidates: [
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0j",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 15,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0k",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 20,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0l",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 3,
-        },
-      ],
-    },
-    {
-      _id: "5e6f7g8h9i0j1k2l3m4n",
-      process_id: "5e6f7g8h9i0j1k2l3m4n",
-      title: "Candidates for Club President Election 2024",
-      candidates: [
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0j",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 15,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i04",
-          list_id: "list123",
-          candidate_name: "null",
-          photo_url: "",
-          organization_name: "",
-          logo_url: "",
-          valid_votes: 20,
-        },
-        {
-          _id: "c1a2b3c4d5e6f7g8h9i0z",
-          list_id: "list123",
-          candidate_name: "Alice Johnson",
-          photo_url:
-            "https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg",
-          organization_name: "Tech Innovators",
-          logo_url:
-            "https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png",
-          valid_votes: 3,
-        },
-      ],
-    },
-  ];
-
-  const [selectedResult, setSelectedResult] = useState<ProcessListsResult>(
-    listsResult[0]
+  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
+    process_id || ""
   );
+  const listsResult: ProcessListsResult[] = useMemo(() => {
+    return (
+      myLists?.map((list) => {
+        return {
+          _id: list?._id,
+          process_id: list?.process_id,
+          title: list?.title,
+          candidates:
+            allCandidates?.filter(
+              (candidate) => candidate?.list_id === list?._id
+            ) || [],
+        };
+      }) || []
+    );
+  }, [myLists, allCandidates]);
+  console.log(currentProcess);
+  const [selectedResult, setSelectedResult] =
+    useState<ProcessListsResult | null>(null);
 
   const handleSelectResult = (id: string) => {
     const result = listsResult.find((list) => list._id === id);
@@ -262,13 +81,13 @@ export const ProcessInfo = () => {
 
   const getWinners = (listsResult: ProcessListsResult[]) => {
     return listsResult.map((list) => {
-      const winner = list.candidates.reduce((max, candidate) => {
+      const winner = list?.candidates.reduce((max, candidate) => {
         return candidate.valid_votes > max.valid_votes ? candidate : max;
-      }, list.candidates[0]);
+      }, list?.candidates[0]);
 
       return {
-        list_id: list._id,
-        title: list.title,
+        list_id: list?._id,
+        title: list?.title,
         winner,
       };
     });
@@ -276,7 +95,14 @@ export const ProcessInfo = () => {
 
   const winners = getWinners(listsResult);
 
-  return (
+  useEffect(() => {
+    if (listsResult.length > 0) {
+      setSelectedResult(listsResult[0]);
+    }
+  }, [listsResult]);
+  return isLoadingCandidates || isLoadingLists || isLoadingProcess ? (
+    <>loading</>
+  ) : (
     <div className="containerProcessInfo">
       <div className="containerProcessInfo__back" onClick={() => navigate(-1)}>
         <ArrowBackIcon className="containerProcessInfo__back-icon" />
@@ -314,30 +140,31 @@ export const ProcessInfo = () => {
         <div className="containerProcessInfo__info-participants">
           <PersonIcon className="containerProcessInfo__info-participants-icon" />
           <div className="containerProcessInfo__info-participants-text">
-            192
+            {processCredentials?.length}
           </div>
         </div>
       </div>
-      {currentProcess.process_status === "done" && (
+      {currentProcess?.process_status === "done" && (
         <div className="containerProcessInfo__doneContent">
           <div className="containerProcessInfo__doneContent-left">
             <div className="containerProcessInfo__doneContent-left-title">
-              {selectedResult.title}
+              {selectedResult?.title}
             </div>
             <PieChart
               className="containerProcessInfo__doneContent-left-chart"
               series={[
                 {
-                  data: selectedResult.candidates.map((candidate) => {
-                    return {
-                      id: candidate._id,
-                      value: candidate.valid_votes,
-                      label:
-                        candidate.candidate_name !== "null"
-                          ? candidate.candidate_name
-                          : "Voto en blanco",
-                    };
-                  }),
+                  data:
+                    selectedResult?.candidates.map((candidate) => {
+                      return {
+                        id: candidate._id,
+                        value: candidate.valid_votes,
+                        label:
+                          candidate.candidate_name !== "null"
+                            ? candidate.candidate_name
+                            : "Voto en blanco",
+                      };
+                    }) || [],
                 },
               ]}
               width={650}
@@ -357,15 +184,15 @@ export const ProcessInfo = () => {
           </div>
         </div>
       )}
-      {currentProcess.process_status === "programmed" && (
+      {currentProcess?.process_status === "programmed" && (
         <div className="containerProcessInfo__programmedContent">
           <div className="containerProcessInfo__programmedContent-text">
             El proceso está programado para empezar en
           </div>
-          <CountdownTimer targetDate={currentProcess.start_date} />
+          <CountdownTimer targetDate={currentProcess?.start_date} />
         </div>
       )}
-      {currentProcess.process_status === "cancelled" && (
+      {currentProcess?.process_status === "cancelled" && (
         <div className="containerProcessInfo__cancelledContent">
           El proceso fue cancelado por el administrador
         </div>
