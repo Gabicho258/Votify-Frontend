@@ -1,16 +1,21 @@
-import { useState } from 'react';
-import { Button } from '@mui/material';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import './_ElectionListItem.scss';
-import { ICandidate } from '../../interfaces';
-import { CandidateListItem } from '../CandidateListItem/CandidateListItem';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState } from "react";
+import { Button } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import "./_ElectionListItem.scss";
+import { ICandidate } from "../../interfaces";
+import { CandidateListItem } from "../CandidateListItem/CandidateListItem";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { cloudinaryService } from "../../services/cloudinaryService";
 
 type ElectionListItemInputs = {
   title: string;
+  candidates: ICandidate[];
+  addCandidate: (listTitle: string, candidate: ICandidate) => void;
+  removeCandidate: (listTitle: string, candidateName: string) => void;
+  removeList: (listTitle: string) => void;
 };
 
 type AddCandidateInputs = {
@@ -18,23 +23,67 @@ type AddCandidateInputs = {
   organization_name: string;
 };
 
-export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
-  const [options, setOptions] = useState<ICandidate[]>([]);
+export const ElectionListItem = ({
+  title,
+  addCandidate,
+  removeCandidate,
+  removeList,
+  candidates,
+}: ElectionListItemInputs) => {
+  // const [options, setOptions] = useState<ICandidate[]>([]);
   const [isCandidatePhotoLoaded, setIsCandidatePhotoLoaded] = useState(false);
   const [isOrganizationPhotoLoaded, setIsOrganizationPhotoLoaded] =
-    useState(true);
+    useState(false);
 
   // open and close add candidate modal
   const [openAddCandidate, setOpenAddCandidate] = useState(false);
   const handleOpenAddCandidate = () => setOpenAddCandidate(true);
-  const handleCloseAddCandidate = () => setOpenAddCandidate(false);
+  const handleCloseAddCandidate = () => {
+    setOpenAddCandidate(false);
+    setPhoto_url("");
+    setLogo_url("");
+    setIsCandidatePhotoLoaded(false);
+    setIsOrganizationPhotoLoaded(false);
+    reset();
+  };
 
   // add candidate form
   const {
     register: registerAddCandidate,
     handleSubmit: handleSubmitAddCandidate,
     formState: { errors: errorsAddCandidate },
+    reset,
   } = useForm<AddCandidateInputs>();
+
+  const [photo_url, setPhoto_url] = useState("");
+  const [logo_url, setLogo_url] = useState("");
+  // CLoudinary
+  const showWidgetPhotoUser = async (type: string) => {
+    let state = "";
+    let URL = "";
+    // hacemos un casteo para evitar errores
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (window as any).cloudinary.openUploadWidget(
+      cloudinaryService("eco_conciencia"),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (err: any, result: any) => {
+        if (!err && result && result.event === "success") {
+          state = "success";
+          const { secure_url } = result.info;
+          URL = secure_url;
+        }
+        if (state === "success" && result.event === "close") {
+          if (type === "photo_url") {
+            setPhoto_url(URL);
+            setIsCandidatePhotoLoaded(true);
+          } else if (type === "logo_url") {
+            setLogo_url(URL);
+            setIsOrganizationPhotoLoaded(true);
+          }
+        }
+      }
+    );
+  };
 
   const onSubmitAddCandidate: SubmitHandler<AddCandidateInputs> = async (
     data
@@ -42,28 +91,26 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
     // submit add candidate code
     const candidateToAdd = {
       ...data,
+      photo_url,
+      logo_url,
+      valid_votes: 0,
     };
+    addCandidate(title, candidateToAdd);
+    handleCloseAddCandidate();
     console.log(candidateToAdd);
-  };
-
-  const testCandidate: ICandidate = {
-    _id: 'c1a2b3c4d5e6f7g8h9i0j',
-    list_id: 'list123',
-    candidate_name: 'Alice Johnson',
-    photo_url:
-      'https://i.pinimg.com/originals/c7/a9/40/c7a9408babdc2852a48191ab83a5944b.jpg',
-    organization_name: 'Tech Innovators',
-    logo_url:
-      'https://png.pngtree.com/png-clipart/20221214/ourlarge/pngtree-shovel-clipart-png-image_6522991.png',
-    valid_votes: 1500,
   };
 
   return (
     <div className="containerElectionListItem">
       <div className="containerElectionListItem__title">{title}</div>
       <div className="containerElectionListItem__options">
-        {options.map((option) => (
-          <CandidateListItem candidate={option} />
+        {candidates.map((option) => (
+          <CandidateListItem
+            key={option.candidate_name}
+            listTitle={title}
+            candidate={option}
+            removeCandidate={removeCandidate}
+          />
         ))}
       </div>
       <div className="containerElectionListItem__buttons">
@@ -73,7 +120,7 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
           startIcon={<AddIcon />}
           onClick={() => {
             handleOpenAddCandidate();
-            setOptions([...options, testCandidate]);
+            // setOptions([...options, testCandidate]);
           }}
         >
           Añadir opción
@@ -82,7 +129,9 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
           variant="outlined"
           className="containerElectionListItem__buttons-delete"
           startIcon={<DeleteIcon />}
-          onClick={() => {}}
+          onClick={() => {
+            removeList(title);
+          }}
         >
           Eliminar lista
         </Button>
@@ -107,8 +156,8 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
               Nombres y Apellidos:
             </label>
             <TextField
-              {...registerAddCandidate('candidate_name', {
-                required: 'Nombre y apellido es requerido',
+              {...registerAddCandidate("candidate_name", {
+                required: "Nombre y apellido es requerido",
               })}
               className="containerElectionListItem__addCandidateModal-content-form-field"
               autoComplete="off"
@@ -129,8 +178,8 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
               Organización:
             </label>
             <TextField
-              {...registerAddCandidate('organization_name', {
-                required: 'Nombre de organización es requerido',
+              {...registerAddCandidate("organization_name", {
+                required: "Nombre de organización es requerido",
               })}
               className="containerElectionListItem__addCandidateModal-content-form-field"
               autoComplete="off"
@@ -148,20 +197,36 @@ export const ElectionListItem = ({ title }: ElectionListItemInputs) => {
               {isCandidatePhotoLoaded ? (
                 <img
                   className="containerElectionListItem__addCandidateModal-content-form-photos-loaded"
-                  src={testCandidate.photo_url}
+                  src={photo_url}
+                  onClick={() => {
+                    showWidgetPhotoUser("photo_url");
+                  }}
                 />
               ) : (
-                <div className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded">
+                <div
+                  className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded"
+                  onClick={() => {
+                    showWidgetPhotoUser("photo_url");
+                  }}
+                >
                   Subir foto del candidato
                 </div>
               )}
               {isOrganizationPhotoLoaded ? (
                 <img
                   className="containerElectionListItem__addCandidateModal-content-form-photos-loaded"
-                  src={testCandidate.logo_url}
+                  src={logo_url}
+                  onClick={() => {
+                    showWidgetPhotoUser("logo_url");
+                  }}
                 />
               ) : (
-                <div className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded">
+                <div
+                  className="containerElectionListItem__addCandidateModal-content-form-photos-notLoaded"
+                  onClick={() => {
+                    showWidgetPhotoUser("logo_url");
+                  }}
+                >
                   Subir foto de la organización
                 </div>
               )}
