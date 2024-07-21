@@ -30,6 +30,7 @@ import { ProcessList } from "./pages/User/ProcessList/ProcessList";
 import { Hub } from "./pages/User/Hub/Hub";
 import { InProgressProcessInfo } from "./pages/User/InProgressProcessInfo/InProgressProcessInfo";
 import { VotesSummary } from "./pages/User/VotesSummary/VotesSummary";
+import { ProcessInfo } from "./pages/User/ProcessInfo/ProcessInfo";
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -80,6 +81,7 @@ function App() {
           element={<InProgressProcessInfo />}
         />
         <Route path="/votes-summary" element={<VotesSummary />} />
+        <Route path="/process-info" element={<ProcessInfo />} />
         {/*       ADMIN ROUTES             */}
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/system-admin-modules" element={<SystemModules />} />
