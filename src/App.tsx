@@ -68,7 +68,6 @@ function App() {
     // Testing routes to test pages
     <BrowserRouter>
       <Routes>
-
         {/* //        User Routes                */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -78,7 +77,7 @@ function App() {
         <Route path="/credential" element={<Credential />} />
         <Route path="/hub" element={<Hub />} />
         <Route
-          path="/in-progress-process-info"
+          path="/in-progress-process-info/:process_id"
           element={<InProgressProcessInfo />}
         />
         <Route path="/votes-summary" element={<VotesSummary />} />

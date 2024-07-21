@@ -1,11 +1,11 @@
-import './_ProcessListItem.scss';
-import ClearIcon from '@mui/icons-material/Clear';
-import { ICandidate } from '../../interfaces';
+import "./_ProcessListItem.scss";
+import ClearIcon from "@mui/icons-material/Clear";
+import { ICandidate } from "../../interfaces";
 
 interface ProcessListItemProps {
   candidate: ICandidate;
   isSelected: boolean;
-  onSelect: (id: string) => void;
+  onSelect: (candidate: ICandidate) => void;
 }
 
 export const ProcessListItem = ({
@@ -15,12 +15,12 @@ export const ProcessListItem = ({
 }: ProcessListItemProps) => {
   const { candidate_name, organization_name, photo_url, logo_url } = candidate;
   const handleSelection = () => {
-    onSelect(candidate._id);
+    onSelect(candidate);
   };
   return (
     <div className="containerProcessListItem">
       <div className="containerProcessListItem__content">
-        {candidate_name !== 'null' ? (
+        {candidate_name !== "null" ? (
           <>
             <img
               className="containerProcessListItem__content-logo"

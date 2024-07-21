@@ -4,4 +4,5 @@ export interface ICredential {
   process_id: string;
   password: string;
   email: string;
+  was_used: boolean;
 }

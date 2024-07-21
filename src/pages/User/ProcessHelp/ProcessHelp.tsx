@@ -1,7 +1,12 @@
 import { Button } from "@mui/material";
 import "./_ProcessHelp.scss";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useGetProcessByIdQuery } from "../../../app/votify.api";
 
 export const ProcessHelp = () => {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { data: currentProcess } = useGetProcessByIdQuery(state.process_id);
   return (
     <div className="processHelpContainer">
       <div className="processHelpContainer__content">
@@ -30,6 +35,14 @@ export const ProcessHelp = () => {
           <Button
             className="processHelpContainer__content-button"
             variant={"contained"}
+            onClick={() =>
+              navigate("/process-list", {
+                state: {
+                  process: currentProcess,
+                  credential_id: state.credential_id,
+                },
+              })
+            }
           >
             Comenzar
           </Button>
