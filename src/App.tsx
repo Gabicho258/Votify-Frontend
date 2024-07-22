@@ -31,6 +31,8 @@ import { Hub } from "./pages/User/Hub/Hub";
 import { InProgressProcessInfo } from "./pages/User/InProgressProcessInfo/InProgressProcessInfo";
 import { VotesSummary } from "./pages/User/VotesSummary/VotesSummary";
 import { ProcessInfo } from "./pages/User/ProcessInfo/ProcessInfo";
+import { useGetUserByIdQuery } from "./app/votify.api";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -64,6 +66,17 @@ function App() {
   // const logout = () => {
   //   setuser(null);
   // };
+  const userDataStorage = localStorage.getItem("voter_id") || "";
+  const adminDataStorage = localStorage.getItem("admin_id") || "";
+
+  const { data: userLogged, isLoading: isLoadingUser } =
+    useGetUserByIdQuery(userDataStorage);
+  const { data: adminLogged, isLoading: isLoadingAdmin } =
+    useGetUserByIdQuery(adminDataStorage);
+  // console.log(user);
+  const isUserAuthenticated = !!userLogged;
+  const isAdminAuthenticated = !!adminLogged;
+  console.log(isUserAuthenticated);
 
   return (
     // Testing routes to test pages
@@ -73,43 +86,98 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/end-register" element={<Register />} />
-        <Route path="/process-list" element={<ProcessList />} />
-        <Route path="/process-help" element={<ProcessHelp />} />
-        <Route path="/credential" element={<Credential />} />
-        <Route path="/hub" element={<Hub />} />
         <Route
-          path="/in-progress-process-info/:process_id"
-          element={<InProgressProcessInfo />}
-        />
-        <Route path="/votes-summary" element={<VotesSummary />} />
-        <Route path="/process-info/:process_id" element={<ProcessInfo />} />
+          element={
+            <ProtectedRoute
+              isLoading={isLoadingUser}
+              children={null}
+              isAuthenticated={isUserAuthenticated}
+              redirectTo="/login"
+            />
+          }
+        >
+          <Route path="/process-list" element={<ProcessList />} />
+          <Route path="/process-help" element={<ProcessHelp />} />
+          <Route path="/credential" element={<Credential />} />
+          <Route path="/hub" element={<Hub />} />
+          <Route
+            path="/in-progress-process-info/:process_id"
+            element={<InProgressProcessInfo />}
+          />
+          <Route path="/votes-summary" element={<VotesSummary />} />
+          <Route path="/process-info/:process_id" element={<ProcessInfo />} />
+        </Route>
         {/*       ADMIN ROUTES             */}
         <Route path="/login-admin" element={<LoginAdmin />} />
-        <Route path="/system-admin-modules" element={<SystemModules />} />
-        <Route path="/process-requests" element={<ProcessRequests />} />
-        <Route
-          path="/process-admin-management"
-          element={<ManagementElectionAdmin />}
-        />
-        <Route
-          path="/electoral-process-administration"
-          element={<ElectoralProcessAdmin />}
-        />
-        <Route path="/mailbox" element={<Mailbox />} />
 
         <Route
-          path="/process-request/:process_id"
-          element={<ProcessRequest />}
-        />
-        <Route path="/process-admin-modules" element={<ProcessModules />} />
-        <Route path="/process-list-admin" element={<ProcessListAdmin />} />
-        <Route path="/process-info-form" element={<ProcessInfoForm />} />
-        <Route path="/process-create-lists" element={<ProcessCreateLists />} />
-        <Route path="/process-add-voter" element={<ProcessAddVoter />} />
+          element={
+            <ProtectedRoute
+              isLoading={isLoadingAdmin}
+              isAuthenticated={isAdminAuthenticated}
+              redirectTo="/login-admin"
+            />
+          }
+        >
+          <Route path="/mailbox" element={<Mailbox />} />
+        </Route>
+
+        {/* SYS_ADMIN  */}
         <Route
-          path="/process-info-admin/:process_id"
-          element={<ProcessInfoAdmin />}
-        />
+          element={
+            <ProtectedRoute
+              isLoading={isLoadingAdmin}
+              isAuthenticated={
+                isAdminAuthenticated && adminLogged.role === "sys_admin"
+              }
+              children={null}
+              redirectTo="/login-admin"
+            />
+          }
+        >
+          <Route path="/system-admin-modules" element={<SystemModules />} />
+          <Route path="/process-requests" element={<ProcessRequests />} />
+          <Route
+            path="/process-admin-management"
+            element={<ManagementElectionAdmin />}
+          />
+          <Route
+            path="/electoral-process-administration"
+            element={<ElectoralProcessAdmin />}
+          />
+
+          <Route
+            path="/process-request/:process_id"
+            element={<ProcessRequest />}
+          />
+        </Route>
+
+        {/* PROCESS_ADMIN  */}
+        <Route
+          element={
+            <ProtectedRoute
+              isLoading={isLoadingAdmin}
+              isAuthenticated={
+                isAdminAuthenticated && adminLogged.role === "process_admin"
+              }
+              children={null}
+              redirectTo="/login-admin"
+            />
+          }
+        >
+          <Route path="/process-admin-modules" element={<ProcessModules />} />
+          <Route path="/process-list-admin" element={<ProcessListAdmin />} />
+          <Route path="/process-info-form" element={<ProcessInfoForm />} />
+          <Route
+            path="/process-create-lists"
+            element={<ProcessCreateLists />}
+          />
+          <Route path="/process-add-voter" element={<ProcessAddVoter />} />
+          <Route
+            path="/process-info-admin/:process_id"
+            element={<ProcessInfoAdmin />}
+          />
+        </Route>
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

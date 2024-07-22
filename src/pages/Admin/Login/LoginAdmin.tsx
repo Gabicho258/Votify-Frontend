@@ -6,7 +6,7 @@ import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import { useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useGetUsersQuery } from "../../../app/votify.api";
+import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
 // import { useNavigate } from "react-router-dom";
 
 interface State extends SnackbarOrigin {
@@ -76,7 +76,16 @@ export const LoginAdmin = () => {
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
-
+  const adminDataStorage = localStorage.getItem("admin_id") || "";
+  const { data: adminLogged } = useGetUserByIdQuery(adminDataStorage);
+  if (adminLogged) {
+    if (adminLogged?.role === "sys_admin") {
+      window.location.href = "/system-admin-modules";
+    } else if (adminLogged?.role === "process_admin") {
+      window.location.href = "/process-admin-modules";
+    }
+    // return null; // para evitar que siga cargando la página al hacer login en caso de estar logueado
+  }
   return (
     <div className="containerAdminLogin">
       <Snackbar

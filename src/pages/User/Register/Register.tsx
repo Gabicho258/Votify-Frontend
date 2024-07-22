@@ -1,7 +1,7 @@
 import "./_Register.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useCreateUserMutation } from "../../../app/votify.api";
 
 type RegisterInputs = {
@@ -36,8 +36,9 @@ export const Register = () => {
     } catch (error) {
       alert(JSON.stringify(error));
     }
-    console.log(userToCreate);
   };
+  if (previousUserData === null)
+    return <Navigate to={"/login"} replace={true} />;
 
   return (
     <div className="containerRegister">

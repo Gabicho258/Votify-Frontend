@@ -5,7 +5,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
 import "./_Login.scss";
-import { useGetUsersQuery } from "../../../app/votify.api";
+import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -32,7 +32,12 @@ export const Login = () => {
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
-
+  const userDataStorage = localStorage.getItem("voter_id") || "";
+  const { data: userLogged } = useGetUserByIdQuery(userDataStorage);
+  if (userLogged) {
+    window.location.href = "/hub";
+    // return null; // para evitar que siga cargando la página al hacer login en caso de estar logueado
+  }
   return (
     <div className="containerLogin">
       <div className="containerLogin__left">

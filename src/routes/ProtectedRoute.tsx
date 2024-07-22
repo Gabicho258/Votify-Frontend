@@ -1,12 +1,27 @@
 import { Navigate, Outlet } from "react-router-dom";
 
+interface ProtectedRouteProps {
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  children?: React.ReactNode;
+  redirectTo?: string;
+}
+
 export const ProtectedRoute = ({
   isAuthenticated,
+  isLoading,
   children,
   redirectTo = "/",
-}) => {
-  if (!isAuthenticated) {
-    return <Navigate to={redirectTo} />;
+}: ProtectedRouteProps) => {
+  console.log("protected route", isAuthenticated);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Puedes personalizar esto según tu necesidad
   }
-  return children ? children : <Outlet />;
+
+  if (!isAuthenticated) {
+    return <Navigate to={redirectTo} replace={true} />;
+  }
+
+  return children ? <>{children}</> : <Outlet />;
 };
