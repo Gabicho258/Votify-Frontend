@@ -77,7 +77,7 @@ export const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
       ) : (
         setTimeout(() => {
           window.location.href = "/hub";
-        }, 500) // better 1000
+        }, 1000) // better 1000
       )}
     </div>
   );

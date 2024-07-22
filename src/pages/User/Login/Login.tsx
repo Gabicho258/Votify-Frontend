@@ -11,10 +11,11 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const { data: allUsers } = useGetUsersQuery();
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      const response = await axios.post("http://localhost:8080/auth/google", {
+      const response = await axios.post(`${API_GATEWAY}/auth/google`, {
         code: codeResponse.code,
       });
       const userData = response.data.user;
