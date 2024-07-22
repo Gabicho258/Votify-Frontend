@@ -16,6 +16,7 @@ import {
   useGetListsByProcessIdQuery,
   useGetProcessByIdQuery,
 } from "../../../app/votify.api";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 type ProcessListsResult = {
   _id: string;
@@ -100,9 +101,18 @@ export const ProcessInfo = () => {
       setSelectedResult(listsResult[0]);
     }
   }, [listsResult]);
-  return isLoadingCandidates || isLoadingLists || isLoadingProcess ? (
-    <>loading</>
-  ) : (
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!(isLoadingCandidates || isLoadingLists || isLoadingProcess)) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isLoadingCandidates, isLoadingLists, isLoadingProcess, setLoading]);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  return (
     <div className="containerProcessInfo">
       <div className="containerProcessInfo__back" onClick={() => navigate(-1)}>
         <ArrowBackIcon className="containerProcessInfo__back-icon" />

@@ -1,12 +1,26 @@
 import { Button } from "@mui/material";
 import "./_ProcessHelp.scss";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useGetProcessByIdQuery } from "../../../app/votify.api";
+import { useEffect } from "react";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 export const ProcessHelp = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { data: currentProcess } = useGetProcessByIdQuery(state.process_id);
+  const { data: currentProcess, isLoading } = useGetProcessByIdQuery(
+    state?.process_id
+  );
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!isLoading) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isLoading, setLoading]);
+  if (state === null) return <Navigate to={"/hub"} replace={true} />;
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="processHelpContainer">
       <div className="processHelpContainer__content">

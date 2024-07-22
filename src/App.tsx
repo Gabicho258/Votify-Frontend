@@ -76,7 +76,6 @@ function App() {
   // console.log(user);
   const isUserAuthenticated = !!userLogged;
   const isAdminAuthenticated = !!adminLogged;
-  console.log(isUserAuthenticated);
 
   return (
     // Testing routes to test pages

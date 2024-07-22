@@ -1,4 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useSpinner } from "../hooks/useSpinner";
 
 interface ProtectedRouteProps {
   isAuthenticated: boolean;
@@ -13,10 +14,11 @@ export const ProtectedRoute = ({
   children,
   redirectTo = "/",
 }: ProtectedRouteProps) => {
-  console.log("protected route", isAuthenticated);
+  // console.log("protected route", isAuthenticated);
+  const { Spinner } = useSpinner(true);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Puedes personalizar esto según tu necesidad
+    return <Spinner />;
   }
 
   if (!isAuthenticated) {

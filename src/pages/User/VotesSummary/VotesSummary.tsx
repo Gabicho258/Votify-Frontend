@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { VoteSummaryListItem } from "../../../components/VoteSummaryListItem/VoteSummaryListItem";
 import "./_VotesSummary.scss";
 import { Button } from "@mui/material";
@@ -19,12 +19,15 @@ export const VotesSummary = () => {
   // const [updateCandidate]
   const handleConfirmVotes = async () => {
     console.log(state);
-    (state.candidates as ICandidate[]).forEach(async (candidate) => {
+    (state?.candidates as ICandidate[]).forEach(async (candidate) => {
       await addVoteByCandidateId(candidate?._id || "");
     });
-    await updateCredentialUsed(state.credential_id);
+    await updateCredentialUsed(state?.credential_id);
     navigate("/hub", { replace: true });
   };
+
+  if (state === null) return <Navigate to={"/hub"} replace={true} />;
+
   // const votes = [
   //   {
   //     title: "Lista 1",

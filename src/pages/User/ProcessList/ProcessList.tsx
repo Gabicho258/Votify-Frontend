@@ -4,11 +4,12 @@ import { Button } from "@mui/material";
 import { ICandidate, IList } from "../../../interfaces";
 import { useEffect, useState } from "react";
 import { ProcessListItem } from "../../../components/ProcessListItem/ProcessListItem";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import {
   useGetCandidatesByListIdQuery,
   useGetListsByProcessIdQuery,
 } from "../../../app/votify.api";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 export const ProcessList = () => {
   const { state } = useLocation();
@@ -24,9 +25,8 @@ export const ProcessList = () => {
     []
   );
   const navigate = useNavigate();
-  const { data: listsOfProcess } = useGetListsByProcessIdQuery(
-    state.process._id
-  );
+  const { data: listsOfProcess, isLoading: isListsLoading } =
+    useGetListsByProcessIdQuery(state?.process._id);
   const [index, setIndex] = useState(0);
 
   const handleNextList = () => {
@@ -58,6 +58,18 @@ export const ProcessList = () => {
       setSelectedCandidate(state.candidates[index]);
     }
   }, [state, index]);
+
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!isListsLoading) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isListsLoading, setLoading]);
+  if (state === null) return <Navigate to={"/hub"} replace={true} />;
+  if (loading) {
+    return <Spinner />;
+  }
+
   // console.log(selectedCandidate);
 
   // const list: IList = {

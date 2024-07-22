@@ -6,11 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 import "./_Login.scss";
 import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
+import { useSpinner } from "../../../hooks/useSpinner";
+import { useEffect } from "react";
 
 export const Login = () => {
   const navigate = useNavigate();
 
-  const { data: allUsers } = useGetUsersQuery();
+  const { data: allUsers, isLoading: isAllUsersLoading } = useGetUsersQuery();
   const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
@@ -25,6 +27,7 @@ export const Login = () => {
       if (userExists) {
         // realiar la navegación al hub de user
         localStorage.setItem("voter_id", userExists._id);
+        // console.log(response.data);
         window.location.href = "/hub";
         // navigate("/");
       } else {
@@ -34,10 +37,23 @@ export const Login = () => {
     onError: (errorResponse) => console.log(errorResponse),
   });
   const userDataStorage = localStorage.getItem("voter_id") || "";
-  const { data: userLogged } = useGetUserByIdQuery(userDataStorage);
+  const { data: userLogged, isLoading: isUserLoading } =
+    useGetUserByIdQuery(userDataStorage);
+  const { Spinner, loading, setLoading } = useSpinner(true);
+
   if (userLogged) {
     window.location.href = "/hub";
     // return null; // para evitar que siga cargando la página al hacer login en caso de estar logueado
+  }
+
+  useEffect(() => {
+    if (!(isUserLoading || isAllUsersLoading)) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isAllUsersLoading, isUserLoading, setLoading]);
+
+  if (loading) {
+    return <Spinner />;
   }
   return (
     <div className="containerLogin">
