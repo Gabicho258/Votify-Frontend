@@ -75,7 +75,9 @@ export const CountdownTimer = ({ targetDate }: CountdownTimerProps) => {
       {timerComponents.length ? (
         <div>{timerComponents}</div>
       ) : (
-        (window.location.href = "/hub")
+        setTimeout(() => {
+          window.location.href = "/hub";
+        }, 1000) // better 1000
       )}
     </div>
   );

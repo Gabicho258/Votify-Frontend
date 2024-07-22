@@ -9,7 +9,6 @@ import { useState } from "react";
 import { AccordionElectionList } from "../../../../components/AccordionElectionList/AccordionElectionList";
 import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
 import { Button } from "@mui/material";
-import { formatISODate } from "../../../../utils/DateFormatter";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -95,11 +94,22 @@ export const ProcessInfoAdmin = () => {
     console.log(contactToAdd);
   };
 
-  const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
+  const startDate = new Date(
     currentProcess?.start_date || ""
-  );
-  const { formattedDate: endDate, formattedTime: endTime } = formatISODate(
-    currentProcess?.end_date || ""
+  ).toLocaleDateString();
+  const endDate = new Date(currentProcess?.end_date || "").toLocaleDateString();
+  const startTime = new Date(
+    currentProcess?.start_date || ""
+  ).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const endTime = new Date(currentProcess?.end_date || "").toLocaleTimeString(
+    [],
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+    }
   );
 
   return (

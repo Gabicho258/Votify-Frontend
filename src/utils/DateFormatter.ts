@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
 export function formatISODate(isoString: string): {
   formattedDate: string;
@@ -8,12 +8,12 @@ export function formatISODate(isoString: string): {
   const date = new Date(isoString);
 
   // Extraer las partes individuales de la fecha y la hora
-  const day = date.getUTCDate().toString().padStart(2, '0');
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const day = date.getUTCDate().toString().padStart(2, "0");
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
   const year = date.getUTCFullYear();
 
-  const hours = date.getUTCHours().toString().padStart(2, '0');
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
 
   // Formatear la fecha y la hora
   const formattedDate = `${day}-${month}-${year}`;
@@ -25,7 +25,7 @@ export function formatISODate(isoString: string): {
   };
 }
 
-const padZero = (num: number): string => num.toString().padStart(2, '0');
+const padZero = (num: number): string => num.toString().padStart(2, "0");
 
 export const convertToISO8601 = (
   startDate: string,
@@ -35,8 +35,8 @@ export const convertToISO8601 = (
 ) => {
   // Función para convertir una fecha y hora al formato ISO 8601
   const convertToISO = (date: string, time: string): string => {
-    const [day, month, year] = date.split('-').map(Number);
-    const [hour, minute] = time.split(':').map(Number);
+    const [day, month, year] = date.split("-").map(Number);
+    const [hour, minute] = time.split(":").map(Number);
 
     // Crear la cadena en formato ISO 8601
     const isoString = `${year}-${padZero(month)}-${padZero(day)}T${padZero(

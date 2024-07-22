@@ -9,10 +9,11 @@ import type {
   IUser,
   ICredential,
 } from "../interfaces/index.ts";
-
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
 export const votifyApi = createApi({
   reducerPath: "votifyApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/api" }),
+  // baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/api" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${API_GATEWAY}/api` }),
   endpoints: (builder) => ({
     // User service endpoint
     getUsers: builder.query<IUser[], void>({

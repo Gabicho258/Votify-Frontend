@@ -6,7 +6,7 @@ import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import { useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-import { useGetUsersQuery } from "../../../app/votify.api";
+import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
 // import { useNavigate } from "react-router-dom";
 
 interface State extends SnackbarOrigin {
@@ -28,7 +28,7 @@ export const LoginAdmin = () => {
   };
 
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {
@@ -39,10 +39,11 @@ export const LoginAdmin = () => {
   // END - Notification
   // const navigate = useNavigate();
   const { data: allUsers } = useGetUsersQuery();
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      const response = await axios.post("http://localhost:8080/auth/google", {
+      const response = await axios.post(`${API_GATEWAY}/auth/google`, {
         code: codeResponse.code,
       });
       const userData = response.data.user;
@@ -76,7 +77,16 @@ export const LoginAdmin = () => {
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
-
+  const adminDataStorage = localStorage.getItem("admin_id") || "";
+  const { data: adminLogged } = useGetUserByIdQuery(adminDataStorage);
+  if (adminLogged) {
+    if (adminLogged?.role === "sys_admin") {
+      window.location.href = "/system-admin-modules";
+    } else if (adminLogged?.role === "process_admin") {
+      window.location.href = "/process-admin-modules";
+    }
+    // return null; // para evitar que siga cargando la página al hacer login en caso de estar logueado
+  }
   return (
     <div className="containerAdminLogin">
       <Snackbar

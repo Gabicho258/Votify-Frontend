@@ -5,16 +5,17 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 
 import "./_Login.scss";
-import { useGetUsersQuery } from "../../../app/votify.api";
+import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
 
 export const Login = () => {
   const navigate = useNavigate();
 
   const { data: allUsers } = useGetUsersQuery();
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
     onSuccess: async (codeResponse) => {
-      const response = await axios.post("http://localhost:8080/auth/google", {
+      const response = await axios.post(`${API_GATEWAY}/auth/google`, {
         code: codeResponse.code,
       });
       const userData = response.data.user;
@@ -32,7 +33,12 @@ export const Login = () => {
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
-
+  const userDataStorage = localStorage.getItem("voter_id") || "";
+  const { data: userLogged } = useGetUserByIdQuery(userDataStorage);
+  if (userLogged) {
+    window.location.href = "/hub";
+    // return null; // para evitar que siga cargando la página al hacer login en caso de estar logueado
+  }
   return (
     <div className="containerLogin">
       <div className="containerLogin__left">

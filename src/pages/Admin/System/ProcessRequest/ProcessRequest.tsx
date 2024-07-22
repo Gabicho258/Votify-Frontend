@@ -64,6 +64,7 @@ export const ProcessRequest = () => {
       minute: "2-digit",
     }
   );
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleApproveProcess = async () => {
     try {
       await updateProcess({
@@ -71,7 +72,7 @@ export const ProcessRequest = () => {
         process_status: "programmed",
         admin_status: "approved",
       }).unwrap();
-      const apigateway = "http://localhost:8080/api";
+      const apigateway = `${API_GATEWAY}/api`;
       const emailBody = {
         process_name: currentProcess?.title,
         start_date: startDate,

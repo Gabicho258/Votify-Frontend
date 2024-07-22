@@ -47,13 +47,14 @@ export const ProcessAddVoter = () => {
     reset();
     // console.log(voterToAdd);
   };
+  const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleSendToRevision = async () => {
     if (voters.length === 0) {
       alert("Debe agregar al menos un participante");
       return;
     }
     try {
-      const gateway = "http://localhost:8080/api";
+      const gateway = `${API_GATEWAY}/api`;
       const { data: processCreated } = await axios.post(
         `${gateway}/election-service/process/create`,
         state.process
