@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Landing } from "./pages/User/Landing/Landing";
+// import { Landing } from "./pages/User/Landing/Landing";
 import { Login } from "./pages/User/Login/Login";
 import { Register } from "./pages/User/Register/Register";
 
@@ -83,7 +83,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* //        User Routes                */}
-        <Route path="/" element={<Landing />} />
+        <Route index element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/end-register" element={<Register />} />
         <Route
