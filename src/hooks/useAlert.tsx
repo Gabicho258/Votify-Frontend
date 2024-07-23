@@ -5,6 +5,7 @@ import { SnackbarOrigin } from "@mui/material/Snackbar";
 interface State extends SnackbarOrigin {
   open: boolean;
   message: string;
+  type: "error" | "warning" | "info" | "success";
 }
 
 export const useAlert = () => {
@@ -13,12 +14,21 @@ export const useAlert = () => {
     vertical: "top",
     horizontal: "right",
     message: "",
+    type: "error", // or "success", "warning", "info" or "default"
   });
 
-  const { vertical, horizontal, open, message } = state;
+  const { vertical, horizontal, open, message, type } = state;
 
-  const showSnackbar = (newState: SnackbarOrigin, message: string) => {
-    setState({ ...newState, open: true, message });
+  const showSnackbar = (
+    message: string,
+    type: "error" | "warning" | "info" | "success"
+  ) => {
+    setState({
+      ...{ vertical: "top", horizontal: "right" },
+      open: true,
+      message,
+      type,
+    });
   };
 
   const hideSnackbar = () => {
@@ -35,7 +45,7 @@ export const useAlert = () => {
     >
       <Alert
         onClose={hideSnackbar}
-        severity="error"
+        severity={type}
         variant="filled"
         sx={{ width: "100%" }}
       >

@@ -7,6 +7,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useGetProcessByIdQuery } from "../../../app/votify.api";
 import { useEffect } from "react";
 import { useSpinner } from "../../../hooks/useSpinner";
+import { useAlert } from "../../../hooks/useAlert";
 
 type CredentialInputs = {
   dni: number;
@@ -24,9 +25,10 @@ export const Credential = () => {
   const { data: currentProcess, isLoading } = useGetProcessByIdQuery(
     state?.process_id
   );
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const onSubmit: SubmitHandler<CredentialInputs> = async (data) => {
     if (state.was_used) {
-      alert("Usted ya realizó un voto");
+      showSnackbar("Usted ya realizó un voto", "warning");
       return;
     }
     // submit code
@@ -40,7 +42,7 @@ export const Credential = () => {
         replace: true,
       });
     } else {
-      alert("DNI o contraseña incorrectos");
+      showSnackbar("DNI o contraseña incorrectos", "warning");
     }
   };
   const { Spinner, loading, setLoading } = useSpinner(true);
@@ -55,6 +57,7 @@ export const Credential = () => {
   }
   return (
     <div className="credentialContainer">
+      <SnackbarComponent />
       <div className="credentialContainer__back" onClick={() => navigate(-1)}>
         <ArrowBackIcon className="credentialContainer__back-icon" />
         <span>Volver</span>

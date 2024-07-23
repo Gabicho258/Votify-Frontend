@@ -8,6 +8,7 @@ import { IUser } from "../../interfaces";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useGetUsersQuery, useUpdateUserMutation } from "../../app/votify.api";
+import { useAlert } from "../../hooks/useAlert";
 
 interface ProcessAdminListItemProps {
   admin: IUser;
@@ -41,7 +42,8 @@ export const ProcessAdminListItem = ({ admin }: ProcessAdminListItemProps) => {
     handleSubmit: handleSubmitEditAdmin,
     formState: { errors: errorsEditAdmin },
   } = useForm<EditAdminInputs>();
-
+  // Alerts
+  const { showSnackbar, SnackbarComponent } = useAlert();
   const onSubmitEditAdmin: SubmitHandler<EditAdminInputs> = async (data) => {
     // submit add admin code
     const processAdminToEdit = {
@@ -53,7 +55,11 @@ export const ProcessAdminListItem = ({ admin }: ProcessAdminListItemProps) => {
       await refetch();
       handleCloseEditAdmin();
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
     // console.log(processAdminToEdit);
   };
@@ -63,12 +69,17 @@ export const ProcessAdminListItem = ({ admin }: ProcessAdminListItemProps) => {
       await refetch();
       handleCloseConfirm();
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
 
   return (
     <div className="containerProcessAdminListItem">
+      <SnackbarComponent />
       <div className="containerProcessAdminListItem__content">
         <div className="containerProcessAdminListItem__content-info">
           <div className="containerProcessAdminListItem__content-info-top">

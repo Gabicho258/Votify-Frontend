@@ -12,6 +12,7 @@ import { useVoters } from "../../../../hooks/useVoter";
 import axios from "axios";
 import { IList } from "../../../../hooks/useList";
 import { useSpinner } from "../../../../hooks/useSpinner";
+import { useAlert } from "../../../../hooks/useAlert";
 
 type AddVoterInputs = {
   user_name: string;
@@ -48,10 +49,11 @@ export const ProcessAddVoter = () => {
     reset();
     // console.log(voterToAdd);
   };
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleSendToRevision = async () => {
     if (voters.length === 0) {
-      alert("Debe agregar al menos un participante");
+      showSnackbar("Debe agregar al menos un participante", "warning");
       return;
     }
     try {
@@ -94,7 +96,11 @@ export const ProcessAddVoter = () => {
       navigate("/process-list-admin", { replace: true });
       // console.log(data);
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
 
     console.log(state);
@@ -116,6 +122,7 @@ export const ProcessAddVoter = () => {
   // ];
   return (
     <div className="containerProcessAddVoter">
+      <SnackbarComponent />
       <div
         className="containerProcessAddVoter__back"
         onClick={() => navigate("/process-info-form", { replace: true })}

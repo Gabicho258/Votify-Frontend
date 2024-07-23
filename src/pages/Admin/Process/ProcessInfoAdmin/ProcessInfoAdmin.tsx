@@ -20,6 +20,7 @@ import {
   useGetProcessByIdQuery,
 } from "../../../../app/votify.api";
 import { useSpinner } from "../../../../hooks/useSpinner";
+import { useAlert } from "../../../../hooks/useAlert";
 
 type ContactInputs = {
   text: string;
@@ -70,7 +71,7 @@ export const ProcessInfoAdmin = () => {
     handleSubmit: handleSubmitContact,
     formState: { errors: errorsContact },
   } = useForm<ContactInputs>();
-
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const onSubmitContact: SubmitHandler<ContactInputs> = async (data) => {
     // submit add list code
     const contactToAdd = {
@@ -92,7 +93,11 @@ export const ProcessInfoAdmin = () => {
       setLoading(false);
       navigate("/mailbox");
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
 
@@ -138,6 +143,7 @@ export const ProcessInfoAdmin = () => {
   }
   return (
     <div className="containerProcessInfoAdmin">
+      <SnackbarComponent />
       <div
         className="containerProcessInfoAdmin__back"
         onClick={() => navigate(-1)}

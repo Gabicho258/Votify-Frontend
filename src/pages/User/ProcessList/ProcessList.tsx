@@ -10,6 +10,7 @@ import {
   useGetListsByProcessIdQuery,
 } from "../../../app/votify.api";
 import { useSpinner } from "../../../hooks/useSpinner";
+import { useAlert } from "../../../hooks/useAlert";
 
 export const ProcessList = () => {
   const { state } = useLocation();
@@ -28,10 +29,10 @@ export const ProcessList = () => {
   const { data: listsOfProcess, isLoading: isListsLoading } =
     useGetListsByProcessIdQuery(state?.process._id);
   const [index, setIndex] = useState(0);
-
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const handleNextList = () => {
     if (selectedCandidate === null) {
-      alert("Debe seleccionar un candidato primero.");
+      showSnackbar("Debe seleccionar un candidato primero.", "info");
       return;
     }
     setCandidatesSelected([...candidatesSelected, selectedCandidate]);
@@ -49,6 +50,7 @@ export const ProcessList = () => {
         candidates: [...candidatesSelected, selectedCandidate],
         process: state.process,
         credential_id: state.credential_id,
+        lists: listsOfProcess,
       },
     });
   };
@@ -126,6 +128,7 @@ export const ProcessList = () => {
   // ];
   return (
     <div className="containerProcessList">
+      <SnackbarComponent />
       <div className="containerProcessList__timer">
         <div className="containerProcessList__timer-box">
           <AccessTimeIcon className="containerProcessList__timer-box-icon" />

@@ -18,7 +18,6 @@ export const VotesSummary = () => {
   const [updateCredentialUsed] = useUpdateCredentialUsedMutation();
   // const [updateCandidate]
   const handleConfirmVotes = async () => {
-    console.log(state);
     (state?.candidates as ICandidate[]).forEach(async (candidate) => {
       await addVoteByCandidateId(candidate?._id || "");
     });
@@ -26,6 +25,7 @@ export const VotesSummary = () => {
     navigate("/hub", { replace: true });
   };
 
+  console.log(state);
   if (state === null) return <Navigate to={"/hub"} replace={true} />;
 
   // const votes = [
@@ -95,8 +95,11 @@ export const VotesSummary = () => {
     <div className="containerVotesSummary">
       <div className="containerVotesSummary__title">Resumen de votos</div>
       <div className="containerVotesSummary__votes">
-        {(state.candidates as ICandidate[])?.map((vote) => (
-          <VoteSummaryListItem key={vote._id} {...{ ...vote, title: "aea" }} />
+        {(state.candidates as ICandidate[])?.map((vote, index) => (
+          <VoteSummaryListItem
+            key={vote._id}
+            {...{ ...vote, title: state.lists[index].title }}
+          />
         ))}
       </div>
       <div className="containerVotesSummary__buttons">

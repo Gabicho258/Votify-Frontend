@@ -2,41 +2,18 @@ import "./_LoginAdmin.scss";
 
 import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
 import { useSpinner } from "../../../hooks/useSpinner";
+import { useAlert } from "../../../hooks/useAlert";
 // import { useNavigate } from "react-router-dom";
-
-interface State extends SnackbarOrigin {
-  open: boolean;
-  message: string;
-}
 
 export const LoginAdmin = () => {
   // Notification
-  const [state, setState] = useState<State>({
-    open: false,
-    vertical: "top",
-    horizontal: "right",
-    message: "Error al iniciar sesión con Google",
-  });
-  const { vertical, horizontal, open } = state;
-  const handleClick = (newState: SnackbarOrigin, message: string) => {
-    setState({ ...newState, open: true, message });
-  };
+  const { showSnackbar, SnackbarComponent } = useAlert();
 
-  const handleClose = (
-    _event: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setState({ ...state, open: false });
-  };
   // END - Notification
   // const navigate = useNavigate();
   const { data: allUsers, isLoading: isAllUsersLoading } = useGetUsersQuery();
@@ -62,17 +39,10 @@ export const LoginAdmin = () => {
           localStorage.setItem("admin_id", userExists._id);
           window.location.href = "/process-admin-modules";
         } else {
-          handleClick(
-            { vertical: "top", horizontal: "right" },
-            "El usuario no tiene permiso para acceder"
-          );
-          console.log("user no admin");
+          showSnackbar("El usuario no tiene permiso para acceder", "error");
         }
       } else {
-        handleClick(
-          { vertical: "top", horizontal: "right" },
-          "El usuario no existe"
-        );
+        showSnackbar("El usuario no existe", "warning");
         // navigate("/end-register", { state: userData });
       }
     },
@@ -101,15 +71,7 @@ export const LoginAdmin = () => {
   }
   return (
     <div className="containerAdminLogin">
-      <Snackbar
-        className="qwe"
-        anchorOrigin={{ vertical, horizontal }}
-        key={vertical + horizontal}
-        open={open}
-        autoHideDuration={5000}
-        onClose={handleClose}
-        message={state.message}
-      />
+      <SnackbarComponent />
 
       <div className="containerAdminLogin__content">
         <img

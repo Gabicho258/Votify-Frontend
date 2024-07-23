@@ -10,6 +10,7 @@ import { useState } from "react";
 import { ElectionListItem } from "../../../../components/ElectionListItem/ElectionListItem";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useList } from "../../../../hooks/useList";
+import { useAlert } from "../../../../hooks/useAlert";
 
 type AddListInputs = {
   title: string;
@@ -47,17 +48,20 @@ export const ProcessCreateLists = () => {
     addList(listToAdd);
     handleCloseAddList();
   };
-
+  const { SnackbarComponent, showSnackbar } = useAlert();
   if (state === null)
     return <Navigate to={"/process-info-form"} replace={true} />;
   const handleContinue = () => {
     if (lists.length === 0) {
-      alert("Debe agregar al menos una lista.");
+      showSnackbar("Debe agregar al menos una lista.", "warning");
       return;
     }
     for (const list of lists) {
       if (list.candidates.length === 0) {
-        alert("Debe agregar al menos un candidato a cada lista.");
+        showSnackbar(
+          "Debe agregar al menos un candidato a cada lista.",
+          "warning"
+        );
         return;
       }
     }
@@ -66,6 +70,7 @@ export const ProcessCreateLists = () => {
 
   return (
     <div className="containerProcessCreateLists">
+      <SnackbarComponent />
       <div
         className="containerProcessCreateLists__back"
         onClick={() => navigate("/process-info-form", { replace: true })}
