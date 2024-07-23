@@ -8,16 +8,16 @@ export const cloudinaryService = (upload_preset: string) => {
     // #71a535
     styles: {
       palette: {
-        window: "#71a535",
+        window: "#2C3E50",
         sourceBg: "#FFFFFF",
-        windowBorder: "#71a535",
+        windowBorder: "#2C3E50",
         tabIcon: "#FFFFFF",
         inactiveTabIcon: "#FFDB92",
         menuIcons: "#FFFFFF",
-        link: "#71a535",
+        link: "#2C3E50",
         action: "#FF2929",
         inProgress: "#000000",
-        complete: "#71a535",
+        complete: "#2C3E50",
         error: "#c43737",
         textDark: "#000000",
         textLight: "#FFFFFF",
