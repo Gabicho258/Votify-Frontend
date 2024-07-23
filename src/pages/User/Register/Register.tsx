@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import { Navigate, useLocation } from "react-router-dom";
 import { useCreateUserMutation } from "../../../app/votify.api";
+import { useAlert } from "../../../hooks/useAlert";
 
 type RegisterInputs = {
   user_name: string;
@@ -21,7 +22,7 @@ export const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterInputs>();
-
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const onSubmit: SubmitHandler<RegisterInputs> = async (data) => {
     // submit code
     const userToCreate = {
@@ -32,9 +33,16 @@ export const Register = () => {
     };
     try {
       await createUser(userToCreate).unwrap();
-      alert("Usuario creado correctamente");
+      showSnackbar("Usuario creado correctamente", "success");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
   if (previousUserData === null)
@@ -42,6 +50,7 @@ export const Register = () => {
 
   return (
     <div className="containerRegister">
+      <SnackbarComponent />
       <div className="containerRegister__content">
         <img
           className="containerRegister__content-logo"
@@ -165,12 +174,7 @@ export const Register = () => {
           >
             Registrarse
           </button>
-          <p className="containerRegister__content-form-help">
-            ¿Ya tienes una cuenta?
-            <a className="containerRegister__content-form-help-link" href="#">
-              Accede aquí
-            </a>
-          </p>
+          <p className="containerRegister__content-form-help"></p>
         </form>
       </div>
     </div>

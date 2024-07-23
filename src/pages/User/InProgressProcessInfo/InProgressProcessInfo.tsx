@@ -10,6 +10,7 @@ import {
 } from "../../../app/votify.api";
 import { useEffect } from "react";
 import { useSpinner } from "../../../hooks/useSpinner";
+import { useAlert } from "../../../hooks/useAlert";
 
 export const InProgressProcessInfo = () => {
   const { process_id } = useParams();
@@ -30,10 +31,13 @@ export const InProgressProcessInfo = () => {
   const credentialForCurrentProcess = userCredentials?.find(
     (credential) => credential.process_id === process_id
   );
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const handleContinue = () => {
     if (!credentialForCurrentProcess) {
-      alert("No tienes acceso para este proceso.");
-      navigate("/hub", { replace: true });
+      showSnackbar("No tienes acceso para este proceso.", "error");
+      setTimeout(() => {
+        navigate("/hub", { replace: true });
+      }, 1000);
       return;
     }
 
@@ -69,6 +73,7 @@ export const InProgressProcessInfo = () => {
   }
   return (
     <div className="containerInProgressProcessInfo">
+      <SnackbarComponent />
       <div
         className="containerInProgressProcessInfo__back"
         onClick={() => navigate(-1)}

@@ -15,6 +15,7 @@ import {
 } from "../../../app/votify.api";
 import { useState, useRef, useEffect } from "react";
 import { useSpinner } from "../../../hooks/useSpinner";
+import { useAlert } from "../../../hooks/useAlert";
 
 export const Mailbox = () => {
   const conversationRef = useRef<HTMLDivElement>(null);
@@ -56,6 +57,7 @@ export const Mailbox = () => {
 
   const { data: messages, refetch: refetchMessages } =
     useGetMessagesByChatIdQuery(selectedChat?._id || "");
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const handleSendMessage = async () => {
     if (messageToSend.length === 0) return;
     const message: Partial<IMessage> = {
@@ -69,7 +71,11 @@ export const Mailbox = () => {
       setMessageToSend("");
       await refetchMessages();
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
 
@@ -103,12 +109,17 @@ export const Mailbox = () => {
         process_name: "Seleccione otro chat para continuar",
       });
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
 
   return (
     <div className="containerMailbox">
+      <SnackbarComponent />
       <div className="containerMailbox__back" onClick={() => navigate(-1)}>
         <ArrowBackIcon className="containerMailbox__back-icon" />
         <div className="containerMailbox__back-text">Ir a módulos</div>

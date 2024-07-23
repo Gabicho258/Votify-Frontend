@@ -13,6 +13,7 @@ import {
 } from "../../../../app/votify.api";
 import { useNavigate } from "react-router-dom";
 import { useSpinner } from "../../../../hooks/useSpinner";
+import { useAlert } from "../../../../hooks/useAlert";
 
 type AddAdminInputs = {
   user_name: string;
@@ -50,7 +51,7 @@ export const ManagementElectionAdmin = () => {
     formState: { errors: errorsAddAdmin },
     reset,
   } = useForm<AddAdminInputs>();
-
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const onSubmitAddAdmin: SubmitHandler<AddAdminInputs> = async (data) => {
     // submit add admin code
     const processAdminToCreate = {
@@ -66,7 +67,11 @@ export const ManagementElectionAdmin = () => {
       setLoading(false);
       handleCloseAddAdmin();
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
   const { Spinner, loading, setLoading } = useSpinner(true);
@@ -81,6 +86,7 @@ export const ManagementElectionAdmin = () => {
 
   return (
     <div className="containerManagementeElectionAdmin">
+      <SnackbarComponent />
       <div
         className="containerManagementeElectionAdmin__back"
         onClick={() => navigate(-1)}

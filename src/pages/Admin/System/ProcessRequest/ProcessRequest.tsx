@@ -19,6 +19,7 @@ import {
 } from "../../../../app/votify.api";
 import axios from "axios";
 import { useSpinner } from "../../../../hooks/useSpinner";
+import { useAlert } from "../../../../hooks/useAlert";
 
 export const ProcessRequest = () => {
   const { process_id } = useParams();
@@ -37,6 +38,7 @@ export const ProcessRequest = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { SnackbarComponent, showSnackbar } = useAlert();
   const handleCancellProcess = async () => {
     try {
       setLoading(true);
@@ -47,7 +49,11 @@ export const ProcessRequest = () => {
       setLoading(false);
       navigate(-1);
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
   const startDate = new Date(
@@ -100,7 +106,11 @@ export const ProcessRequest = () => {
       setLoading(false);
       navigate(-1);
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
   const handleRejectProcess = async () => {
@@ -114,7 +124,11 @@ export const ProcessRequest = () => {
       setLoading(false);
       navigate(-1);
     } catch (error) {
-      alert(JSON.stringify(error));
+      if (error instanceof Error) {
+        showSnackbar(error.message, "error");
+      } else {
+        showSnackbar("An unknown error occurred", "error");
+      }
     }
   };
   const { Spinner, loading, setLoading } = useSpinner(true);
@@ -144,6 +158,7 @@ export const ProcessRequest = () => {
   }
   return (
     <div className="containerProcessRequestInfo">
+      <SnackbarComponent />
       <div
         className="containerProcessRequestInfo__back"
         onClick={() => navigate(-1)}
