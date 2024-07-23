@@ -103,6 +103,7 @@ export const ProcessInfoForm = () => {
               </label>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                  format="DD/MM/YYYY"
                   value={startDateValue}
                   onChange={(newValue) => setStartDateValue(newValue)}
                   name="start_date"
@@ -119,6 +120,7 @@ export const ProcessInfoForm = () => {
               </label>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                  format="DD/MM/YYYY"
                   value={endDateValue}
                   onChange={(newValue) => setEndDateValue(newValue)}
                   name="end_date"
