@@ -13,6 +13,7 @@ import axios from "axios";
 import { IList } from "../../../../hooks/useList";
 import { useSpinner } from "../../../../hooks/useSpinner";
 import { useAlert } from "../../../../hooks/useAlert";
+import { ICandidate } from "../../../../interfaces";
 
 type AddVoterInputs = {
   user_name: string;
@@ -74,8 +75,19 @@ export const ProcessAddVoter = () => {
           `${gateway}/election-service/list/create`,
           listToCreate
         );
-
-        candidates.forEach(async (candidate) => {
+        const realCandidates: ICandidate[] = [
+          ...candidates,
+          {
+            candidate_name: "Voto en blanco",
+            logo_url:
+              "https://res.cloudinary.com/hotelapp/image/upload/v1721705713/eco_conciencia/nm3zwzcchj5uzwvtgfp8.jpg",
+            organization_name: "Voto en blanco",
+            photo_url:
+              "https://res.cloudinary.com/hotelapp/image/upload/v1721705713/eco_conciencia/nm3zwzcchj5uzwvtgfp8.jpg",
+            valid_votes: 0,
+          },
+        ];
+        realCandidates.forEach(async (candidate) => {
           const candidateCreated = {
             list_id: listCreated._id,
             ...candidate,
