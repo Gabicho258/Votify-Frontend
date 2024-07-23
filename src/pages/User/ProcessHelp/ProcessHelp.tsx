@@ -32,7 +32,8 @@ export const ProcessHelp = () => {
               asegúrese que sea el correcto.
             </li>
             <li>
-              Una vez presione en "Comenzar" dispondrá de 10 minutos para votar.
+              Si el proceso electoral termina mientras usted está realizando el
+              voto, no se guardará su voto. Tome precauciones.
             </li>
             <li>
               Una vez haya realizado sus votos se mostrará un resumen para que
