@@ -4,7 +4,7 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccordionElectionList } from "../../../../components/AccordionElectionList/AccordionElectionList";
 import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
 import { Button } from "@mui/material";
@@ -18,19 +18,20 @@ import {
   useUpdateProcessMutation,
 } from "../../../../app/votify.api";
 import axios from "axios";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 export const ProcessRequest = () => {
   const { process_id } = useParams();
   const user_id = localStorage.getItem("admin_id") || "";
-  const { data: currentUser } = useGetUserByIdQuery(user_id);
-  const { data: currentProcess } = useGetProcessByIdQuery(process_id || "");
-  const { data: lists } = useGetListsByProcessIdQuery(
-    currentProcess?._id || ""
-  );
-  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
-    process_id || ""
-  );
-  const { data: allUsers } = useGetUsersQuery();
+  const { data: currentUser, isLoading: isCurrentUserLoading } =
+    useGetUserByIdQuery(user_id);
+  const { data: currentProcess, isLoading: isCurrentProcessLoading } =
+    useGetProcessByIdQuery(process_id || "");
+  const { data: lists, isLoading: isListsLoading } =
+    useGetListsByProcessIdQuery(currentProcess?._id || "");
+  const { data: processCredentials, isLoading: isProcessCredentialsLoading } =
+    useGetCredentialsByProcessIdQuery(process_id || "");
+  const { data: allUsers, isLoading: isAllUsersLoading } = useGetUsersQuery();
   const [updateProcess] = useUpdateProcessMutation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -38,10 +39,12 @@ export const ProcessRequest = () => {
   const handleClose = () => setOpen(false);
   const handleCancellProcess = async () => {
     try {
+      setLoading(true);
       await updateProcess({
         _id: process_id,
         process_status: "cancelled",
       }).unwrap();
+      setLoading(false);
       navigate(-1);
     } catch (error) {
       alert(JSON.stringify(error));
@@ -67,6 +70,7 @@ export const ProcessRequest = () => {
   const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleApproveProcess = async () => {
     try {
+      setLoading(true);
       await updateProcess({
         _id: process_id,
         process_status: "programmed",
@@ -93,7 +97,7 @@ export const ProcessRequest = () => {
         // startDate:
       };
       await axios.post(`${apigateway}/email-service/credential`, emailBody);
-
+      setLoading(false);
       navigate(-1);
     } catch (error) {
       alert(JSON.stringify(error));
@@ -101,24 +105,43 @@ export const ProcessRequest = () => {
   };
   const handleRejectProcess = async () => {
     try {
+      setLoading(true);
       await updateProcess({
         _id: process_id,
         process_status: "",
         admin_status: "rejected",
       }).unwrap();
+      setLoading(false);
       navigate(-1);
     } catch (error) {
       alert(JSON.stringify(error));
     }
   };
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (
+      !(
+        isCurrentProcessLoading ||
+        isCurrentUserLoading ||
+        isListsLoading ||
+        isProcessCredentialsLoading ||
+        isAllUsersLoading
+      )
+    ) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [
+    isCurrentProcessLoading,
+    isCurrentUserLoading,
+    isListsLoading,
+    isProcessCredentialsLoading,
+    isAllUsersLoading,
+    setLoading,
+  ]);
 
-  // const { formattedDate: startDate, formattedTime: startTime } = formatISODate(
-  //   currentProcess?.start_date || ""
-  // );
-  // const { formattedDate: endDate, formattedTime: endTime } = formatISODate(
-  //   currentProcess?.end_date || ""
-  // );
-
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerProcessRequestInfo">
       <div

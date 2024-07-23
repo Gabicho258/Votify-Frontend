@@ -6,12 +6,13 @@ import Modal from "@mui/material/Modal";
 import { ProcessAdminListItem } from "../../../../components/ProcessAdminListItem/ProcessAdminListItem";
 import { useForm, SubmitHandler } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   useCreateUserMutation,
   useGetUsersQuery,
 } from "../../../../app/votify.api";
 import { useNavigate } from "react-router-dom";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 type AddAdminInputs = {
   user_name: string;
@@ -32,7 +33,11 @@ export const ManagementElectionAdmin = () => {
     setOpenAddAdmin(false);
   };
   // get admins
-  const { data: allUsers, refetch: refetchUsers } = useGetUsersQuery();
+  const {
+    data: allUsers,
+    refetch: refetchUsers,
+    isLoading,
+  } = useGetUsersQuery();
   const admins = allUsers?.filter((user) => user.role === "process_admin");
 
   // mutators
@@ -55,14 +60,24 @@ export const ManagementElectionAdmin = () => {
       dni: data.dni.toString(),
     };
     try {
+      setLoading(true);
       await createUser(processAdminToCreate).unwrap();
       await refetchUsers();
+      setLoading(false);
       handleCloseAddAdmin();
     } catch (error) {
       alert(JSON.stringify(error));
     }
-    console.log(processAdminToCreate);
   };
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!isLoading) {
+      setLoading(false);
+    }
+  }, [isLoading, setLoading]);
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="containerManagementeElectionAdmin">

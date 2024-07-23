@@ -5,6 +5,7 @@ import { Process } from "../../../../components/ProcessRequest/Process";
 import { useNavigate } from "react-router-dom";
 import { useGetAllProcessesQuery } from "../../../../app/votify.api";
 import { useEffect } from "react";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 export const ProcessRequests = () => {
   const navigate = useNavigate();
@@ -17,9 +18,14 @@ export const ProcessRequests = () => {
     (process) => process.admin_status === "pending"
   );
 
+  const { Spinner } = useSpinner(true);
+
   useEffect(() => {
     refetch();
   }, []);
+  if (isLoading) {
+    return <Spinner />;
+  }
   // !isLoading && console.log(electionProcesses?.reverse());
 
   return (

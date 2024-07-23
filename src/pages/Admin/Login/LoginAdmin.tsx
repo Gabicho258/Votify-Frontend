@@ -3,10 +3,11 @@ import "./_LoginAdmin.scss";
 import { Button } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useGetUserByIdQuery, useGetUsersQuery } from "../../../app/votify.api";
+import { useSpinner } from "../../../hooks/useSpinner";
 // import { useNavigate } from "react-router-dom";
 
 interface State extends SnackbarOrigin {
@@ -38,7 +39,7 @@ export const LoginAdmin = () => {
   };
   // END - Notification
   // const navigate = useNavigate();
-  const { data: allUsers } = useGetUsersQuery();
+  const { data: allUsers, isLoading: isAllUsersLoading } = useGetUsersQuery();
   const API_GATEWAY = import.meta.env.VITE_API_GATEWAY;
   const handleGoogleLogin = useGoogleLogin({
     flow: "auth-code",
@@ -78,7 +79,8 @@ export const LoginAdmin = () => {
     onError: (errorResponse) => console.log(errorResponse),
   });
   const adminDataStorage = localStorage.getItem("admin_id") || "";
-  const { data: adminLogged } = useGetUserByIdQuery(adminDataStorage);
+  const { data: adminLogged, isLoading: isAdminLoading } =
+    useGetUserByIdQuery(adminDataStorage);
   if (adminLogged) {
     if (adminLogged?.role === "sys_admin") {
       window.location.href = "/system-admin-modules";
@@ -86,6 +88,16 @@ export const LoginAdmin = () => {
       window.location.href = "/process-admin-modules";
     }
     // return null; // para evitar que siga cargando la página al hacer login en caso de estar logueado
+  }
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!(isAdminLoading || isAllUsersLoading)) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isAllUsersLoading, isAdminLoading, setLoading]);
+
+  if (loading) {
+    return <Spinner />;
   }
   return (
     <div className="containerAdminLogin">

@@ -5,15 +5,31 @@ import { Button } from "@mui/material";
 import { Process } from "../../../../components/ProcessRequest/Process";
 import { useNavigate } from "react-router-dom";
 import { useGetProcessesByUserIdQuery } from "../../../../app/votify.api";
+import { useEffect } from "react";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 export const ProcessListAdmin = () => {
   const user_id = localStorage.getItem("admin_id") || "";
   // const { data: process_user } = useGetUserByIdQuery(user_id);
-  const { data: electionProcesses } = useGetProcessesByUserIdQuery(
-    user_id || ""
-  );
-
+  const {
+    data: electionProcesses,
+    isLoading: isProcessesLoading,
+    refetch,
+  } = useGetProcessesByUserIdQuery(user_id || "");
   const navigate = useNavigate();
+
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!isProcessesLoading) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isProcessesLoading, setLoading]);
+  useEffect(() => {
+    refetch();
+  }, []);
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerProcessListAdmin">
       <div
