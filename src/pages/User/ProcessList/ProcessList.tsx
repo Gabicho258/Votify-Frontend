@@ -1,5 +1,5 @@
 import "./_ProcessList.scss";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+// import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Button } from "@mui/material";
 import { ICandidate, IList } from "../../../interfaces";
 import { useEffect, useState } from "react";
@@ -45,6 +45,10 @@ export const ProcessList = () => {
   };
   useEffect(() => {}, []);
   const handleNextSummary = () => {
+    if (selectedCandidate === null) {
+      showSnackbar("Debe seleccionar un candidato primero.", "info");
+      return;
+    }
     navigate("/votes-summary", {
       state: {
         candidates: [...candidatesSelected, selectedCandidate],
@@ -130,10 +134,10 @@ export const ProcessList = () => {
     <div className="containerProcessList">
       <SnackbarComponent />
       <div className="containerProcessList__timer">
-        <div className="containerProcessList__timer-box">
-          <AccessTimeIcon className="containerProcessList__timer-box-icon" />
-          <div className="containerProcessList__timer-box-time">10:00</div>
-        </div>
+        {/* <div className="containerProcessList__timer-box"> */}
+        {/* <AccessTimeIcon className="containerProcessList__timer-box-icon" /> */}
+        {/* <div className="containerProcessList__timer-box-time">10:00</div> */}
+        {/* </div> */}
       </div>
 
       <Options

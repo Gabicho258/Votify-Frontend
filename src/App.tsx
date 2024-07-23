@@ -33,6 +33,7 @@ import { VotesSummary } from "./pages/User/VotesSummary/VotesSummary";
 import { ProcessInfo } from "./pages/User/ProcessInfo/ProcessInfo";
 import { useGetUserByIdQuery } from "./app/votify.api";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { Page404 } from "./pages/Page404/Page404";
 // import { Login } from "./pages/User/Login/Login";
 
 // Test
@@ -178,7 +179,7 @@ function App() {
           />
         </Route>
 
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<Page404 />} />
       </Routes>
     </BrowserRouter>
     // Protected routes - Official
