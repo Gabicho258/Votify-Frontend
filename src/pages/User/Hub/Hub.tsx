@@ -9,25 +9,44 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import "./_Hub.scss";
 import { Process } from "../../../components/ProcessRequest/Process";
 import { IElectionProcess } from "../../../interfaces";
+import { useEffect } from "react";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 export const Hub = () => {
   const user_id = localStorage.getItem("voter_id") || "";
-  const { data: voter } = useGetUserByIdQuery(user_id);
+  const { data: voter, isLoading: isVoterLoading } =
+    useGetUserByIdQuery(user_id);
   const handleLogout = () => {
     localStorage.removeItem("voter_id");
     window.location.href = "/login";
   };
-  const { data: allElectionProcesses } = useGetAllProcessesQuery();
-  const { data: userCredentials } = useGetCredentialsByUserIdQuery(
-    voter?._id || ""
-  );
+  const { data: allElectionProcesses, isLoading: isAllProcessesLoading } =
+    useGetAllProcessesQuery();
+  const { data: userCredentials, isLoading: isUserCredentialsLoading } =
+    useGetCredentialsByUserIdQuery(voter?._id || "");
   const electionProcesses: IElectionProcess[] =
     allElectionProcesses?.filter((process) =>
       userCredentials?.some(
         (credentials) => credentials.process_id == process._id
       )
     ) || [];
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (
+      !(isVoterLoading || isAllProcessesLoading || isUserCredentialsLoading)
+    ) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [
+    isVoterLoading,
+    isAllProcessesLoading,
+    isUserCredentialsLoading,
+    setLoading,
+  ]);
 
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerHub">
       <div className="containerHub__left">

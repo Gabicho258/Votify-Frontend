@@ -5,6 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import "./_Credential.scss";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useGetProcessByIdQuery } from "../../../app/votify.api";
+import { useEffect } from "react";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 type CredentialInputs = {
   dni: number;
@@ -19,8 +21,9 @@ export const Credential = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<CredentialInputs>();
-  const { data: currentProcess } = useGetProcessByIdQuery(state.process_id);
-  console.log(state);
+  const { data: currentProcess, isLoading } = useGetProcessByIdQuery(
+    state?.process_id
+  );
   const onSubmit: SubmitHandler<CredentialInputs> = async (data) => {
     if (state.was_used) {
       alert("Usted ya realizó un voto");
@@ -40,7 +43,16 @@ export const Credential = () => {
       alert("DNI o contraseña incorrectos");
     }
   };
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!isLoading) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isLoading, setLoading]);
   if (state === null) return <Navigate to={"/hub"} replace={true} />;
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="credentialContainer">
       <div className="credentialContainer__back" onClick={() => navigate(-1)}>

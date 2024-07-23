@@ -4,14 +4,22 @@ import { Process } from "../../../../components/ProcessRequest/Process";
 import { useGetAllProcessesQuery } from "../../../../app/votify.api";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 export const ElectoralProcessAdmin = () => {
   const navigate = useNavigate();
-  const { data: electionProcesses, refetch } = useGetAllProcessesQuery();
-
+  const {
+    data: electionProcesses,
+    refetch,
+    isLoading,
+  } = useGetAllProcessesQuery();
+  const { Spinner } = useSpinner(true);
   useEffect(() => {
     refetch();
   }, []);
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerElectoralProcessAdmin">
       <div

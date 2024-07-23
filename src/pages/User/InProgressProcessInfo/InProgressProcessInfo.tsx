@@ -9,17 +9,24 @@ import {
   useGetUserByIdQuery,
 } from "../../../app/votify.api";
 import { useEffect } from "react";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 export const InProgressProcessInfo = () => {
   const { process_id } = useParams();
 
   const navigate = useNavigate();
-  const { data: process } = useGetProcessByIdQuery(process_id || "");
+  const { data: process, isLoading: isProcessLoading } = useGetProcessByIdQuery(
+    process_id || ""
+  );
 
   const user_id = localStorage.getItem("voter_id") || "";
-  const { data: userCredentials, refetch: refetchCredentials } =
-    useGetCredentialsByUserIdQuery(user_id);
-  const { data: currentUser } = useGetUserByIdQuery(user_id);
+  const {
+    data: userCredentials,
+    refetch: refetchCredentials,
+    isLoading: isUserCredentialsLoading,
+  } = useGetCredentialsByUserIdQuery(user_id);
+  const { data: currentUser, isLoading: isCurrentUserLoading } =
+    useGetUserByIdQuery(user_id);
   const credentialForCurrentProcess = userCredentials?.find(
     (credential) => credential.process_id === process_id
   );
@@ -43,6 +50,23 @@ export const InProgressProcessInfo = () => {
   useEffect(() => {
     refetchCredentials();
   }, []);
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (
+      !(isProcessLoading || isUserCredentialsLoading || isCurrentUserLoading)
+    ) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [
+    isProcessLoading,
+    isUserCredentialsLoading,
+    isCurrentUserLoading,
+    setLoading,
+  ]);
+
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerInProgressProcessInfo">
       <div

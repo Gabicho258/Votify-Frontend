@@ -5,7 +5,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonIcon from "@mui/icons-material/Person";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccordionElectionList } from "../../../../components/AccordionElectionList/AccordionElectionList";
 import { EmailListItem } from "../../../../components/EmailListItem/EmailListItem";
 import { Button } from "@mui/material";
@@ -19,6 +19,7 @@ import {
   useGetListsByProcessIdQuery,
   useGetProcessByIdQuery,
 } from "../../../../app/votify.api";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 type ContactInputs = {
   text: string;
@@ -29,15 +30,16 @@ export const ProcessInfoAdmin = () => {
   // get information from backend
   const user_id = localStorage.getItem("admin_id") || "";
   const { process_id } = useParams();
-  const { data: currentProcess } = useGetProcessByIdQuery(process_id || "");
-  const { data: chats } = useGetChatsByUserIdQuery(user_id || "");
+  const { data: currentProcess, isLoading: isCurrentProcessLoading } =
+    useGetProcessByIdQuery(process_id || "");
+  const { data: chats, isLoading: isChatsLoading } = useGetChatsByUserIdQuery(
+    user_id || ""
+  );
 
-  const { data: lists } = useGetListsByProcessIdQuery(
-    currentProcess?._id || ""
-  );
-  const { data: processCredentials } = useGetCredentialsByProcessIdQuery(
-    process_id || ""
-  );
+  const { data: lists, isLoading: isListsLoading } =
+    useGetListsByProcessIdQuery(currentProcess?._id || "");
+  const { data: processCredentials, isLoading: isProcessCredentialsLoading } =
+    useGetCredentialsByProcessIdQuery(process_id || "");
   const [createChat] = useCreateChatMutation();
   const [createMessage] = useCreateMessageMutation();
 
@@ -79,19 +81,19 @@ export const ProcessInfoAdmin = () => {
       process_name: currentProcess?.title,
     };
     try {
+      setLoading(true);
       const { _id } = await createChat(contactToAdd).unwrap();
-      console.log(_id);
       const messageToSend = {
         chat_id: _id,
         sender_id: user_id,
         text: data.text,
       };
       await createMessage(messageToSend).unwrap();
+      setLoading(false);
       navigate("/mailbox");
     } catch (error) {
       alert(JSON.stringify(error));
     }
-    console.log(contactToAdd);
   };
 
   const startDate = new Date(
@@ -111,7 +113,29 @@ export const ProcessInfoAdmin = () => {
       minute: "2-digit",
     }
   );
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (
+      !(
+        isCurrentProcessLoading ||
+        isChatsLoading ||
+        isListsLoading ||
+        isProcessCredentialsLoading
+      )
+    ) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [
+    isCurrentProcessLoading,
+    isChatsLoading,
+    isListsLoading,
+    isProcessCredentialsLoading,
+    setLoading,
+  ]);
 
+  if (loading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerProcessInfoAdmin">
       <div

@@ -14,17 +14,21 @@ import {
   useUpdateChatMutation,
 } from "../../../app/votify.api";
 import { useState, useRef, useEffect } from "react";
+import { useSpinner } from "../../../hooks/useSpinner";
 
 export const Mailbox = () => {
   const conversationRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
   const scrollToBottom = () => {
     if (conversationRef.current) {
       conversationRef.current.scrollTop = conversationRef.current.scrollHeight;
     }
   };
   const user_id = localStorage.getItem("admin_id") || "";
-  const { data: currentUser } = useGetUserByIdQuery(user_id);
-  const { data: allUsers } = useGetUsersQuery();
+  const { data: currentUser, isLoading: isCurrentUserLoading } =
+    useGetUserByIdQuery(user_id);
+  const { data: allUsers, isLoading: isAllUsersLoading } = useGetUsersQuery();
   const [messageToSend, setMessageToSend] = useState("");
 
   const [selectedChat, setSelectedChat] = useState<Partial<IChat>>({
@@ -32,9 +36,11 @@ export const Mailbox = () => {
   });
   const idToSearchChats =
     currentUser?.role === "sys_admin" ? "system" : currentUser?._id;
-  const { data: chats, refetch: refetchChats } = useGetChatsByUserIdQuery(
-    idToSearchChats || ""
-  );
+  const {
+    data: chats,
+    refetch: refetchChats,
+    isLoading: isChatsLoading,
+  } = useGetChatsByUserIdQuery(idToSearchChats || "");
   const handleSelectChat = (chat: IChat) => {
     setSelectedChat(chat);
     setMessageToSend("");
@@ -73,6 +79,19 @@ export const Mailbox = () => {
   useEffect(() => {
     refetchMessages();
   }, [selectedChat]);
+  useEffect(() => {
+    refetchChats();
+  }, []);
+  const { Spinner, loading, setLoading } = useSpinner(true);
+  useEffect(() => {
+    if (!(isCurrentUserLoading || isAllUsersLoading || isChatsLoading)) {
+      setLoading(false); // Terminar la carga cuando la petición haya finalizado
+    }
+  }, [isCurrentUserLoading, isAllUsersLoading, isChatsLoading, setLoading]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   const handleCloseChat = async () => {
     try {
@@ -87,8 +106,6 @@ export const Mailbox = () => {
       alert(JSON.stringify(error));
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <div className="containerMailbox">

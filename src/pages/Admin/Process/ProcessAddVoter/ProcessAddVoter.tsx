@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useVoters } from "../../../../hooks/useVoter";
 import axios from "axios";
 import { IList } from "../../../../hooks/useList";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 type AddVoterInputs = {
   user_name: string;
@@ -55,6 +56,7 @@ export const ProcessAddVoter = () => {
     }
     try {
       const gateway = `${API_GATEWAY}/api`;
+      setLoading(true);
       const { data: processCreated } = await axios.post(
         `${gateway}/election-service/process/create`,
         state.process
@@ -87,6 +89,7 @@ export const ProcessAddVoter = () => {
         process_title: processCreated._title,
         voters,
       });
+      setLoading(false);
       ///
       navigate("/process-list-admin", { replace: true });
       // console.log(data);
@@ -96,8 +99,13 @@ export const ProcessAddVoter = () => {
 
     console.log(state);
   };
+  const { Spinner, loading, setLoading } = useSpinner(false);
+
   if (state === null)
     return <Navigate to={"/process-info-form"} replace={true} />;
+  if (loading) {
+    return <Spinner />;
+  }
   // const voters: Partial<IUser>[] = [
   //   {
   //     dni: "75964143",

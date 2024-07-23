@@ -4,27 +4,20 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import "./_SystemModules.scss";
 import { useGetUserByIdQuery } from "../../../../app/votify.api";
 import { useNavigate } from "react-router-dom";
+import { useSpinner } from "../../../../hooks/useSpinner";
 
 export const SystemModules = () => {
-  // delete mock when finished
-  // const admin: IUser = {
-  //   _id: "001",
-  //   role: "sys_admin",
-  //   user_name: "Juan Pedro",
-  //   user_surname: "Perez Rodriguez",
-  //   email: "jperezr@gmail.com",
-  //   created_at: "string",
-  //   dni: "12345678",
-  //   is_active: true,
-  // };
   const navigate = useNavigate();
   const user_id = localStorage.getItem("admin_id") || "";
-  const { data: sys_user } = useGetUserByIdQuery(user_id);
+  const { data: sys_user, isLoading } = useGetUserByIdQuery(user_id);
   const handleLogout = () => {
     localStorage.removeItem("admin_id");
     window.location.href = "/login-admin";
   };
-
+  const { Spinner } = useSpinner(true);
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <div className="containerSystemModules">
       <div className="containerSystemModules__left">
